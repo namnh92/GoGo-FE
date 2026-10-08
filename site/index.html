@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>GoGo — Sắp ra mắt</title>
-  <meta name="description" content="GoGo giúp cặp đôi và nhóm bạn thống nhất địa điểm, tạo lịch trình và dùng kế hoạch trong ngày đi chơi. Sắp ra mắt.">
-  <meta property="og:title" content="GoGo — Sắp ra mắt">
+  <title>GoGo VN — Sắp ra mắt</title>
+  <meta name="description" content="GoGo VN giúp cặp đôi và nhóm bạn thống nhất địa điểm, tạo lịch trình và dùng kế hoạch trong ngày đi chơi. Sắp ra mắt.">
+  <meta property="og:title" content="GoGo VN — Sắp ra mắt">
   <meta property="og:description" content="Chọn chỗ đi chơi cùng nhau, không còn cãi nhau vì 'đi đâu giờ?'.">
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#F6F3EE">
@@ -97,6 +97,13 @@
     .i-c { background: var(--coral-soft); }
     .i-l { background: var(--lavender-soft); }
     .i-m { background: var(--mint-soft); }
+    .i-a { background: var(--amber-soft); flex: none; }
+    .built { display: flex; gap: 20px; align-items: flex-start; }
+    .built h2 { margin-bottom: 6px; }
+    .built p { margin: 0; color: var(--ink-2); font-size: 16px; }
+    .built a { color: var(--coral-ink); font-weight: 600; text-underline-offset: 3px; }
+    .built a:focus-visible { outline: 2px solid var(--coral-ink); outline-offset: 2px; border-radius: 4px; }
+    @media (max-width: 520px) { .built { flex-direction: column; gap: 12px; } }
 
     .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); counter-reset: s; }
     .steps li {
@@ -133,7 +140,7 @@
 
   <header>
     <div class="wrap">
-      <a class="brand" href="/" aria-label="GoGo — trang chủ"><span class="mark" aria-hidden="true">Go</span>GoGo</a>
+      <a class="brand" href="/" aria-label="GoGo VN — trang chủ"><span class="mark" aria-hidden="true">Go</span>GoGo VN</a>
     </div>
   </header>
 
@@ -141,7 +148,7 @@
     <div class="wrap hero">
       <span class="badge"><span class="dot" aria-hidden="true"></span>Sắp ra mắt</span>
       <h1>Hết cảnh hỏi nhau <em>“đi đâu giờ?”</em></h1>
-      <p class="lead">GoGo giúp cặp đôi và nhóm bạn thống nhất địa điểm, tạo lịch trình và đi theo kế hoạch trong ngày đi chơi — tất cả trong một nơi.</p>
+      <p class="lead">GoGo VN giúp cặp đôi và nhóm bạn thống nhất địa điểm, tạo lịch trình và đi theo kế hoạch trong ngày đi chơi — tất cả trong một nơi.</p>
       <p class="soon">Chúng mình đang hoàn thiện những bước cuối. <strong>Hẹn gặp bạn rất sớm!</strong></p>
     </div>
 
@@ -153,7 +160,7 @@
           <article class="card">
             <div class="icon i-c" aria-hidden="true">💞</div>
             <h3>Cặp đôi</h3>
-            <p>Mỗi người chọn chỗ mình thích, GoGo tìm ra điểm chung và gợi ý lịch hẹn hợp ngân sách.</p>
+            <p>Mỗi người chọn chỗ mình thích, GoGo VN tìm ra điểm chung và gợi ý lịch hẹn hợp ngân sách.</p>
           </article>
           <article class="card">
             <div class="icon i-l" aria-hidden="true">👯</div>
@@ -171,22 +178,34 @@
 
     <section aria-labelledby="how">
       <div class="wrap">
-        <h2 id="how">Cách GoGo hoạt động</h2>
+        <h2 id="how">Cách GoGo VN hoạt động</h2>
         <p class="sub">Từ lúc rủ nhau đến khi về nhà.</p>
         <ol class="steps">
           <li><strong>Tạo kèo</strong>Mở phòng cho buổi đi chơi, đặt ngân sách và thời gian.</li>
           <li><strong>Mời bạn</strong>Gửi một đường link, mọi người tham gia ngay.</li>
           <li><strong>Chọn sở thích</strong>Mỗi người cho biết mình muốn ăn gì, chơi gì.</li>
           <li><strong>Match &amp; bình chọn</strong>Cùng chốt những địa điểm cả phòng đều ưng.</li>
-          <li><strong>Nhận lịch trình</strong>GoGo sắp xếp các điểm dừng thành kế hoạch hợp lý.</li>
+          <li><strong>Nhận lịch trình</strong>GoGo VN sắp xếp các điểm dừng thành kế hoạch hợp lý.</li>
           <li><strong>Đi chơi &amp; đánh giá</strong>Đi theo kế hoạch, rồi chia sẻ cảm nhận sau buổi đi.</li>
         </ol>
       </div>
     </section>
 
+    <section aria-labelledby="claude">
+      <div class="wrap">
+        <div class="card built">
+          <div class="icon i-a" aria-hidden="true">✳️</div>
+          <div>
+            <h2 id="claude">Phát triển cùng Claude</h2>
+            <p>GoGo VN được đội ngũ xây dựng cùng <a href="https://claude.com/product/claude-code" target="_blank" rel="noopener">Claude Code</a> — trợ lý lập trình AI của Anthropic. Claude đồng hành từ viết mã, kiểm thử đến rà soát, giúp đội ngũ nhỏ đi nhanh mà vẫn giữ chất lượng.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <div class="wrap">
       <div class="closing">
-        <h2>GoGo đang trên đường tới</h2>
+        <h2>GoGo VN đang trên đường tới</h2>
         <p>Ứng dụng di động và phiên bản web sẽ sớm có mặt. Hãy quay lại trang này để cập nhật tin mới nhất.</p>
       </div>
     </div>
@@ -194,7 +213,7 @@
 
   <footer>
     <div class="wrap">
-      <span>© <span id="y">2026</span> GoGo</span>
+      <span>© <span id="y">2026</span> GoGo VN</span>
       <span>Cùng nhau chọn, cùng nhau đi.</span>
     </div>
   </footer>
