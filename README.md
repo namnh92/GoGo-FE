@@ -3,13 +3,11 @@
 Landing page "Sắp ra mắt" của GoGo — trang tĩnh, không build step.
 
 - Mã nguồn: `site/index.html`
-- Hosting: Cloudflare Pages, project `gogo-landing` (production branch `master`)
+- Hosting: Cloudflare Workers static assets, Worker `gogo-landing` (`wrangler.jsonc`)
+- URL: https://gogo-landing.namnh-code4fun.workers.dev
 
 ## Deploy
 
 ```bash
-npx wrangler@4 pages deploy site --project-name gogo-landing --branch master
+npx wrangler@4 deploy
 ```
-
-`--branch master` bắt buộc để cập nhật bản production (`gogo-landing.pages.dev`);
-nhánh khác chỉ tạo preview URL.
