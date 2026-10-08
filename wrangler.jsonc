@@ -5,6 +5,7 @@
     "directory": "./site"
   },
   "routes": [
-    { "pattern": "gogo.id.vn", "custom_domain": true }
+    { "pattern": "gogo.id.vn", "custom_domain": true },
+    { "pattern": "www.gogo.id.vn", "custom_domain": true }
   ]
 }
