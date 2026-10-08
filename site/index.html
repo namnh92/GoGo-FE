@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GoGo — Sắp ra mắt</title>
+  <meta name="description" content="GoGo giúp cặp đôi và nhóm bạn thống nhất địa điểm, tạo lịch trình và dùng kế hoạch trong ngày đi chơi. Sắp ra mắt.">
+  <meta property="og:title" content="GoGo — Sắp ra mắt">
+  <meta property="og:description" content="Chọn chỗ đi chơi cùng nhau, không còn cãi nhau vì 'đi đâu giờ?'.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#F6F3EE">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23B93E48'/%3E%3Ctext x='32' y='43' font-family='Arial,sans-serif' font-size='30' font-weight='700' fill='white' text-anchor='middle'%3EGo%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap&subset=vietnamese" rel="stylesheet">
+  <style>
+    :root {
+      --coral: #D84F4A;
+      --coral-ink: #B93E48;
+      --coral-soft: #FFD8D4;
+      --lavender: #7667E8;
+      --lavender-soft: #E5E0FF;
+      --mint: #4FAF86;
+      --mint-soft: #D9F3E7;
+      --amber-soft: #FCEBCB;
+      --ivory: #F6F3EE;
+      --surface: #FFFFFF;
+      --line: #ECE8E1;
+      --ink: #211F1C;
+      --ink-2: #4A4641;
+      --muted: #746E68;
+      --glass: rgba(255, 255, 255, 0.72);
+      --glass-line: rgba(255, 255, 255, 0.9);
+      --shadow: 0 10px 30px rgba(33, 31, 28, 0.08);
+      --radius: 20px;
+      --motion: 240ms;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--ivory);
+      color: var(--ink);
+      font-family: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+
+    /* Background accents — solid soft shapes, no full-screen blur. */
+    .bg { position: absolute; inset: 0 0 auto 0; height: 720px; overflow: hidden; z-index: -1; pointer-events: none; }
+    .blob { position: absolute; border-radius: 50%; opacity: .7; }
+    .blob.c { width: 420px; height: 420px; background: var(--coral-soft); top: -140px; right: -120px; }
+    .blob.l { width: 360px; height: 360px; background: var(--lavender-soft); top: 220px; left: -160px; }
+    .blob.a { width: 220px; height: 220px; background: var(--amber-soft); top: 420px; right: 18%; opacity: .55; }
+
+    header { padding: 20px 0; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; font-size: 22px; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; }
+    .mark { width: 36px; height: 36px; border-radius: 11px; background: var(--coral-ink); color: #fff; display: grid; place-items: center; font-size: 15px; font-weight: 800; }
+
+    .hero { padding: 48px 0 64px; text-align: center; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px; border-radius: 999px;
+      background: var(--surface); border: 1px solid var(--line);
+      font-size: 14px; font-weight: 600; color: var(--coral-ink);
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--coral); animation: pulse 1.8s ease-in-out infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+    h1 {
+      margin: 20px auto 16px; max-width: 760px;
+      font-size: clamp(34px, 7vw, 60px); line-height: 1.12; letter-spacing: -0.03em; font-weight: 800;
+    }
+    h1 em { font-style: normal; color: var(--coral-ink); }
+    .lead { margin: 0 auto; max-width: 600px; font-size: clamp(17px, 2.4vw, 20px); color: var(--ink-2); }
+    .soon { margin-top: 28px; font-size: 15px; color: var(--muted); }
+    .soon strong { color: var(--ink); }
+
+    section { padding: 40px 0; }
+    h2 { margin: 0 0 8px; font-size: clamp(24px, 4vw, 32px); letter-spacing: -0.02em; font-weight: 800; }
+    .sub { margin: 0 0 28px; color: var(--muted); }
+
+    .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .card {
+      background: var(--glass);
+      -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+      border: 1px solid var(--glass-line);
+      border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow);
+    }
+    @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+      .card { background: var(--surface); }
+    }
+    .card h3 { margin: 12px 0 6px; font-size: 19px; font-weight: 700; }
+    .card p { margin: 0; color: var(--ink-2); font-size: 15px; }
+    .icon { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; font-size: 22px; }
+    .i-c { background: var(--coral-soft); }
+    .i-l { background: var(--lavender-soft); }
+    .i-m { background: var(--mint-soft); }
+
+    .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); counter-reset: s; }
+    .steps li {
+      counter-increment: s; background: var(--surface); border: 1px solid var(--line);
+      border-radius: 16px; padding: 18px; font-size: 15px; color: var(--ink-2);
+    }
+    .steps li::before {
+      content: counter(s); display: grid; place-items: center;
+      width: 30px; height: 30px; margin-bottom: 10px; border-radius: 50%;
+      background: var(--lavender); color: #fff; font-weight: 700; font-size: 14px;
+    }
+    .steps strong { display: block; color: var(--ink); font-size: 16px; margin-bottom: 2px; }
+
+    .closing {
+      margin: 24px 0 56px; padding: 36px 24px; border-radius: 28px; text-align: center;
+      background: var(--ink); color: #fff;
+    }
+    .closing h2 { color: #fff; }
+    .closing p { margin: 0 auto; max-width: 520px; color: rgba(255, 255, 255, 0.8); }
+
+    footer { padding: 24px 0 40px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+    footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .dot { animation: none; }
+      * { transition-duration: 0ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg" aria-hidden="true">
+    <div class="blob c"></div><div class="blob l"></div><div class="blob a"></div>
+  </div>
+
+  <header>
+    <div class="wrap">
+      <a class="brand" href="/" aria-label="GoGo — trang chủ"><span class="mark" aria-hidden="true">Go</span>GoGo</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap hero">
+      <span class="badge"><span class="dot" aria-hidden="true"></span>Sắp ra mắt</span>
+      <h1>Hết cảnh hỏi nhau <em>“đi đâu giờ?”</em></h1>
+      <p class="lead">GoGo giúp cặp đôi và nhóm bạn thống nhất địa điểm, tạo lịch trình và đi theo kế hoạch trong ngày đi chơi — tất cả trong một nơi.</p>
+      <p class="soon">Chúng mình đang hoàn thiện những bước cuối. <strong>Hẹn gặp bạn rất sớm!</strong></p>
+    </div>
+
+    <section aria-labelledby="who">
+      <div class="wrap">
+        <h2 id="who">Dành cho mọi buổi đi chơi</h2>
+        <p class="sub">Dù đi hai người hay cả nhóm, ai cũng có tiếng nói.</p>
+        <div class="grid">
+          <article class="card">
+            <div class="icon i-c" aria-hidden="true">💞</div>
+            <h3>Cặp đôi</h3>
+            <p>Mỗi người chọn chỗ mình thích, GoGo tìm ra điểm chung và gợi ý lịch hẹn hợp ngân sách.</p>
+          </article>
+          <article class="card">
+            <div class="icon i-l" aria-hidden="true">👯</div>
+            <h3>Nhóm bạn</h3>
+            <p>Mời cả nhóm vào phòng, mọi người nêu sở thích và cùng bình chọn — không ai bị bỏ lại.</p>
+          </article>
+          <article class="card">
+            <div class="icon i-m" aria-hidden="true">🗺️</div>
+            <h3>Trong ngày đi chơi</h3>
+            <p>Lịch trình rõ ràng từng điểm dừng, chỉ đường và theo dõi kế hoạch ngay trên điện thoại.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="how">
+      <div class="wrap">
+        <h2 id="how">Cách GoGo hoạt động</h2>
+        <p class="sub">Từ lúc rủ nhau đến khi về nhà.</p>
+        <ol class="steps">
+          <li><strong>Tạo kèo</strong>Mở phòng cho buổi đi chơi, đặt ngân sách và thời gian.</li>
+          <li><strong>Mời bạn</strong>Gửi một đường link, mọi người tham gia ngay.</li>
+          <li><strong>Chọn sở thích</strong>Mỗi người cho biết mình muốn ăn gì, chơi gì.</li>
+          <li><strong>Match &amp; bình chọn</strong>Cùng chốt những địa điểm cả phòng đều ưng.</li>
+          <li><strong>Nhận lịch trình</strong>GoGo sắp xếp các điểm dừng thành kế hoạch hợp lý.</li>
+          <li><strong>Đi chơi &amp; đánh giá</strong>Đi theo kế hoạch, rồi chia sẻ cảm nhận sau buổi đi.</li>
+        </ol>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div class="closing">
+        <h2>GoGo đang trên đường tới</h2>
+        <p>Ứng dụng di động và phiên bản web sẽ sớm có mặt. Hãy quay lại trang này để cập nhật tin mới nhất.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>© <span id="y">2026</span> GoGo</span>
+      <span>Cùng nhau chọn, cùng nhau đi.</span>
+    </div>
+  </footer>
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+</body>
+</html>
