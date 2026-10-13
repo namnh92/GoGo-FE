@@ -17,12 +17,12 @@ const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g
 // The tour, in flow order. File sizes are fixed by the screenshots in site/img.
 const SHOTS = [
   { n: 1, img: 'create-type', w: 460, h: 1000, kind: 'ios' },
-  { n: 2, img: 'mood', w: 460, h: 948, kind: 'android' },
-  { n: 3, img: 'vote', w: 448, h: 948, kind: 'android' },
-  { n: 4, img: 'match', w: 448, h: 948, kind: 'android' },
-  { n: 5, img: 'plan', w: 448, h: 948, kind: 'android' },
-  { n: 6, img: 'active', w: 448, h: 948, kind: 'android' },
-  { n: 7, img: 'done', w: 448, h: 948, kind: 'android' },
+  { n: 2, img: 'mood', w: 460, h: 1000, kind: 'ios' },
+  { n: 3, img: 'vote', w: 460, h: 1000, kind: 'ios' },
+  { n: 4, img: 'match', w: 460, h: 1000, kind: 'ios' },
+  { n: 5, img: 'plan', w: 460, h: 1000, kind: 'ios' },
+  { n: 6, img: 'active', w: 460, h: 1000, kind: 'ios' },
+  { n: 7, img: 'done', w: 460, h: 1000, kind: 'ios' },
 ];
 
 function render(code) {

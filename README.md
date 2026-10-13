@@ -12,7 +12,12 @@ Landing page giới thiệu sản phẩm GoGo VN + mục kêu gọi đầu tư �
   `site/en/index.html` (EN). **Không sửa trực tiếp file trong `site/*.html`.**
 - `node build.mjs --check` báo lỗi nếu trang đã commit lệch nguồn, thiếu/thừa chuỗi, hoặc hai
   ngôn ngữ khác bộ khoá.
-- Ảnh app: `site/img/*.png` — chụp từ bản thử nghiệm (`dev/test-evidence/` của workspace).
+- Ảnh app: `site/img/*.png` — chụp 2026-10-13 trên iOS simulator (iPhone 17) từ GoGo-MobileApp
+  `develop` 63aa2e0 nối DEV, phòng demo "Chủ nhật dạo phố"; bản gốc 1206×2622 trong
+  `dev/test-evidence/fe-shots-2026-10-13/` của workspace, downscale `sips -Z 1000`.
+- Ảnh địa điểm thấy trong ảnh app: Wikimedia Commons, giấy phép mở, gắn vào place trên DEV qua
+  CMS (attribution lưu ở media). Ảnh nào hiện trong screenshot thì phải ghi nguồn ở footer
+  (`foot.photo` + `.credits`): hiện chỉ Tràng Tiền Plaza (The Hanoian, CC BY-SA 4.0).
 - Logo công nghệ: `site/img/logos/` — Claude từ simple-icons 13.21.0 (CC0); Cloudflare, AWS,
   Google Cloud từ devicon 2.16.0 (MIT). Logo là thương hiệu của chủ sở hữu tương ứng.
 - Nháp chính sách chưa có hiệu lực: `docs/drafts/` (không deploy).

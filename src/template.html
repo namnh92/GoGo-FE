@@ -224,6 +224,7 @@
     footer { padding: 28px 0 44px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
     footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; align-items: center; }
     footer a { color: var(--ink-2); display: inline-block; padding: 10px 0; }
+    footer .credits { flex-basis: 100%; order: 3; font-size: 13px; }
 
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
@@ -266,8 +267,8 @@
         <p class="note">{{hero.note}}</p>
       </div>
       <div class="hero-shots stage" role="group" aria-label="{{a.heroShots}}">
-        <div class="phone android"><div class="island" aria-hidden="true"></div><div class="screen"><img src="/img/vote.png" width="448" height="948" alt="{{a.s3}}" fetchpriority="high"></div></div>
-        <div class="phone android"><div class="island" aria-hidden="true"></div><div class="screen"><img src="/img/plan.png" width="448" height="948" alt="{{a.s5}}" fetchpriority="high"></div></div>
+        <div class="phone ios"><div class="island" aria-hidden="true"></div><div class="screen"><img src="/img/vote.png" width="460" height="1000" alt="{{a.s3}}" fetchpriority="high"></div></div>
+        <div class="phone ios"><div class="island" aria-hidden="true"></div><div class="screen"><img src="/img/plan.png" width="460" height="1000" alt="{{a.s5}}" fetchpriority="high"></div></div>
       </div>
     </div>
 
@@ -353,6 +354,7 @@
   <footer>
     <div class="wrap">
       <span>© 2026 GoGo VN · {{foot.project}}</span>
+      <span class="credits">{{foot.photo}} <a href="https://commons.wikimedia.org/wiki/File:Tr%C3%A0ng_Ti%E1%BB%81n_Plaza_-_2022-09-02_01.jpg">Tràng Tiền Plaza</a> — The Hanoian, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>, Wikimedia Commons</span>
       <span>{{foot.support}} <a href="mailto:{{@mail}}">{{@mail}}</a> · <a href="{{@otherPath}}" hreflang="{{@otherLang}}" lang="{{@otherLang}}">{{foot.lang}}</a></span>
     </div>
   </footer>
