@@ -100,7 +100,7 @@ export const locales = {
       'c2.cta': 'Liên hệ hợp tác',
       'contact.mail': 'Email:',
 
-      'tech.eyebrow': 'Công nghệ sử dụng',
+      'tech.eyebrow': 'Công nghệ đồng hành',
       'tech.h2': 'Công cụ và hạ tầng',
       'tech.sub': 'Đây là những dịch vụ chúng tôi đang dùng, không phải quan hệ đối tác chính thức.',
       't1.h': 'Claude Code · Anthropic',
