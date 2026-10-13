@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GoGo — Decide where to go, together</title>
+  <meta name="description" content="An app that helps couples and friend groups pick a place together, vote, and get one shared itinerary for the outing. A Vietnamese startup project with its MVP in testing.">
+  <link rel="canonical" href="https://gogo.id.vn/en/">
+  <link rel="alternate" hreflang="vi" href="https://gogo.id.vn/">
+  <link rel="alternate" hreflang="en" href="https://gogo.id.vn/en/">
+  <link rel="alternate" hreflang="x-default" href="https://gogo.id.vn/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GoGo VN">
+  <meta property="og:title" content="GoGo — Decide where to go, together">
+  <meta property="og:description" content="Everyone picks, the group votes, and you get one shared itinerary that fits the budget. MVP in testing.">
+  <meta property="og:url" content="https://gogo.id.vn/en/">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="vi_VN">
+  <meta property="og:image" content="https://gogo.id.vn/icon-512.png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#F6F3EE">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap&subset=vietnamese" rel="stylesheet">
+  <style>
+    :root {
+      --coral: #D84F4A;
+      --coral-ink: #B93E48;
+      --coral-deep: #9E333D;
+      --coral-soft: #FFD8D4;
+      --lavender: #7667E8;
+      --lavender-ink: #5B4DD1;
+      --lavender-soft: #E5E0FF;
+      --mint: #4FAF86;
+      --mint-ink: #2F7D5C;
+      --mint-soft: #D9F3E7;
+      --amber-soft: #FCEBCB;
+      --ivory: #F6F3EE;
+      --surface: #FFFFFF;
+      --line: #ECE8E1;
+      --ink: #211F1C;
+      --ink-2: #4A4641;
+      --muted: #6A645E;
+      --glass: rgba(255, 255, 255, 0.72);
+      --glass-line: rgba(255, 255, 255, 0.9);
+      --shadow: 0 10px 30px rgba(33, 31, 28, 0.08);
+      --shadow-phone: 0 30px 60px -18px rgba(33, 31, 28, 0.45), 0 12px 24px -12px rgba(33, 31, 28, 0.25);
+      --bezel: #2A2825;
+      --bezel-edge: #4A4641;
+      --bezel-hi: rgba(255, 255, 255, 0.28);
+      --panel: linear-gradient(160deg, #7667E8 0%, #9A6BD6 48%, #D84F4A 100%);
+      --radius: 20px;
+      --motion: 240ms;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 80px; }
+    body {
+      margin: 0; background: var(--ivory); color: var(--ink);
+      font-family: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      font-size: 16px; line-height: 1.6; overflow-x: hidden;
+    }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+    a { color: inherit; }
+    a:not(.btn):not(.brand) { text-underline-offset: 3px; }
+    :focus-visible { outline: 3px solid var(--lavender-ink); outline-offset: 3px; border-radius: 6px; }
+    .skip {
+      position: absolute; left: 16px; top: -60px; z-index: 50; padding: 10px 16px; border-radius: 10px;
+      background: var(--ink); color: #fff; font-weight: 700; text-decoration: none;
+    }
+    .skip:focus { top: 12px; }
+
+    /* Background accents — solid soft shapes, no full-screen blur. */
+    .bg { position: absolute; inset: 0 0 auto 0; height: 900px; overflow: hidden; z-index: -1; pointer-events: none; }
+    .blob { position: absolute; border-radius: 50%; opacity: .7; }
+    .blob.c { width: 480px; height: 480px; background: var(--coral-soft); top: -160px; right: -140px; }
+    .blob.l { width: 380px; height: 380px; background: var(--lavender-soft); top: 260px; left: -180px; }
+    .blob.a { width: 240px; height: 240px; background: var(--amber-soft); top: 520px; right: 22%; opacity: .55; }
+
+    /* Header */
+    header.top {
+      position: sticky; top: 0; z-index: 20;
+      background: var(--glass); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--glass-line);
+    }
+    @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+      header.top { background: var(--surface); }
+    }
+    .nav { display: flex; align-items: center; gap: 12px; min-height: 64px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; font-size: 22px; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; margin-right: auto; }
+    .mark { width: 40px; height: 40px; display: block; flex: none; }
+    .links { display: flex; gap: 4px; margin: 0; padding: 0; list-style: none; }
+    .links a {
+      display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px;
+      font-size: 15px; font-weight: 500; color: var(--ink-2); text-decoration: none; border-radius: 10px;
+    }
+    .links a:hover { color: var(--ink); background: var(--surface); }
+    .lang { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); padding: 3px; }
+    .lang a {
+      display: inline-grid; place-items: center; min-width: 44px; min-height: 38px; border-radius: 999px;
+      font-size: 13px; font-weight: 700; color: var(--muted); text-decoration: none;
+    }
+    .lang a[aria-current="page"] { background: var(--ink); color: #fff; }
+    @media (max-width: 820px) { .links { display: none; } }
+
+    /* Buttons — filled CTA on coral-ink for AA with white text. */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 48px; padding: 0 22px; border-radius: 14px; border: 1px solid transparent;
+      font: inherit; font-weight: 700; font-size: 16px; text-decoration: none; cursor: pointer;
+      transition: transform var(--motion), background var(--motion), border-color var(--motion);
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary { background: var(--coral-ink); color: #fff; }
+    .btn-primary:hover { background: var(--coral-deep); }
+    .btn-secondary { background: var(--surface); color: var(--ink); border-color: var(--line); }
+    .btn-secondary:hover { border-color: var(--ink-2); }
+
+    /* Hero */
+    .hero { padding-top: 48px; padding-bottom: 24px; display: grid; gap: 40px; grid-template-columns: 1.1fr 1fr; align-items: center; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px;
+      background: var(--surface); border: 1px solid var(--line); font-size: 14px; font-weight: 600; color: var(--coral-ink);
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--coral); flex: none; }
+    h1 { margin: 20px 0 16px; max-width: 640px; font-size: clamp(36px, 6vw, 58px); line-height: 1.1; letter-spacing: -0.03em; font-weight: 800; }
+    h1 em { font-style: normal; color: var(--coral-ink); }
+    .lead { margin: 0; max-width: 580px; font-size: clamp(17px, 2.2vw, 19px); color: var(--ink-2); }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+    .note { margin: 14px 0 0; font-size: 14px; color: var(--muted); max-width: 560px; }
+
+    /* Phone frames — thin titanium bezel, large radius, Dynamic Island, side keys. */
+    .phone {
+      position: relative; width: 100%; aspect-ratio: 460 / 969;
+      border-radius: 15.5% / 7.4%; background: var(--bezel); padding: 2.9%;
+      box-shadow: inset 0 0 0 1.5px var(--bezel-edge), inset 0 0 0 3px var(--bezel), var(--shadow-phone);
+    }
+    .phone::before, .phone::after { content: ""; position: absolute; width: 1.4%; background: var(--bezel-edge); border-radius: 2px; }
+    .phone::before { right: -1.3%; top: 23%; height: 9%; }
+    .phone::after  { left: -1.3%; top: 18%; height: 6%; box-shadow: 0 170% 0 var(--bezel-edge); }
+    .phone .screen { position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: 13.5% / 6.4%; background: var(--ivory); box-shadow: inset 0 0 0 1px var(--bezel-hi); }
+    .phone img { position: absolute; left: 0; right: 0; top: 0; display: block; width: 100%; height: auto; }
+    .phone .island { position: absolute; top: 3.9%; left: 50%; width: 26%; height: 3.1%; transform: translateX(-50%); border-radius: 999px; background: var(--bezel); z-index: 2; }
+    .phone.android .island { width: 4.5%; height: 2.1%; top: 3.2%; }  /* punch-hole camera */
+
+    .stage { position: relative; isolation: isolate; border-radius: 32px; background: var(--panel); box-shadow: var(--shadow); }
+
+    .hero-shots { display: grid; grid-template-columns: repeat(2, minmax(0, 196px)); justify-content: center; gap: 24px; align-items: start; padding: 44px 32px 40px; }
+    .hero-shots .phone:first-child { margin-top: 40px; }
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; gap: 32px; padding-top: 32px; }
+      .hero-shots { width: 100%; max-width: 460px; justify-self: center; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 28px 20px; }
+    }
+
+    /* Sections */
+    section { padding: 56px 0; }
+    .eyebrow { display: block; margin: 0 0 10px; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--coral-ink); }
+    h2 { margin: 0 0 8px; font-size: clamp(26px, 4vw, 36px); line-height: 1.15; letter-spacing: -0.02em; font-weight: 800; }
+    h3 { margin: 0 0 6px; font-size: 18px; line-height: 1.3; font-weight: 700; }
+    .sub { margin: 0 0 32px; max-width: 680px; color: var(--muted); font-size: 17px; }
+
+    .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); }
+    .card p { margin: 0; color: var(--ink-2); font-size: 15px; }
+    .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .icon { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; font-size: 22px; flex: none; margin-bottom: 12px; }
+    .i-c { background: var(--coral-soft); } .i-l { background: var(--lavender-soft); } .i-m { background: var(--mint-soft); } .i-a { background: var(--amber-soft); }
+
+    /* Product evidence */
+    .gallery { list-style: none; margin: 0; padding: 40px 28px 44px; display: flex; flex-wrap: wrap; justify-content: center; gap: 28px 24px; counter-reset: shot; }
+    .shot { width: 196px; margin: 0; counter-increment: shot; }
+    .shot:nth-child(even) { transform: translateY(24px); }
+    .shot figure { margin: 0; }
+    .shot figcaption { margin-top: 14px; padding: 12px 14px; border-radius: 14px; background: var(--surface); font-size: 14px; color: var(--ink-2); }
+    .shot figcaption strong { display: block; color: var(--ink); font-size: 15px; }
+    .shot figcaption strong::before { content: counter(shot) ". "; color: var(--coral-ink); }
+    @media (max-width: 900px) {
+      .gallery { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; overflow-y: hidden; margin: 0 -16px; border-radius: 0; padding: 28px 20px 32px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+      .shot { flex: 0 0 min(64vw, 240px); scroll-snap-align: center; }
+      .shot:nth-child(even) { transform: none; }
+    }
+
+    /* How it works */
+    .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; grid-template-columns: repeat(3, 1fr); counter-reset: s; }
+    .steps li { counter-increment: s; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px; font-size: 15px; color: var(--ink-2); }
+    .steps li::before { content: counter(s); display: grid; place-items: center; width: 30px; height: 30px; margin-bottom: 10px; border-radius: 50%; background: var(--lavender-soft); color: var(--ink); font-weight: 700; font-size: 14px; }
+    .steps h3 { font-size: 16px; margin-bottom: 2px; }
+    .steps p { margin: 0; }
+    @media (max-width: 760px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 440px) { .steps { grid-template-columns: 1fr; } }
+
+    /* Progress */
+    .stage-grid { display: grid; gap: 16px; grid-template-columns: repeat(3, 1fr); }
+    @media (max-width: 900px) { .stage-grid { grid-template-columns: 1fr; } }
+    .ticks { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; font-size: 15px; color: var(--ink-2); }
+    .ticks li { position: relative; padding-left: 26px; }
+    .ticks li::before { position: absolute; left: 0; top: 0; font-weight: 700; }
+    .ticks.done li::before { content: "✓"; color: var(--mint-ink); }
+    .ticks.next li::before { content: "→"; color: var(--lavender-ink); }
+    .ticks.info li::before { content: "•"; color: var(--coral-ink); left: 6px; }
+    .card.next { background: var(--lavender-soft); border-color: transparent; box-shadow: none; }
+
+    /* Contact */
+    .contact { display: grid; gap: 16px; grid-template-columns: 1.2fr 1fr; }
+    .contact .card { display: flex; flex-direction: column; gap: 14px; }
+    .contact .card .btn { align-self: flex-start; }
+    .contact .primary { background: var(--ink); border-color: var(--ink); }
+    .contact .primary h3 { color: #fff; font-size: 21px; }
+    .contact .primary p { color: rgba(255, 255, 255, 0.84); }
+    .contact .primary .btn { background: #fff; color: var(--ink); }
+    .contact .primary .btn:hover { background: var(--ivory); }
+    .mail { font-size: 15px; color: var(--ink-2); margin: 20px 0 0; }
+    .mail a { color: var(--coral-ink); font-weight: 600; }
+    @media (max-width: 760px) { .contact { grid-template-columns: 1fr; } }
+
+    /* Technology */
+    .tech .card { box-shadow: none; }
+    .tech .card a { color: var(--coral-ink); font-weight: 600; }
+    .tech .logo { display: block; width: 40px; height: 40px; margin-bottom: 14px; object-fit: contain; }
+    .tech .grid { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+
+    footer { padding: 28px 0 44px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+    footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; align-items: center; }
+    footer a { color: var(--ink-2); display: inline-block; padding: 10px 0; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition-duration: 0ms !important; }
+    }
+    @media (prefers-reduced-transparency: reduce) {
+      header.top { background: var(--surface); -webkit-backdrop-filter: none; backdrop-filter: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to main content</a>
+  <div class="bg" aria-hidden="true"><div class="blob c"></div><div class="blob l"></div><div class="blob a"></div></div>
+
+  <header class="top">
+    <div class="wrap nav">
+      <a class="brand" href="/en/" aria-label="GoGo VN — home"><svg class="mark" viewBox="0 0 42 42" fill="none" aria-hidden="true"><circle cx="14" cy="21" r="9" fill="var(--coral)"/><circle cx="28" cy="21" r="9" fill="var(--coral)" opacity="0.6"/><path d="M21 14C17 14 14 17 14 21C14 25 17 28 21 28C25 28 28 25 28 21C28 17 25 14 21 14Z" fill="#FFFFFF"/></svg>GoGo VN</a>
+      <nav aria-label="Main navigation">
+        <ul class="links">
+          <li><a href="#demo">Product</a></li>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#stage">Progress</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="lang" role="group" aria-label="Language"><a href="/" hreflang="vi" lang="vi">VI</a><a href="/en/" hreflang="en" lang="en" aria-current="page">EN</a></div>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap hero">
+      <div>
+        <p class="badge"><span class="dot" aria-hidden="true"></span>MVP in testing · not publicly released</p>
+        <h1>No more <em>“so… where do we go?”</em></h1>
+        <p class="lead">Planning an outing usually takes an evening of messages, and someone still ends up going along with the majority. GoGo lets couples and friend groups each choose, vote together, and get one shared itinerary that fits the budget and the time.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#demo">See the product</a>
+          <a class="btn btn-secondary" href="mailto:support@gogo.id.vn?subject=GoGo%20%E2%80%94%20Trial%20request">Request a trial</a>
+        </div>
+        <p class="note">There is no public download yet. Trial access is arranged by the team over email.</p>
+      </div>
+      <div class="hero-shots stage" role="group" aria-label="App screenshots: voting on a place and the group itinerary">
+        <div class="phone android"><div class="island" aria-hidden="true"></div><div class="screen"><img src="/img/vote.png" width="448" height="948" alt="Voting card for Xofa Café &amp; Bistro with three buttons: not for me, like, really want" fetchpriority="high"></div></div>
+        <div class="phone android"><div class="island" aria-hidden="true"></div><div class="screen"><img src="/img/plan.png" width="448" height="948" alt="Plan for a group of 3: stop 1 locked, 3 minutes to stop 2, total time 3 hours 16 minutes" fetchpriority="high"></div></div>
+      </div>
+    </div>
+
+    <section id="demo" aria-labelledby="demo-h">
+      <div class="wrap">
+        <p class="eyebrow">The real product</p>
+        <h2 id="demo-h">One outing, from choosing to heading home</h2>
+        <p class="sub">Screenshots from our internal test build on iPhone and Android, using test data. The interface may change before release. The app’s interface is in Vietnamese.</p>
+        <ol class="gallery stage">
+          <li class="shot"><figure><div class="phone ios"><div class="island" aria-hidden="true"></div><div class="screen"><img src="/img/create-type.png" width="460" height="1000" loading="lazy" alt="Create-room screen with two options: two people or a friend group"></div></div><figcaption><strong>Create a room</strong>Pick a couple or a group outing.</figcaption></figure></li>
+          <li class="shot"><figure><div class="phone android"><div class="island" aria-hidden="true"></div><div class="screen"><img src="/img/mood.png" width="460" height="948" loading="lazy" alt="Preference screen for mood, setting and spend level"></div></div><figcaption><strong>Share preferences</strong>Mood, setting, spend level — a few taps.</figcaption></figure></li>
+          <li class="shot"><figure><div class="phone android"><div class="island" aria-hidden="true"></div><div class="screen"><img src="/img/vote.png" width="448" height="948" loading="lazy" alt="Voting card for Xofa Café &amp; Bistro with three buttons: not for me, like, really want"></div></div><figcaption><strong>Vote</strong>Each person marks every place as Not for me, Like, or Really want.</figcaption></figure></li>
+          <li class="shot"><figure><div class="phone android"><div class="island" aria-hidden="true"></div><div class="screen"><img src="/img/match.png" width="448" height="948" loading="lazy" alt="Group result: Xofa Café &amp; Bistro liked by 2 of 3 people, with reasons and other options"></div></div><figcaption><strong>Group result</strong>The place the whole group likes most, with the reasons GoGo chose it.</figcaption></figure></li>
+          <li class="shot"><figure><div class="phone android"><div class="island" aria-hidden="true"></div><div class="screen"><img src="/img/plan.png" width="448" height="948" loading="lazy" alt="Plan for a group of 3: stop 1 locked, 3 minutes to stop 2, total time 3 hours 16 minutes"></div></div><figcaption><strong>Group itinerary</strong>Stops in order with travel time; locked stops stay when you regenerate.</figcaption></figure></li>
+          <li class="shot"><figure><div class="phone android"><div class="island" aria-hidden="true"></div><div class="screen"><img src="/img/active.png" width="448" height="948" loading="lazy" alt="Outing in progress: stop 1 of 2 with a map, a done button and directions"></div></div><figcaption><strong>On the day</strong>One stop at a time, with map and directions.</figcaption></figure></li>
+          <li class="shot"><figure><div class="phone android"><div class="island" aria-hidden="true"></div><div class="screen"><img src="/img/done.png" width="448" height="948" loading="lazy" alt="End-of-outing screen with two completed stops and a review button"></div></div><figcaption><strong>Wrap-up & review</strong>A summary of the outing, then everyone is invited to review.</figcaption></figure></li>
+        </ol>
+      </div>
+    </section>
+
+    <section aria-labelledby="diff-h">
+      <div class="wrap">
+        <p class="eyebrow">What makes it different</p>
+        <h2 id="diff-h">Built for a group decision</h2>
+        <p class="sub">Not another list of venues — a way for the whole group to reach one plan.</p>
+        <div class="grid">
+          <article class="card"><div class="icon i-c" aria-hidden="true">🗳️</div><h3>Everyone gets a say</h3><p>Each person chooses on their own; the result is a genuine overlap, not the loudest voice. In a group, the host makes the final call.</p></article>
+          <article class="card"><div class="icon i-l" aria-hidden="true">⚖️</div><h3>Balanced preferences</h3><p>Suggestions are scored on the whole group’s preferences, distance and spend by a rule-based algorithm, and always say why they were picked.</p></article>
+          <article class="card"><div class="icon i-m" aria-hidden="true">💰</div><h3>A clear budget</h3><p>Budget per group or per person. Prices always carry their unit; when there is no data, the app says “No price information” instead of guessing.</p></article>
+          <article class="card"><div class="icon i-a" aria-hidden="true">🗺️</div><h3>One shared itinerary</h3><p>Stops are ordered with travel time between them. Locked stops always stay when the itinerary is regenerated.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="how" aria-labelledby="how-h">
+      <div class="wrap">
+        <p class="eyebrow">How it works</p>
+        <h2 id="how-h" style="margin-bottom:28px">From “let’s hang out” to heading home</h2>
+        <ol class="steps">
+          <li><h3>Create a room</h3><p>Open a room for the outing, set budget and time.</p></li>
+          <li><h3>Invite friends</h3><p>Send one link and everyone joins the room.</p></li>
+          <li><h3>Share preferences</h3><p>Each person says what they want to eat, do and spend.</p></li>
+          <li><h3>Vote</h3><p>Everyone chooses on their own; GoGo finds the group’s overlap.</p></li>
+          <li><h3>Get the itinerary</h3><p>Stops are arranged into one sensible plan.</p></li>
+          <li><h3>Go out & review</h3><p>Follow the plan, then share how it went.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="stage" aria-labelledby="stage-h">
+      <div class="wrap">
+        <p class="eyebrow">Progress</p>
+        <h2 id="stage-h" style="margin-bottom:28px">Current stage: finishing the MVP</h2>
+        <div class="stage-grid">
+          <article class="card"><h3>Done so far</h3><ul class="ticks done"><li>iOS and Android app covering the full flow: create a room, invite, preferences, vote, itinerary, the outing itself and review.</li><li>The full flow has run on real iOS and Android phones against our test environment; system-wide integration testing is in progress.</li><li>An internal tool for managing the place catalogue and moderating content.</li></ul></article>
+          <article class="card next"><h3>Next (planned)</h3><ul class="ticks next"><li>A closed trial with a first group of users.</li><li>Release on the App Store and Google Play.</li><li>Grow the place dataset.</li></ul></article>
+          <article class="card"><h3>About the project</h3><ul class="ticks info"><li>A self-funded Vietnamese startup project; no legal entity has been registered yet.</li><li>The product is not released, so there are no external users and no revenue yet.</li><li><strong>Planned</strong>, unvalidated revenue model: partnerships with venues (offers and visibility at the moment a group is choosing) and a premium tier for users.</li><li>Vietnamese is the default language; English is available.</li></ul></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" aria-labelledby="contact-h">
+      <div class="wrap">
+        <p class="eyebrow">Contact</p>
+        <h2 id="contact-h" style="margin-bottom:28px">Want to see GoGo in action?</h2>
+        <div class="contact">
+          <article class="card primary"><h3>Try it or see a demo</h3><p>Email us and the team will arrange trial access on iOS or Android, or a demo. Please mention which phone you use.</p><a class="btn" href="mailto:support@gogo.id.vn?subject=GoGo%20%E2%80%94%20Trial%20request">Email us to request a trial</a></article>
+          <article class="card"><h3>Partnership & investment</h3><p>Venues, F&amp;B chains, startup programs or investors who want to talk. Detailed materials are shared after first contact.</p><a class="btn btn-secondary" href="mailto:support@gogo.id.vn?subject=GoGo%20%E2%80%94%20Partnership%20%2F%20investment">Contact us about partnering</a></article>
+        </div>
+        <p class="mail">Email: <a href="mailto:support@gogo.id.vn">support@gogo.id.vn</a></p>
+      </div>
+    </section>
+
+    <section class="tech" aria-labelledby="tech-h">
+      <div class="wrap">
+        <p class="eyebrow">Technology we use</p>
+        <h2 id="tech-h">Tools and infrastructure</h2>
+        <p class="sub">These are services we use, not formal partnerships.</p>
+        <div class="grid">
+          <article class="card"><img class="logo" src="/img/logos/claude.svg" width="40" height="40" alt=""><h3>Claude Code · Anthropic</h3><p><strong>Development tool:</strong> the team writes, tests and reviews code with <a href="https://claude.com/product/claude-code" rel="noopener">Claude Code</a>. The product does <strong>not</strong> integrate the Claude API today: place suggestions come from a rule-based algorithm, with no generative AI.</p></article>
+          <article class="card"><img class="logo" src="/img/logos/cloudflare.svg" width="40" height="40" alt=""><h3>Cloudflare</h3><p>This site and GoGo’s share links run on <a href="https://workers.cloudflare.com/" rel="noopener">Cloudflare Workers</a>; DNS, CDN and attack protection are handled by Cloudflare; internal tools sit behind Cloudflare Access.</p></article>
+          <article class="card"><img class="logo" src="/img/logos/aws.svg" width="40" height="40" alt=""><h3>AWS</h3><p>Secrets (service keys, system passwords) are managed in AWS Systems Manager Parameter Store, never in source code.</p></article>
+          <article class="card"><img class="logo" src="/img/logos/google-cloud.svg" width="40" height="40" alt=""><h3>Google Cloud</h3><p>Maps, place search and directions use Google Maps Platform (Maps SDK, Places API, Routes API). Google ratings always show their source and are never merged with GoGo community ratings.</p></article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>© 2026 GoGo VN · A Vietnamese startup project · no legal entity yet</span>
+      <span>Support: <a href="mailto:support@gogo.id.vn">support@gogo.id.vn</a> · <a href="/" hreflang="vi" lang="vi">Phiên bản tiếng Việt</a></span>
+    </div>
+  </footer>
+  
+</body>
+</html>
