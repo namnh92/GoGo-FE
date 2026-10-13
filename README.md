@@ -17,7 +17,9 @@ Landing page giới thiệu sản phẩm GoGo VN + mục kêu gọi đầu tư �
   `dev/test-evidence/fe-shots-2026-10-13/` của workspace, downscale `sips -Z 1000`.
 - Ảnh địa điểm thấy trong ảnh app: Wikimedia Commons, giấy phép mở, gắn vào place trên DEV qua
   CMS (attribution lưu ở media). Ảnh nào hiện trong screenshot thì phải ghi nguồn ở footer
-  (`foot.photo` + `.credits`): hiện chỉ Tràng Tiền Plaza (The Hanoian, CC BY-SA 4.0).
+  (`foot.photo` + `.credits`): Tràng Tiền Plaza (The Hanoian, CC BY-SA 4.0) và Bảo tàng Phụ nữ Việt Nam
+  (Aumusee, CC BY-SA 3.0). Ảnh ở Kết quả / Lịch trình / Đang đi chơi cần GoGo-MobileApp#334
+  (merged develop d3e2ab7); ảnh chụp từ Metro ở ac3bc6f.
 - Logo công nghệ: `site/img/logos/` — Claude từ simple-icons 13.21.0 (CC0); Cloudflare, AWS,
   Google Cloud từ devicon 2.16.0 (MIT). Logo là thương hiệu của chủ sở hữu tương ứng.
 - Nháp chính sách chưa có hiệu lực: `docs/drafts/` (không deploy).
