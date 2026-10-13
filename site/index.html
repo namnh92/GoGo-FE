@@ -3,15 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>GoGo VN — Sắp ra mắt</title>
-  <meta name="description" content="GoGo VN giúp cặp đôi và nhóm bạn thống nhất địa điểm, tạo lịch trình và dùng kế hoạch trong ngày đi chơi. Sắp ra mắt.">
-  <meta property="og:title" content="GoGo VN — Sắp ra mắt">
-  <meta property="og:description" content="Chọn chỗ đi chơi cùng nhau, không còn cãi nhau vì 'đi đâu giờ?'.">
+  <title>GoGo VN — Cùng nhau chọn, cùng nhau đi</title>
+  <meta name="description" content="GoGo VN giúp cặp đôi và nhóm bạn thống nhất địa điểm, tạo lịch trình và dùng kế hoạch trong ngày đi chơi. Startup Việt Nam, đang hoàn thiện MVP và tìm đối tác đồng hành.">
+  <meta property="og:title" content="GoGo VN — Cùng nhau chọn, cùng nhau đi">
+  <meta property="og:description" content="Chọn chỗ đi chơi cùng nhau, không còn cãi nhau vì 'đi đâu giờ?'. Startup Việt Nam đang tìm đối tác đồng hành.">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://gogo.id.vn/">
+  <meta property="og:image" content="https://gogo.id.vn/icon-512.png">
   <meta name="theme-color" content="#F6F3EE">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <meta property="og:image" content="https://gogo.id.vn/icon-512.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap&subset=vietnamese" rel="stylesheet">
@@ -24,6 +25,7 @@
       --lavender-soft: #E5E0FF;
       --mint: #4FAF86;
       --mint-soft: #D9F3E7;
+      --amber: #D99028;
       --amber-soft: #FCEBCB;
       --ivory: #F6F3EE;
       --surface: #FFFFFF;
@@ -31,14 +33,17 @@
       --ink: #211F1C;
       --ink-2: #4A4641;
       --muted: #746E68;
+      --on-dark: rgba(255, 255, 255, 0.8);
+      --on-dark-line: rgba(255, 255, 255, 0.16);
       --glass: rgba(255, 255, 255, 0.72);
       --glass-line: rgba(255, 255, 255, 0.9);
       --shadow: 0 10px 30px rgba(33, 31, 28, 0.08);
+      --shadow-phone: 0 24px 60px rgba(33, 31, 28, 0.22);
       --radius: 20px;
       --motion: 240ms;
     }
     *, *::before, *::after { box-sizing: border-box; }
-    html { -webkit-text-size-adjust: 100%; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 80px; }
     body {
       margin: 0;
       background: var(--ivory);
@@ -48,20 +53,64 @@
       line-height: 1.6;
       overflow-x: hidden;
     }
-    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+    a { color: inherit; }
+    :focus-visible { outline: 2px solid var(--coral-ink); outline-offset: 3px; border-radius: 6px; }
+    .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
     /* Background accents — solid soft shapes, no full-screen blur. */
-    .bg { position: absolute; inset: 0 0 auto 0; height: 720px; overflow: hidden; z-index: -1; pointer-events: none; }
+    .bg { position: absolute; inset: 0 0 auto 0; height: 900px; overflow: hidden; z-index: -1; pointer-events: none; }
     .blob { position: absolute; border-radius: 50%; opacity: .7; }
-    .blob.c { width: 420px; height: 420px; background: var(--coral-soft); top: -140px; right: -120px; }
-    .blob.l { width: 360px; height: 360px; background: var(--lavender-soft); top: 220px; left: -160px; }
-    .blob.a { width: 220px; height: 220px; background: var(--amber-soft); top: 420px; right: 18%; opacity: .55; }
+    .blob.c { width: 480px; height: 480px; background: var(--coral-soft); top: -160px; right: -140px; }
+    .blob.l { width: 380px; height: 380px; background: var(--lavender-soft); top: 260px; left: -180px; }
+    .blob.a { width: 240px; height: 240px; background: var(--amber-soft); top: 520px; right: 22%; opacity: .55; }
 
-    header { padding: 20px 0; }
-    .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; font-size: 22px; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; }
+    /* Header */
+    header.top {
+      position: sticky; top: 0; z-index: 20;
+      background: var(--glass); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--glass-line);
+    }
+    @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+      header.top { background: var(--surface); }
+    }
+    .nav { display: flex; align-items: center; gap: 12px; min-height: 64px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; font-size: 22px; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; margin-right: auto; }
     .mark { width: 40px; height: 40px; display: block; flex: none; }
+    .links { display: flex; gap: 4px; }
+    .links a {
+      display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px;
+      font-size: 15px; font-weight: 500; color: var(--ink-2); text-decoration: none; border-radius: 10px;
+    }
+    .links a:hover { color: var(--ink); background: var(--surface); }
+    .lang {
+      display: inline-flex; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); padding: 3px;
+    }
+    .lang button {
+      min-width: 44px; min-height: 36px; border: 0; border-radius: 999px; background: transparent;
+      font: inherit; font-size: 13px; font-weight: 700; color: var(--muted); cursor: pointer;
+    }
+    .lang button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+    @media (max-width: 760px) { .links { display: none; } }
 
-    .hero { padding: 48px 0 64px; text-align: center; }
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 48px; padding: 0 22px; border-radius: 14px; border: 1px solid transparent;
+      font: inherit; font-weight: 700; font-size: 16px; text-decoration: none; cursor: pointer;
+      transition: transform var(--motion), background var(--motion), border-color var(--motion);
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary { background: var(--coral); color: #fff; }
+    .btn-primary:hover { background: var(--coral-ink); }
+    .btn-secondary { background: var(--surface); color: var(--ink); border-color: var(--line); }
+    .btn-secondary:hover { border-color: var(--ink-2); }
+    .btn-ghost { background: transparent; color: var(--coral-ink); padding: 0 12px; }
+    .btn-on-dark { background: #fff; color: var(--ink); }
+    .btn-on-dark:hover { background: var(--ivory); }
+
+    /* Hero */
+    .hero { padding: 56px 0 24px; display: grid; gap: 40px; grid-template-columns: 1.1fr 1fr; align-items: center; }
     .badge {
       display: inline-flex; align-items: center; gap: 8px;
       padding: 6px 14px; border-radius: 999px;
@@ -71,17 +120,43 @@
     .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--coral); animation: pulse 1.8s ease-in-out infinite; }
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
     h1 {
-      margin: 20px auto 16px; max-width: 760px;
-      font-size: clamp(34px, 7vw, 60px); line-height: 1.12; letter-spacing: -0.03em; font-weight: 800;
+      margin: 20px 0 16px; max-width: 640px;
+      font-size: clamp(36px, 6vw, 60px); line-height: 1.1; letter-spacing: -0.03em; font-weight: 800;
     }
     h1 em { font-style: normal; color: var(--coral-ink); }
-    .lead { margin: 0 auto; max-width: 600px; font-size: clamp(17px, 2.4vw, 20px); color: var(--ink-2); }
-    .soon { margin-top: 28px; font-size: 15px; color: var(--muted); }
-    .soon strong { color: var(--ink); }
+    .lead { margin: 0; max-width: 560px; font-size: clamp(17px, 2.2vw, 20px); color: var(--ink-2); }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+    .facts { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 24px 0 0; padding: 0; list-style: none; font-size: 14px; color: var(--muted); }
+    .facts li { display: inline-flex; align-items: center; gap: 6px; }
+    .facts li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--mint); }
 
-    section { padding: 40px 0; }
-    h2 { margin: 0 0 8px; font-size: clamp(24px, 4vw, 32px); letter-spacing: -0.02em; font-weight: 800; }
-    .sub { margin: 0 0 28px; color: var(--muted); }
+    /* Phone frames */
+    .phone {
+      position: relative; width: 100%; aspect-ratio: 9 / 19;
+      border-radius: 40px; background: var(--ink); padding: 10px;
+      box-shadow: var(--shadow-phone);
+    }
+    .phone .screen { width: 100%; height: 100%; overflow: hidden; border-radius: 32px; background: var(--ivory); }
+    .phone img { display: block; width: 100%; height: auto; }
+    .phone.ios img { margin-top: -7%; }      /* hide device status bar */
+    .phone.android img { margin-top: -3%; }  /* hide device status bar */
+    .phone .notch { position: absolute; top: 18px; left: 50%; width: 32%; height: 22px; transform: translateX(-50%); border-radius: 999px; background: var(--ink); }
+
+    .hero-shots { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: end; }
+    .hero-shots .phone:first-child { margin-top: 56px; }
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; gap: 32px; padding-top: 40px; text-align: center; }
+      .hero h1, .hero .lead { margin-left: auto; margin-right: auto; }
+      .cta-row, .facts { justify-content: center; }
+      .hero-shots { max-width: 460px; margin: 0 auto; }
+    }
+
+    /* Sections */
+    section { padding: 56px 0; }
+    .eyebrow { display: inline-block; margin: 0 0 10px; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--coral-ink); }
+    .eyebrow.lav { color: var(--lavender); }
+    h2 { margin: 0 0 8px; font-size: clamp(26px, 4vw, 36px); line-height: 1.15; letter-spacing: -0.02em; font-weight: 800; }
+    .sub { margin: 0 0 32px; max-width: 640px; color: var(--muted); font-size: 17px; }
 
     .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
     .card {
@@ -95,19 +170,27 @@
     }
     .card h3 { margin: 12px 0 6px; font-size: 19px; font-weight: 700; }
     .card p { margin: 0; color: var(--ink-2); font-size: 15px; }
-    .icon { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; font-size: 22px; }
+    .icon { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; font-size: 22px; flex: none; }
     .i-c { background: var(--coral-soft); }
     .i-l { background: var(--lavender-soft); }
     .i-m { background: var(--mint-soft); }
-    .i-a { background: var(--amber-soft); flex: none; }
-    .built { display: flex; gap: 20px; align-items: flex-start; }
-    .built h2 { margin-bottom: 6px; }
-    .built p { margin: 0; color: var(--ink-2); font-size: 16px; }
-    .built a { color: var(--coral-ink); font-weight: 600; text-underline-offset: 3px; }
-    .built a:focus-visible { outline: 2px solid var(--coral-ink); outline-offset: 2px; border-radius: 4px; }
-    @media (max-width: 520px) { .built { flex-direction: column; gap: 12px; } }
+    .i-a { background: var(--amber-soft); }
 
-    .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); counter-reset: s; }
+    /* Gallery */
+    .gallery { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
+    .shot figcaption { margin-top: 14px; font-size: 14px; color: var(--ink-2); text-align: center; }
+    .shot figcaption strong { display: block; color: var(--ink); font-size: 15px; margin-bottom: 2px; }
+    .note { margin: 20px 0 0; font-size: 13px; color: var(--muted); text-align: center; }
+    @media (max-width: 1000px) {
+      .gallery { grid-template-columns: repeat(5, 72vw); overflow-x: auto; padding: 8px 16px 16px; margin: 0 -16px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+      .gallery > figure { scroll-snap-align: center; margin: 0; }
+    }
+    @media (min-width: 560px) and (max-width: 1000px) { .gallery { grid-template-columns: repeat(5, 240px); } }
+
+    /* Steps */
+    .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; grid-template-columns: repeat(3, 1fr); counter-reset: s; }
+    @media (max-width: 760px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 440px) { .steps { grid-template-columns: 1fr; } }
     .steps li {
       counter-increment: s; background: var(--surface); border: 1px solid var(--line);
       border-radius: 16px; padding: 18px; font-size: 15px; color: var(--ink-2);
@@ -119,19 +202,56 @@
     }
     .steps strong { display: block; color: var(--ink); font-size: 16px; margin-bottom: 2px; }
 
-    .closing {
-      margin: 24px 0 56px; padding: 36px 24px; border-radius: 28px; text-align: center;
-      background: var(--ink); color: #fff;
-    }
-    .closing h2 { color: #fff; }
-    .closing p { margin: 0 auto; max-width: 520px; color: rgba(255, 255, 255, 0.8); }
+    /* Platform */
+    .platform { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .platform .card h3 { margin-top: 0; font-size: 17px; }
+    .tag { display: inline-block; margin-top: 12px; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+    .tag.m { background: var(--mint-soft); color: var(--ink); }
+    .tag.a { background: var(--amber-soft); color: var(--ink); }
+    .tag.l { background: var(--lavender-soft); color: var(--ink); }
 
-    footer { padding: 24px 0 40px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
-    footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+    /* Company */
+    .company { display: grid; gap: 32px; grid-template-columns: 1fr 1fr; align-items: start; }
+    .company p { color: var(--ink-2); font-size: 17px; margin: 0 0 16px; }
+    .principles { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+    .principles li { display: flex; gap: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px; }
+    .principles strong { display: block; font-size: 16px; margin-bottom: 2px; }
+    .principles span { font-size: 15px; color: var(--ink-2); }
+    @media (max-width: 820px) { .company { grid-template-columns: 1fr; } }
+
+    /* Invest */
+    .invest {
+      border-radius: 28px; padding: clamp(28px, 5vw, 56px); background: var(--ink); color: #fff;
+      display: grid; gap: 32px; grid-template-columns: 1.1fr 1fr;
+    }
+    .invest h2 { color: #fff; }
+    .invest .eyebrow { color: var(--coral-soft); }
+    .invest p { color: var(--on-dark); margin: 0 0 16px; font-size: 17px; }
+    .asks { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+    .asks li { display: flex; gap: 12px; padding: 14px 16px; border: 1px solid var(--on-dark-line); border-radius: 14px; font-size: 15px; color: var(--on-dark); }
+    .asks li strong { color: #fff; display: block; margin-bottom: 2px; }
+    .asks .icon { width: 40px; height: 40px; font-size: 20px; }
+    .invest .cta-row { margin-top: 24px; }
+    .invest .mail { color: #fff; font-weight: 600; text-underline-offset: 3px; }
+    @media (max-width: 820px) { .invest { grid-template-columns: 1fr; } }
+
+    .built { display: flex; gap: 20px; align-items: flex-start; }
+    .built h2 { margin-bottom: 6px; font-size: 24px; }
+    .built p { margin: 0; color: var(--ink-2); font-size: 16px; }
+    .built a { color: var(--coral-ink); font-weight: 600; text-underline-offset: 3px; }
+    @media (max-width: 520px) { .built { flex-direction: column; gap: 12px; } }
+
+    footer { padding: 28px 0 44px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+    footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; align-items: center; }
+    footer a { color: var(--ink-2); text-underline-offset: 3px; }
 
     @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
       .dot { animation: none; }
       * { transition-duration: 0ms !important; }
+    }
+    @media (prefers-reduced-transparency: reduce) {
+      header.top, .card { background: var(--surface); -webkit-backdrop-filter: none; backdrop-filter: none; }
     }
   </style>
 </head>
@@ -140,56 +260,184 @@
     <div class="blob c"></div><div class="blob l"></div><div class="blob a"></div>
   </div>
 
-  <header>
-    <div class="wrap">
+  <header class="top">
+    <div class="wrap nav">
       <a class="brand" href="/" aria-label="GoGo VN — trang chủ"><svg class="mark" viewBox="0 0 42 42" fill="none" aria-hidden="true"><circle cx="14" cy="21" r="9" fill="var(--coral)"/><circle cx="28" cy="21" r="9" fill="var(--coral)" opacity="0.6"/><path d="M21 14C17 14 14 17 14 21C14 25 17 28 21 28C25 28 28 25 28 21C28 17 25 14 21 14Z" fill="#FFFFFF"/></svg>GoGo VN</a>
+      <nav class="links" aria-label="Điều hướng">
+        <a href="#product" data-i18n="nav.product">Sản phẩm</a>
+        <a href="#how" data-i18n="nav.how">Cách hoạt động</a>
+        <a href="#company" data-i18n="nav.company">Công ty</a>
+        <a href="#invest" data-i18n="nav.invest">Đầu tư</a>
+      </nav>
+      <div class="lang" role="group" aria-label="Ngôn ngữ / Language">
+        <button type="button" data-lang="vi" aria-pressed="true" lang="vi">VI</button>
+        <button type="button" data-lang="en" aria-pressed="false" lang="en">EN</button>
+      </div>
     </div>
   </header>
 
   <main>
     <div class="wrap hero">
-      <span class="badge"><span class="dot" aria-hidden="true"></span>Sắp ra mắt</span>
-      <h1>Hết cảnh hỏi nhau <em>“đi đâu giờ?”</em></h1>
-      <p class="lead">GoGo VN giúp cặp đôi và nhóm bạn thống nhất địa điểm, tạo lịch trình và đi theo kế hoạch trong ngày đi chơi — tất cả trong một nơi.</p>
-      <p class="soon">Chúng mình đang hoàn thiện những bước cuối. <strong>Hẹn gặp bạn rất sớm!</strong></p>
+      <div>
+        <span class="badge"><span class="dot" aria-hidden="true"></span><span data-i18n="hero.badge">MVP đang hoàn thiện</span></span>
+        <h1 data-i18n="hero.h1" data-i18n-html>Hết cảnh hỏi nhau <em>“đi đâu giờ?”</em></h1>
+        <p class="lead" data-i18n="hero.lead">GoGo VN giúp cặp đôi và nhóm bạn thống nhất địa điểm, tạo lịch trình và đi theo kế hoạch trong ngày đi chơi — tất cả trong một ứng dụng.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#product" data-i18n="hero.cta1">Xem sản phẩm</a>
+          <a class="btn btn-secondary" href="#invest" data-i18n="hero.cta2">Đồng hành đầu tư</a>
+        </div>
+        <ul class="facts">
+          <li data-i18n="hero.f1">Ứng dụng iOS &amp; Android</li>
+          <li data-i18n="hero.f2">Tiếng Việt là ngôn ngữ mặc định</li>
+          <li data-i18n="hero.f3">Dữ liệu địa điểm đã xác thực</li>
+        </ul>
+      </div>
+      <div class="hero-shots" aria-label="Ảnh màn hình ứng dụng GoGo">
+        <div class="phone ios"><div class="notch" aria-hidden="true"></div><div class="screen"><img src="/img/create-type.png" width="460" height="1000" alt="Màn hình tạo kèo: chọn đi hai người hay nhóm bạn" fetchpriority="high"></div></div>
+        <div class="phone ios"><div class="notch" aria-hidden="true"></div><div class="screen"><img src="/img/search.png" width="448" height="1000" alt="Màn hình tìm địa điểm với danh sách quán, đánh giá và giờ mở cửa" fetchpriority="high"></div></div>
+      </div>
     </div>
 
-    <section aria-labelledby="who">
+    <section id="product" aria-labelledby="who">
       <div class="wrap">
-        <h2 id="who">Dành cho mọi buổi đi chơi</h2>
-        <p class="sub">Dù đi hai người hay cả nhóm, ai cũng có tiếng nói.</p>
+        <span class="eyebrow" data-i18n="who.eyebrow">Sản phẩm</span>
+        <h2 id="who" data-i18n="who.h2">Dành cho mọi buổi đi chơi</h2>
+        <p class="sub" data-i18n="who.sub">Dù đi hai người hay cả nhóm, ai cũng có tiếng nói — và cả nhóm có một kế hoạch chung thay vì mười tin nhắn rời rạc.</p>
         <div class="grid">
           <article class="card">
             <div class="icon i-c" aria-hidden="true">💞</div>
-            <h3>Cặp đôi</h3>
-            <p>Mỗi người chọn chỗ mình thích, GoGo VN tìm ra điểm chung và gợi ý lịch hẹn hợp ngân sách.</p>
+            <h3 data-i18n="who.c1.h">Cặp đôi</h3>
+            <p data-i18n="who.c1.p">Mỗi người chọn chỗ mình thích, GoGo VN tìm ra điểm chung và gợi ý lịch hẹn hợp ngân sách.</p>
           </article>
           <article class="card">
             <div class="icon i-l" aria-hidden="true">👯</div>
-            <h3>Nhóm bạn</h3>
-            <p>Mời cả nhóm vào phòng, mọi người nêu sở thích và cùng bình chọn — không ai bị bỏ lại.</p>
+            <h3 data-i18n="who.c2.h">Nhóm bạn</h3>
+            <p data-i18n="who.c2.p">Mời cả nhóm vào phòng bằng một đường link, mọi người nêu sở thích và cùng bình chọn — host chốt phương án.</p>
           </article>
           <article class="card">
             <div class="icon i-m" aria-hidden="true">🗺️</div>
-            <h3>Trong ngày đi chơi</h3>
-            <p>Lịch trình rõ ràng từng điểm dừng, chỉ đường và theo dõi kế hoạch ngay trên điện thoại.</p>
+            <h3 data-i18n="who.c3.h">Trong ngày đi chơi</h3>
+            <p data-i18n="who.c3.p">Lịch trình rõ từng điểm dừng, chỉ đường, giờ mở cửa và theo dõi kế hoạch ngay trên điện thoại.</p>
           </article>
         </div>
       </div>
     </section>
 
-    <section aria-labelledby="how">
+    <section aria-labelledby="tour">
       <div class="wrap">
-        <h2 id="how">Cách GoGo VN hoạt động</h2>
-        <p class="sub">Từ lúc rủ nhau đến khi về nhà.</p>
+        <span class="eyebrow" data-i18n="tour.eyebrow">Một vòng qua ứng dụng</span>
+        <h2 id="tour" data-i18n="tour.h2">Từ ý tưởng đến kế hoạch trong vài phút</h2>
+        <p class="sub" data-i18n="tour.sub">Ảnh chụp từ bản thử nghiệm nội bộ trên iPhone và Android.</p>
+        <div class="gallery">
+          <figure class="shot">
+            <div class="phone ios"><div class="notch" aria-hidden="true"></div><div class="screen"><img src="/img/create-type.png" width="460" height="1000" loading="lazy" alt="Màn hình tạo kèo với hai lựa chọn: Hai người và Nhóm bạn"></div></div>
+            <figcaption><strong data-i18n="tour.s1.h">Tạo kèo</strong><span data-i18n="tour.s1.p">Chọn đi hai người hay cả nhóm.</span></figcaption>
+          </figure>
+          <figure class="shot">
+            <div class="phone android"><div class="screen"><img src="/img/mood.png" width="460" height="916" loading="lazy" alt="Màn hình chọn mood: thư giãn, lãng mạn, phiêu lưu; không gian; mức chi"></div></div>
+            <figcaption><strong data-i18n="tour.s2.h">Nêu sở thích</strong><span data-i18n="tour.s2.p">Mood, không gian, mức chi — vài chạm là xong.</span></figcaption>
+          </figure>
+          <figure class="shot">
+            <div class="phone ios"><div class="notch" aria-hidden="true"></div><div class="screen"><img src="/img/search.png" width="448" height="1000" loading="lazy" alt="Danh sách địa điểm có đánh giá Google, giờ mở cửa và bộ lọc theo loại hình"></div></div>
+            <figcaption><strong data-i18n="tour.s3.h">Khám phá địa điểm</strong><span data-i18n="tour.s3.p">Bộ lọc theo loại hình, đánh giá và giờ mở cửa thật.</span></figcaption>
+          </figure>
+          <figure class="shot">
+            <div class="phone ios"><div class="notch" aria-hidden="true"></div><div class="screen"><img src="/img/place.png" width="460" height="1000" loading="lazy" alt="Chi tiết địa điểm Vincom Center Đồng Khởi với bản đồ, đánh giá Google và nút chỉ đường"></div></div>
+            <figcaption><strong data-i18n="tour.s4.h">Chi tiết địa điểm</strong><span data-i18n="tour.s4.p">Bản đồ, giờ mở cửa, thêm vào kế hoạch, chỉ đường.</span></figcaption>
+          </figure>
+          <figure class="shot">
+            <div class="phone ios"><div class="notch" aria-hidden="true"></div><div class="screen"><img src="/img/plans.png" width="460" height="1000" loading="lazy" alt="Danh sách kế hoạch sắp tới với trạng thái đang chờ mọi người chọn và đã có kế hoạch"></div></div>
+            <figcaption><strong data-i18n="tour.s5.h">Theo dõi kế hoạch</strong><span data-i18n="tour.s5.p">Mọi kèo sắp tới và lịch sử ở một chỗ.</span></figcaption>
+          </figure>
+        </div>
+        <p class="note" data-i18n="tour.note">Giao diện và dữ liệu minh hoạ có thể thay đổi trước khi ra mắt chính thức.</p>
+      </div>
+    </section>
+
+    <section id="how" aria-labelledby="how-h">
+      <div class="wrap">
+        <span class="eyebrow" data-i18n="how.eyebrow">Cách hoạt động</span>
+        <h2 id="how-h" data-i18n="how.h2">Từ lúc rủ nhau đến khi về nhà</h2>
+        <p class="sub" data-i18n="how.sub">Một luồng duy nhất, không cần nhảy qua lại giữa chat, bản đồ và ghi chú.</p>
         <ol class="steps">
-          <li><strong>Tạo kèo</strong>Mở phòng cho buổi đi chơi, đặt ngân sách và thời gian.</li>
-          <li><strong>Mời bạn</strong>Gửi một đường link, mọi người tham gia ngay.</li>
-          <li><strong>Chọn sở thích</strong>Mỗi người cho biết mình muốn ăn gì, chơi gì.</li>
-          <li><strong>Match &amp; bình chọn</strong>Cùng chốt những địa điểm cả phòng đều ưng.</li>
-          <li><strong>Nhận lịch trình</strong>GoGo VN sắp xếp các điểm dừng thành kế hoạch hợp lý.</li>
-          <li><strong>Đi chơi &amp; đánh giá</strong>Đi theo kế hoạch, rồi chia sẻ cảm nhận sau buổi đi.</li>
+          <li><strong data-i18n="how.1.h">Tạo kèo</strong><span data-i18n="how.1.p">Mở phòng cho buổi đi chơi, đặt ngân sách và thời gian.</span></li>
+          <li><strong data-i18n="how.2.h">Mời bạn</strong><span data-i18n="how.2.p">Gửi một đường link, mọi người tham gia ngay — không cần tài khoản.</span></li>
+          <li><strong data-i18n="how.3.h">Chọn sở thích</strong><span data-i18n="how.3.p">Mỗi người cho biết mình muốn ăn gì, chơi gì, chi bao nhiêu.</span></li>
+          <li><strong data-i18n="how.4.h">Match &amp; bình chọn</strong><span data-i18n="how.4.p">Cùng chốt những địa điểm cả phòng đều ưng.</span></li>
+          <li><strong data-i18n="how.5.h">Nhận lịch trình</strong><span data-i18n="how.5.p">GoGo VN sắp xếp các điểm dừng thành kế hoạch hợp lý; điểm đã khoá luôn được giữ.</span></li>
+          <li><strong data-i18n="how.6.h">Đi chơi &amp; đánh giá</strong><span data-i18n="how.6.p">Đi theo kế hoạch, rồi chia sẻ cảm nhận sau buổi đi.</span></li>
         </ol>
+      </div>
+    </section>
+
+    <section aria-labelledby="plat">
+      <div class="wrap">
+        <span class="eyebrow lav" data-i18n="plat.eyebrow">Nền tảng</span>
+        <h2 id="plat" data-i18n="plat.h2">Một hệ thống, nhiều điểm chạm</h2>
+        <p class="sub" data-i18n="plat.sub">Toàn bộ sản phẩm được xây trên một backend dùng chung, với hợp đồng API thống nhất giữa các ứng dụng.</p>
+        <div class="platform">
+          <article class="card">
+            <h3 data-i18n="plat.1.h">Ứng dụng di động</h3>
+            <p data-i18n="plat.1.p">iOS và Android từ một mã nguồn React Native. Bản đồ, chỉ đường, thông báo đẩy, chia sẻ link mời.</p>
+            <span class="tag m" data-i18n="plat.1.t">Đang kiểm thử tích hợp</span>
+          </article>
+          <article class="card">
+            <h3 data-i18n="plat.2.h">Web / PWA &amp; Mini App</h3>
+            <p data-i18n="plat.2.p">Phiên bản web responsive và Mini App chạy trong các nền tảng đối tác, để khách mời tham gia không cần cài app.</p>
+            <span class="tag a" data-i18n="plat.2.t">Đang phát triển</span>
+          </article>
+          <article class="card">
+            <h3 data-i18n="plat.3.h">Hệ thống quản trị nội dung</h3>
+            <p data-i18n="plat.3.p">Danh mục địa điểm, kiểm duyệt, nhập liệu hàng loạt và bảng điều hành vận hành cho đội ngũ nội bộ.</p>
+            <span class="tag m" data-i18n="plat.3.t">Đang kiểm thử tích hợp</span>
+          </article>
+          <article class="card">
+            <h3 data-i18n="plat.4.h">Backend &amp; dữ liệu</h3>
+            <p data-i18n="plat.4.p">API tập trung, cơ sở dữ liệu địa lý, tìm kiếm, bộ gợi ý tất định và hàng đợi xử lý nền. Hạ tầng quản lý bằng mã (IaC).</p>
+            <span class="tag l" data-i18n="plat.4.t">Môi trường DEV đang chạy</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="company" aria-labelledby="company-h">
+      <div class="wrap company">
+        <div>
+          <span class="eyebrow" data-i18n="co.eyebrow">Về GoGo VN</span>
+          <h2 id="company-h" data-i18n="co.h2">Startup Việt Nam, làm cho người Việt đi chơi vui hơn</h2>
+          <p data-i18n="co.p1">GoGo VN ra đời từ một câu hỏi quen thuộc của mọi cặp đôi và nhóm bạn: “Cuối tuần này đi đâu?”. Câu hỏi đơn giản, nhưng để trả lời thường mất cả buổi nhắn tin, vài lần đổi ý và không ít lần có người đành chiều theo số đông.</p>
+          <p data-i18n="co.p2">Chúng tôi xây GoGo VN để việc chọn chỗ đi chơi trở thành chuyện vui của cả nhóm: mỗi người được nói lên sở thích, kết quả là điểm chung thật sự, và kế hoạch đi kèm luôn khớp ngân sách lẫn thời gian.</p>
+          <p data-i18n="co.p3">Sứ mệnh của chúng tôi: giúp mọi người dành thời gian cho nhau nhiều hơn, và ít thời gian hơn cho việc bàn xem nên đi đâu.</p>
+        </div>
+        <ul class="principles" aria-label="Nguyên tắc sản phẩm">
+          <li><div class="icon i-m" aria-hidden="true">✅</div><div><strong data-i18n="co.v1.h">Dữ liệu thật, không đoán</strong><span data-i18n="co.v1.p">Giờ mở cửa, giá, đánh giá chỉ đến từ nguồn đã xác thực và luôn ghi rõ nguồn. AI không được “bịa” địa điểm.</span></div></li>
+          <li><div class="icon i-l" aria-hidden="true">🤝</div><div><strong data-i18n="co.v2.h">Công bằng cho cả nhóm</strong><span data-i18n="co.v2.p">Thuật toán gợi ý cân bằng sở thích của mọi thành viên thay vì chiều theo người nói to nhất.</span></div></li>
+          <li><div class="icon i-c" aria-hidden="true">🔒</div><div><strong data-i18n="co.v3.h">Riêng tư từ thiết kế</strong><span data-i18n="co.v3.p">Vị trí chính xác chỉ lưu có thời hạn, link mời có hạn dùng, người dùng xoá được tài khoản và dữ liệu của mình.</span></div></li>
+          <li><div class="icon i-a" aria-hidden="true">🇻🇳</div><div><strong data-i18n="co.v4.h">Việt Nam trước tiên</strong><span data-i18n="co.v4.p">Tiếng Việt là ngôn ngữ mặc định, dữ liệu địa điểm và thói quen đi chơi được xây cho thị trường Việt Nam.</span></div></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="invest" aria-labelledby="invest-h">
+      <div class="wrap">
+        <div class="invest">
+          <div>
+            <span class="eyebrow" data-i18n="inv.eyebrow">Đồng hành cùng GoGo VN</span>
+            <h2 id="invest-h" data-i18n="inv.h2">Chúng tôi đang tìm đối tác cho chặng đầu tiên</h2>
+            <p data-i18n="inv.p1">GoGo VN đang ở giai đoạn hoàn thiện MVP: toàn bộ luồng từ tạo kèo đến lịch trình đã chạy trên môi trường thử nghiệm, ứng dụng di động đang được kiểm thử trên thiết bị thật.</p>
+            <p data-i18n="inv.p2">Chặng tiếp theo là ra mắt tại thị trường đầu tiên, mở rộng dữ liệu địa điểm và xây cộng đồng người dùng ban đầu. Chúng tôi tìm nhà đầu tư và đối tác chia sẻ tầm nhìn đó.</p>
+            <div class="cta-row">
+              <a class="btn btn-on-dark" href="mailto:support@gogo.id.vn?subject=GoGo%20VN%20%E2%80%94%20H%E1%BB%A3p%20t%C3%A1c%20%C4%91%E1%BA%A7u%20t%C6%B0" data-i18n="inv.cta">Liên hệ đầu tư</a>
+            </div>
+            <p style="margin-top:16px;font-size:15px"><span data-i18n="inv.mail">Hoặc gửi email tới</span> <a class="mail" href="mailto:support@gogo.id.vn">support@gogo.id.vn</a></p>
+          </div>
+          <ul class="asks" aria-label="Điều chúng tôi tìm kiếm">
+            <li><div class="icon i-c" aria-hidden="true">💡</div><div><strong data-i18n="inv.a1.h">Vốn giai đoạn sớm</strong><span data-i18n="inv.a1.p">Để ra mắt chính thức, mở rộng đội ngũ và dữ liệu địa điểm.</span></div></li>
+            <li><div class="icon i-l" aria-hidden="true">📍</div><div><strong data-i18n="inv.a2.h">Đối tác địa điểm &amp; dữ liệu</strong><span data-i18n="inv.a2.p">Quán, điểm vui chơi, chuỗi F&amp;B muốn xuất hiện đúng lúc nhóm bạn đang chọn chỗ.</span></div></li>
+            <li><div class="icon i-m" aria-hidden="true">🧭</div><div><strong data-i18n="inv.a3.h">Cố vấn &amp; mạng lưới</strong><span data-i18n="inv.a3.p">Kinh nghiệm tăng trưởng sản phẩm tiêu dùng và vận hành tại Việt Nam.</span></div></li>
+            <li><div class="icon i-a" aria-hidden="true">📄</div><div><strong data-i18n="inv.a4.h">Tài liệu chi tiết theo yêu cầu</strong><span data-i18n="inv.a4.p">Bản giới thiệu, lộ trình sản phẩm và demo trực tiếp được chia sẻ sau khi liên hệ.</span></div></li>
+          </ul>
+        </div>
       </div>
     </section>
 
@@ -198,27 +446,104 @@
         <div class="card built">
           <div class="icon i-a" aria-hidden="true">✳️</div>
           <div>
-            <h2 id="claude">Phát triển cùng Claude</h2>
-            <p>GoGo VN được đội ngũ xây dựng cùng <a href="https://claude.com/product/claude-code" target="_blank" rel="noopener">Claude Code</a> — trợ lý lập trình AI của Anthropic. Claude đồng hành từ viết mã, kiểm thử đến rà soát, giúp đội ngũ nhỏ đi nhanh mà vẫn giữ chất lượng.</p>
+            <h2 id="claude" data-i18n="cl.h2">Phát triển cùng Claude</h2>
+            <p data-i18n="cl.p" data-i18n-html>GoGo VN được đội ngũ xây dựng cùng <a href="https://claude.com/product/claude-code" target="_blank" rel="noopener">Claude Code</a> — trợ lý lập trình AI của Anthropic. Claude đồng hành từ viết mã, kiểm thử đến rà soát, giúp đội ngũ nhỏ đi nhanh mà vẫn giữ chất lượng.</p>
           </div>
         </div>
       </div>
     </section>
-
-    <div class="wrap">
-      <div class="closing">
-        <h2>GoGo VN đang trên đường tới</h2>
-        <p>Ứng dụng di động và phiên bản web sẽ sớm có mặt. Hãy quay lại trang này để cập nhật tin mới nhất.</p>
-      </div>
-    </div>
   </main>
 
   <footer>
     <div class="wrap">
-      <span>© <span id="y">2026</span> GoGo VN</span>
-      <span>Cùng nhau chọn, cùng nhau đi.</span>
+      <span>© <span id="y">2026</span> GoGo VN · <a href="mailto:support@gogo.id.vn">support@gogo.id.vn</a></span>
+      <span data-i18n="foot.tag">Cùng nhau chọn, cùng nhau đi.</span>
     </div>
   </footer>
-  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // English copy. Vietnamese is the default and lives in the markup.
+    var EN = {
+      'nav.product': 'Product', 'nav.how': 'How it works', 'nav.company': 'Company', 'nav.invest': 'Invest',
+      'hero.badge': 'MVP in final stretch',
+      'hero.h1': 'No more <em>“so… where to?”</em>',
+      'hero.lead': 'GoGo VN helps couples and friend groups agree on a place, build an itinerary and follow the plan on the day out — all in one app.',
+      'hero.cta1': 'See the product', 'hero.cta2': 'Invest with us',
+      'hero.f1': 'iOS & Android app', 'hero.f2': 'Vietnamese-first', 'hero.f3': 'Verified place data',
+      'who.eyebrow': 'Product', 'who.h2': 'Built for every outing',
+      'who.sub': 'Two people or the whole crew — everyone gets a say, and the group ends up with one plan instead of ten scattered messages.',
+      'who.c1.h': 'Couples', 'who.c1.p': 'Each person picks what they like; GoGo VN finds the overlap and suggests a date that fits the budget.',
+      'who.c2.h': 'Friend groups', 'who.c2.p': 'Invite everyone with one link, collect preferences, vote together — the host makes the final call.',
+      'who.c3.h': 'On the day', 'who.c3.p': 'A clear stop-by-stop itinerary with directions, opening hours and live plan tracking on your phone.',
+      'tour.eyebrow': 'A tour of the app', 'tour.h2': 'From idea to plan in minutes',
+      'tour.sub': 'Screenshots from our internal test build on iPhone and Android.',
+      'tour.s1.h': 'Create a room', 'tour.s1.p': 'Pick couple or group mode.',
+      'tour.s2.h': 'Share preferences', 'tour.s2.p': 'Mood, setting, spend level — a few taps.',
+      'tour.s3.h': 'Discover places', 'tour.s3.p': 'Filter by type, with real ratings and opening hours.',
+      'tour.s4.h': 'Place details', 'tour.s4.p': 'Map, hours, add to plan, get directions.',
+      'tour.s5.h': 'Track plans', 'tour.s5.p': 'Every upcoming outing and its history in one place.',
+      'tour.note': 'Interface and sample data may change before public launch.',
+      'how.eyebrow': 'How it works', 'how.h2': 'From “let’s hang out” to heading home',
+      'how.sub': 'One flow — no bouncing between chat, maps and notes.',
+      'how.1.h': 'Create a room', 'how.1.p': 'Open a room for the outing, set budget and time.',
+      'how.2.h': 'Invite friends', 'how.2.p': 'Send one link; everyone joins instantly — no account needed.',
+      'how.3.h': 'Share preferences', 'how.3.p': 'Each person says what they want to eat, do and spend.',
+      'how.4.h': 'Match & vote', 'how.4.p': 'Settle on the places the whole room likes.',
+      'how.5.h': 'Get the itinerary', 'how.5.p': 'GoGo VN orders the stops into a sensible plan; locked stops always stay.',
+      'how.6.h': 'Go out & review', 'how.6.p': 'Follow the plan, then share how it went.',
+      'plat.eyebrow': 'Platform', 'plat.h2': 'One system, many touchpoints',
+      'plat.sub': 'The whole product runs on one shared backend with a single API contract across apps.',
+      'plat.1.h': 'Mobile app', 'plat.1.p': 'iOS and Android from one React Native codebase. Maps, directions, push notifications, invite links.', 'plat.1.t': 'In integration testing',
+      'plat.2.h': 'Web / PWA & Mini App', 'plat.2.p': 'Responsive web and a Mini App inside partner platforms, so guests can join without installing anything.', 'plat.2.t': 'In development',
+      'plat.3.h': 'Content management system', 'plat.3.p': 'Place catalogue, moderation, bulk import and an ops dashboard for the internal team.', 'plat.3.t': 'In integration testing',
+      'plat.4.h': 'Backend & data', 'plat.4.p': 'Central API, geospatial database, search, a deterministic suggestion engine and background queues. Infrastructure as code.', 'plat.4.t': 'DEV environment live',
+      'co.eyebrow': 'About GoGo VN', 'co.h2': 'A Vietnamese startup making going out more fun',
+      'co.p1': 'GoGo VN started from a question every couple and friend group knows: “Where are we going this weekend?”. Simple to ask, yet answering it usually eats an evening of messages, a few changes of mind, and someone quietly giving in to the majority.',
+      'co.p2': 'We built GoGo VN so choosing where to go becomes part of the fun: everyone states their preferences, the result is a genuine overlap, and the plan that comes with it fits both budget and time.',
+      'co.p3': 'Our mission: help people spend more time together, and less time debating where to go.',
+      'co.v1.h': 'Real data, no guessing', 'co.v1.p': 'Opening hours, prices and ratings come only from verified sources and always show their origin. AI is never allowed to invent a place.',
+      'co.v2.h': 'Fair to the whole group', 'co.v2.p': 'The suggestion engine balances every member’s preferences instead of following the loudest voice.',
+      'co.v3.h': 'Private by design', 'co.v3.p': 'Exact locations are kept only for a limited time, invite links expire, and users can delete their account and data.',
+      'co.v4.h': 'Vietnam first', 'co.v4.p': 'Vietnamese is the default language; place data and outing habits are built for the Vietnamese market.',
+      'inv.eyebrow': 'Partner with GoGo VN', 'inv.h2': 'We are looking for partners for the first leg',
+      'inv.p1': 'GoGo VN is finishing its MVP: the full flow from creating a room to a generated itinerary runs on our test environment, and the mobile app is being tested on real devices.',
+      'inv.p2': 'Next comes launch in our first market, growing the place dataset and building the first user community. We are looking for investors and partners who share that vision.',
+      'inv.cta': 'Contact us about investing', 'inv.mail': 'Or email',
+      'inv.a1.h': 'Early-stage capital', 'inv.a1.p': 'To launch publicly, grow the team and the place dataset.',
+      'inv.a2.h': 'Venue & data partners', 'inv.a2.p': 'Cafés, venues and F&B chains that want to show up right when a group is choosing.',
+      'inv.a3.h': 'Advisors & network', 'inv.a3.p': 'Experience growing consumer products and operating in Vietnam.',
+      'inv.a4.h': 'Detailed materials on request', 'inv.a4.p': 'Deck, product roadmap and a live demo shared after first contact.',
+      'cl.h2': 'Built with Claude',
+      'cl.p': 'GoGo VN is built by the team together with <a href="https://claude.com/product/claude-code" target="_blank" rel="noopener">Claude Code</a>, Anthropic’s AI coding assistant. Claude helps from writing code to testing and review, letting a small team move fast without dropping quality.',
+      'foot.tag': 'Choose together, go together.'
+    };
+    var VI = {};
+    var nodes = document.querySelectorAll('[data-i18n]');
+    nodes.forEach(function (n) { VI[n.getAttribute('data-i18n')] = n.innerHTML; });
+
+    function setLang(lang) {
+      var dict = lang === 'en' ? EN : VI;
+      nodes.forEach(function (n) {
+        var k = n.getAttribute('data-i18n');
+        if (dict[k] != null) n.innerHTML = dict[k];
+      });
+      document.documentElement.lang = lang;
+      document.querySelectorAll('.lang button').forEach(function (b) {
+        b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === lang));
+      });
+      try { localStorage.setItem('gogo.lang', lang); } catch (e) {}
+    }
+    document.querySelectorAll('.lang button').forEach(function (b) {
+      b.addEventListener('click', function () { setLang(b.getAttribute('data-lang')); });
+    });
+    var initial = 'vi';
+    try {
+      var q = new URLSearchParams(location.search).get('lang');
+      initial = q || localStorage.getItem('gogo.lang') || 'vi';
+    } catch (e) {}
+    if (initial === 'en') setLang('en');
+  </script>
 </body>
 </html>
