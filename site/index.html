@@ -211,7 +211,9 @@
     .note { margin: 20px 0 0; font-size: 13px; color: var(--muted); text-align: center; }
     @media (max-width: 1000px) {
       .gallery { grid-template-columns: repeat(5, 68vw); overflow-x: auto; overflow-y: hidden; padding: 28px 20px 28px; margin: 0 -16px; border-radius: 0; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
-      .gallery::before, .gallery::after { border-radius: 0; }
+      /* A scroll container's pseudo-elements only cover the scrollport; paint the stage on the box itself. */
+      .gallery { background: var(--panel); }
+      .gallery::before, .gallery::after { display: none; }
       .gallery > figure { scroll-snap-align: center; }
       .gallery > figure:nth-child(even) { transform: none; }
     }
