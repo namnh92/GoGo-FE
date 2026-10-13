@@ -267,8 +267,9 @@
     .invest .mail { color: #fff; font-weight: 600; text-underline-offset: 3px; }
     @media (max-width: 820px) { .invest { grid-template-columns: 1fr; } }
 
+    .partners { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
     .built { display: flex; gap: 20px; align-items: flex-start; }
-    .built h2 { margin-bottom: 6px; font-size: 24px; }
+    .built h3 { margin: 0 0 6px; font-size: 21px; font-weight: 700; }
     .built p { margin: 0; color: var(--ink-2); font-size: 16px; }
     .built a { color: var(--coral-ink); font-weight: 600; text-underline-offset: 3px; }
     @media (max-width: 520px) { .built { flex-direction: column; gap: 12px; } }
@@ -473,14 +474,26 @@
       </div>
     </section>
 
-    <section aria-labelledby="claude">
+    <section aria-labelledby="partners">
       <div class="wrap">
-        <div class="card built">
-          <div class="icon i-a" aria-hidden="true">✳️</div>
-          <div>
-            <h2 id="claude" data-i18n="cl.h2">Phát triển cùng Claude</h2>
-            <p data-i18n="cl.p" data-i18n-html>GoGo VN được đội ngũ xây dựng cùng <a href="https://claude.com/product/claude-code" target="_blank" rel="noopener">Claude Code</a> — trợ lý lập trình AI của Anthropic. Claude đồng hành từ viết mã, kiểm thử đến rà soát, giúp đội ngũ nhỏ đi nhanh mà vẫn giữ chất lượng.</p>
-          </div>
+        <span class="eyebrow" data-i18n="pt.eyebrow">Công nghệ đồng hành</span>
+        <h2 id="partners" data-i18n="pt.h2">Xây nhanh, chạy ổn định</h2>
+        <p class="sub" data-i18n="pt.sub">Hai nền tảng giúp một đội ngũ nhỏ làm được việc của một đội lớn.</p>
+        <div class="partners">
+          <article class="card built">
+            <div class="icon i-a" aria-hidden="true">✳️</div>
+            <div>
+              <h3 data-i18n="cl.h2">Phát triển cùng Claude</h3>
+              <p data-i18n="cl.p" data-i18n-html>GoGo VN được đội ngũ xây dựng cùng <a href="https://claude.com/product/claude-code" target="_blank" rel="noopener">Claude Code</a> — trợ lý lập trình AI của Anthropic. Claude đồng hành từ viết mã, kiểm thử đến rà soát, giúp đội ngũ nhỏ đi nhanh mà vẫn giữ chất lượng.</p>
+            </div>
+          </article>
+          <article class="card built">
+            <div class="icon i-a" aria-hidden="true">☁️</div>
+            <div>
+              <h3 data-i18n="cf.h2">Vận hành trên Cloudflare</h3>
+              <p data-i18n="cf.p" data-i18n-html>Trang này và link chia sẻ của GoGo VN chạy trên <a href="https://workers.cloudflare.com/" target="_blank" rel="noopener">Cloudflare Workers</a>; DNS, CDN và bảo vệ chống tấn công do Cloudflare đảm nhiệm, còn công cụ nội bộ được khoá sau <a href="https://www.cloudflare.com/zero-trust/products/access/" target="_blank" rel="noopener">Cloudflare Access</a>. Hạ tầng gọn, chi phí thấp, sẵn sàng mở rộng.</p>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -547,8 +560,12 @@
       'inv.a2.h': 'Venue & data partners', 'inv.a2.p': 'Cafés, venues and F&B chains that want to show up right when a group is choosing.',
       'inv.a3.h': 'Advisors & network', 'inv.a3.p': 'Experience growing consumer products and operating in Vietnam.',
       'inv.a4.h': 'Detailed materials on request', 'inv.a4.p': 'Deck, product roadmap and a live demo shared after first contact.',
+      'pt.eyebrow': 'Technology partners', 'pt.h2': 'Build fast, run reliably',
+      'pt.sub': 'Two platforms that let a small team do the work of a big one.',
       'cl.h2': 'Built with Claude',
       'cl.p': 'GoGo VN is built by the team together with <a href="https://claude.com/product/claude-code" target="_blank" rel="noopener">Claude Code</a>, Anthropic’s AI coding assistant. Claude helps from writing code to testing and review, letting a small team move fast without dropping quality.',
+      'cf.h2': 'Running on Cloudflare',
+      'cf.p': 'This site and GoGo VN’s share links run on <a href="https://workers.cloudflare.com/" target="_blank" rel="noopener">Cloudflare Workers</a>; DNS, CDN and attack protection are handled by Cloudflare, and internal tools sit behind <a href="https://www.cloudflare.com/zero-trust/products/access/" target="_blank" rel="noopener">Cloudflare Access</a>. Lean infrastructure, low cost, ready to scale.',
       'foot.tag': 'Choose together, go together.'
     };
     var VI = {};
