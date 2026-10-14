@@ -4,7 +4,7 @@
 // - Anything not yet true is labelled as planned (dự kiến / kế hoạch).
 // - Values are inserted as HTML. Keys starting with `a.` are escaped for attributes.
 
-const MAIL = 'support@gogo.id.vn';
+const MAIL = 'namnh@gogo.id.vn';
 
 export const SITE = 'https://gogo.id.vn';
 

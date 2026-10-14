@@ -7,7 +7,7 @@
 ## 1. Ai vận hành
 - GoGo VN là dự án startup Việt Nam, **chưa có pháp nhân**. **[CẦN XÁC NHẬN]** người/đơn vị chịu
   trách nhiệm dữ liệu, địa chỉ liên hệ pháp lý.
-- Liên hệ: support@gogo.id.vn.
+- Liên hệ: namnh@gogo.id.vn.
 
 ## 2. Dữ liệu thu thập (theo code hiện tại) **[CẦN XÁC NHẬN đầy đủ danh sách]**
 - Tài khoản: email, mật khẩu (băm), tên hiển thị, ảnh đại diện, khu vực, ngân sách thường dùng,
