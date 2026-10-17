@@ -26,14 +26,18 @@ export const SITE = 'https://gogo.id.vn';
 export const LEGAL = {
   /** Printed in the privacy policy as the person responsible for the data. */
   ownerName: null,
-  /** 'YYYY-MM-DD'; rendered per locale by the date table in build.mjs. */
+  /**
+   * 'YYYY-MM-DD'; rendered per locale by the date table in build.mjs. Deliberately still null:
+   * owner decision 2026-10-18 is to date the policy the day it actually goes live, so the
+   * effective date is never earlier than the day anyone could read it. Filled at deploy.
+   */
   effectiveDate: null,
-  /** Hours to acknowledge a privacy request. ADR-0011's engineering default is 72, pending Legal. */
-  ackWithinHours: null,
-  /** Days to complete one. ADR-0011's engineering default is 30, pending Legal. */
-  completeWithinDays: null,
-  /** Months a request record is kept after closure. ADR-0011's provisional figure is 12. */
-  ledgerRetentionMonths: null,
+  /** Owner decision 2026-10-18: ADR-0011's engineering defaults, so the page and the system that
+      measures the request promise the same number. Changing one means changing `PRIVACY_SLA_JSON`. */
+  ackWithinHours: 72,
+  completeWithinDays: 30,
+  /** ADR-0011's provisional figure, confirmed by the owner 2026-10-18. */
+  ledgerRetentionMonths: 12,
 };
 
 export const shared = {
