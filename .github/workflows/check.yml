@@ -1,0 +1,18 @@
+# The repo has no build step and no dependencies, so the one thing CI has to answer is whether the
+# committed pages still match their sources — and, since #4, whether a page has started fetching
+# something from another origin. `node build.mjs --check` answers both and needs nothing installed.
+name: check
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node build.mjs --check

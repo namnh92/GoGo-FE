@@ -31,6 +31,8 @@ Landing page giới thiệu sản phẩm GoGo VN + mục kêu gọi đầu tư �
 - Logo công nghệ: `site/img/logos/` — Claude từ simple-icons 13.21.0 (CC0); Cloudflare, AWS,
   Google Cloud từ devicon 2.16.0 (MIT). Logo là thương hiệu của chủ sở hữu tương ứng.
 - Nháp chính sách chưa có hiệu lực: `docs/drafts/` (không deploy).
+- CI: `.github/workflows/check.yml` chạy `node build.mjs --check` trên PR và trên `master` —
+  trước #4 không có gì chặn một trang commit lệch nguồn.
 - Nội dung chỉ ghi điều đã xác nhận: không founder, số liệu, pháp nhân, đối tác chưa được owner chốt.
 
 ## Preview & deploy
