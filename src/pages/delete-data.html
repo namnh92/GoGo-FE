@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="{{@htmlLang}}">
+<head>
+{{>head.html}}
+  <style>
+{{>base.css}}
+{{>legal.css}}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">{{skip}}</a>
+{{>header.html}}
+
+  <main id="main" class="legal">
+    <div class="wrap">
+      <h1>{{d.h1}}</h1>
+      <p class="lead">{{d.lead}}</p>
+      <p class="meta"><a href="{{@otherPath}}" hreflang="{{@otherLang}}" lang="{{@otherLang}}">{{d.otherLang}}</a></p>
+
+      <h2>{{s1.h}}</h2>
+      {{s1.p}}
+
+      <h2>{{s2.h}}</h2>
+      {{s2.p}}
+      <p class="btn-mail"><a class="btn btn-primary" href="{{a.mailDelete}}">{{s2.cta}}</a></p>
+      <div class="box">
+        {{s2.body}}
+      </div>
+
+      <h2>{{s3.h}}</h2>
+      {{s3.p}}
+
+      <h2>{{s4.h}}</h2>
+      <h3>{{s4.removedH}}</h3>
+      {{s4.removed}}
+      <h3>{{s4.keptH}}</h3>
+      {{s4.kept}}
+      {{s4.irreversible}}
+
+      <h2>{{s5.h}}</h2>
+      {{s5.p}}
+
+      <h2>{{s6.h}}</h2>
+      {{s6.p}}
+
+      <h2>{{s7.h}}</h2>
+      {{s7.p}}
+
+      <h2>{{s8.h}}</h2>
+      {{s8.p}}
+
+      <h2>{{s9.h}}</h2>
+      {{s9.p}}
+
+      {{s10.p}}
+    </div>
+  </main>
+
+{{>footer.html}}
+</body>
+</html>

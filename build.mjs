@@ -11,15 +11,30 @@
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { shared, SITE, MAIL } from './src/strings/shared.mjs';
+import { shared, SITE, MAIL, LEGAL } from './src/strings/shared.mjs';
 import { landing } from './src/strings/landing.mjs';
+import { privacy } from './src/strings/privacy.mjs';
+import { deleteData } from './src/strings/delete-data.mjs';
 
 const root = dirname(fileURLToPath(import.meta.url));
 
 /** Locale-level facts. A page decides its own paths; a locale decides how it is labelled. */
 const LOCALES = {
-  vi: { htmlLang: 'vi', ogLocale: 'vi_VN', ogLocaleAlt: 'en_US' },
-  en: { htmlLang: 'en', ogLocale: 'en_US', ogLocaleAlt: 'vi_VN' },
+  vi: {
+    htmlLang: 'vi',
+    ogLocale: 'vi_VN',
+    ogLocaleAlt: 'en_US',
+    // A date in the output must not depend on the ICU data of whoever runs the build, so the month
+    // names are a table rather than `Intl`.
+    date: ([y, m, d]) => `ngày ${Number(d)} tháng ${Number(m)} năm ${y}`,
+  },
+  en: {
+    htmlLang: 'en',
+    ogLocale: 'en_US',
+    ogLocaleAlt: 'vi_VN',
+    date: ([y, m, d]) =>
+      `${Number(d)} ${['January','February','March','April','May','June','July','August','September','October','November','December'][Number(m) - 1]} ${y}`,
+  },
 };
 
 /**
@@ -35,6 +50,18 @@ const PAGES = [
     path: { vi: '/', en: '/en/' },
     // Old links used ?lang=en on the Vietnamese page; only that page carries the redirect.
     legacyRedirect: true,
+  },
+  {
+    id: 'privacy',
+    template: 'src/pages/privacy.html',
+    strings: privacy,
+    path: { vi: '/quyen-rieng-tu/', en: '/en/privacy/' },
+  },
+  {
+    id: 'deleteData',
+    template: 'src/pages/delete-data.html',
+    strings: deleteData,
+    path: { vi: '/xoa-du-lieu/', en: '/en/delete-my-data/' },
   },
 ];
 
@@ -107,7 +134,32 @@ function render(page, code) {
       ? `<script>if (/[?&]lang=en(&|$)/.test(location.search)) location.replace('/en/' + location.hash);</script>`
       : '';
 
+  // Three hreflang lines per page, x-default pointing at the Vietnamese one: the product's default
+  // language, and the URL submitted where a store console has only one field.
+  const alternates = [
+    `<link rel="alternate" hreflang="vi" href="${SITE}${page.path.vi}">`,
+    `<link rel="alternate" hreflang="en" href="${SITE}${page.path.en}">`,
+    `<link rel="alternate" hreflang="x-default" href="${SITE}${page.path.vi}">`,
+  ].join('\n  ');
+
+  // Every page is reachable from every other by id, in the current locale, so no partial has to
+  // know a path.
+  const links = Object.fromEntries(PAGES.map((p) => [`link.${p.id}`, p.path[code]]));
+
+  // A legal constant nobody has decided yet renders as a visible token. `--check` still passes, so
+  // the page is reviewable and mergeable; `--release` refuses, so it cannot be deployed.
+  const legal = Object.fromEntries(
+    Object.entries(LEGAL).map(([name, value]) => {
+      if (value === null) return [`legal.${name}`, `⟦legal.${name}⟧`];
+      if (name === 'effectiveDate') return [`legal.${name}`, loc.date(value.split('-'))];
+      return [`legal.${name}`, String(value)];
+    }),
+  );
+
   const special = {
+    ...links,
+    ...legal,
+    alternates,
     htmlLang: loc.htmlLang,
     canonical: SITE + page.path[code],
     site: SITE,
@@ -123,20 +175,26 @@ function render(page, code) {
   };
 
   const used = new Set();
-  const fill = (src) =>
-    src
-      .replace(/\{\{>([\w.-]+)\}\}/g, (_, name) => fill(partial(name)))
+  // Strings are filled recursively, like specials: prose refers to `{{@mail}}`, to a sibling page
+  // via `{{@link.privacy}}`, and the legal pages refer to `{{@legal.*}}` constants. A depth cap
+  // turns a self-referential string into an error instead of a hang.
+  const fill = (src, depth = 0) => {
+    if (depth > 8) throw new Error(`[${page.id}/${code}] placeholders nested more than 8 deep — a string refers to itself?`);
+    return src
+      .replace(/\{\{>([\w.-]+)\}\}/g, (_, name) => fill(partial(name), depth + 1))
       .replace(/\{\{(@?)([\w.]+)\}\}/g, (_, at, key) => {
         // `in` would accept anything on Object.prototype: `{{toString}}` rendered the function
         // source instead of throwing.
         if (at) {
           if (!Object.hasOwn(special, key)) throw new Error(`unknown special {{@${key}}}`);
-          return fill(String(special[key]));
+          return fill(String(special[key]), depth + 1);
         }
         if (!Object.hasOwn(t, key)) throw new Error(`[${page.id}/${code}] missing string "${key}"`);
         used.add(key);
-        return key.startsWith('a.') ? esc(t[key]) : t[key];
+        // `a.` values land in attributes: escaped, and never a carrier for other placeholders.
+        return key.startsWith('a.') ? esc(t[key]) : fill(t[key], depth + 1);
       });
+  };
 
   const html = fill(readFileSync(join(root, page.template), 'utf8'));
 
@@ -206,6 +264,7 @@ for (const page of PAGES) {
 }
 
 const check = process.argv.includes('--check');
+const release = process.argv.includes('--release');
 const rendered = [];
 
 for (const page of PAGES) {
@@ -247,6 +306,22 @@ if (check) {
   const orphans = walk(join(root, 'site')).filter((p) => p.endsWith('.html') && !produced.has(p));
   if (orphans.length) {
     console.error(`orphan pages under site/ — no PAGES row produces them: ${orphans.map((p) => relative(root, p)).join(', ')}`);
+    stale++;
+  }
+}
+
+// Printed on every build, so an unset constant is visible without reading the pages.
+const unsetLegal = Object.entries(LEGAL).filter(([, v]) => v === null).map(([k]) => k);
+if (unsetLegal.length) console.log(`unset legal constants: ${unsetLegal.join(', ')}`);
+
+if (release) {
+  // The deploy gate: a visible token in a published legal page is worse than an unpublished one.
+  const withTokens = rendered.filter(({ html }) => html.includes('⟦'));
+  if (withTokens.length) {
+    console.error(
+      `refusing to release: unresolved legal constants in ${withTokens.map(({ file }) => relative(root, file)).join(', ')}` +
+        (unsetLegal.length ? ` — set ${unsetLegal.join(', ')} in src/strings/shared.mjs` : ''),
+    );
     stale++;
   }
 }

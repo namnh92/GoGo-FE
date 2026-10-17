@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="{{@htmlLang}}">
+<head>
+{{>head.html}}
+  <style>
+{{>base.css}}
+{{>legal.css}}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">{{skip}}</a>
+{{>header.html}}
+
+  <main id="main" class="legal">
+    <div class="wrap">
+      <h1>{{p.h1}}</h1>
+      <p class="lead">{{p.lead}}</p>
+      <p class="meta">{{p.effective}} · <a href="{{@otherPath}}" hreflang="{{@otherLang}}" lang="{{@otherLang}}">{{p.otherLang}}</a></p>
+
+      <h2>{{s1.h}}</h2>
+      {{s1.p}}
+
+      <h2>{{s2.h}}</h2>
+      {{s2.p}}
+      <table>
+        <thead><tr><th>{{s2.thWhat}}</th><th>{{s2.thWhy}}</th><th>{{s2.thNeed}}</th></tr></thead>
+        <tbody>
+{{s2.rows}}
+        </tbody>
+      </table>
+      {{s2.not}}
+      {{s2.directions}}
+
+      <h2>{{s3.h}}</h2>
+      {{s3.p}}
+      <ul>
+        <li>{{s3.onesignal}}</li>
+        <li>{{s3.tenjin}}</li>
+        <li>{{s3.sentry}}</li>
+        <li>{{s3.maps}}</li>
+      </ul>
+
+      <h2>{{s4.h}}</h2>
+      <ul>
+{{s4.list}}
+      </ul>
+      {{s4.not}}
+
+      <h2>{{s5.h}}</h2>
+      <ul>
+{{s5.list}}
+      </ul>
+      {{s5.hosting}}
+
+      <h2>{{s6.h}}</h2>
+      <ul>
+{{s6.list}}
+      </ul>
+
+      <h2>{{s7.h}}</h2>
+      {{s7.p}}
+
+      <h2>{{s8.h}}</h2>
+      <ul>
+{{s8.list}}
+      </ul>
+
+      <h2>{{s9.h}}</h2>
+      {{s9.p}}
+
+      <h2>{{s10.h}}</h2>
+      {{s10.p}}
+
+      <h2>{{s11.h}}</h2>
+      {{s11.p}}
+    </div>
+  </main>
+
+{{>footer.html}}
+</body>
+</html>
