@@ -119,6 +119,18 @@
     .btn-secondary { background: var(--surface); color: var(--ink); border-color: var(--line); }
     .btn-secondary:hover { border-color: var(--ink-2); }
 
+    footer { padding: 28px 0 44px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+    footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; align-items: center; }
+    footer a { color: var(--ink-2); display: inline-block; padding: 10px 0; }
+    footer .credits { flex-basis: 100%; order: 3; font-size: 13px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition-duration: 0ms !important; }
+    }
+    @media (prefers-reduced-transparency: reduce) {
+      header.top { background: var(--surface); -webkit-backdrop-filter: none; backdrop-filter: none; }
+    }
     /* Hero */
     .hero { padding-top: 48px; padding-bottom: 24px; display: grid; gap: 40px; grid-template-columns: 1.1fr 1fr; align-items: center; }
     .badge {
@@ -221,18 +233,6 @@
     .tech .logo { display: block; width: 40px; height: 40px; margin-bottom: 14px; object-fit: contain; }
     .tech .grid { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
 
-    footer { padding: 28px 0 44px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
-    footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; align-items: center; }
-    footer a { color: var(--ink-2); display: inline-block; padding: 10px 0; }
-    footer .credits { flex-basis: 100%; order: 3; font-size: 13px; }
-
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      * { transition-duration: 0ms !important; }
-    }
-    @media (prefers-reduced-transparency: reduce) {
-      header.top { background: var(--surface); -webkit-backdrop-filter: none; backdrop-filter: none; }
-    }
   </style>
 </head>
 <body>
