@@ -1,4 +1,11 @@
 // Landing page strings (`/`, `/en/`).
+//
+// Editing rules, carried over from the single strings module this file replaced:
+//   - verified facts only; a claim nobody can check does not go on the site, and anything not built
+//     yet is labelled as planned rather than described as working;
+//   - values are raw HTML and are interpolated as-is, so markup belongs in them deliberately;
+//   - `a.*` keys are HTML-escaped by `build.mjs` because they land in attributes — never put markup
+//     in one.
 import { MAIL } from './shared.mjs';
 
 export const landing = {

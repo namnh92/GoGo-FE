@@ -38,6 +38,30 @@ const PAGES = [
   },
 ];
 
+/** Enough of HTML's entity set to stop `&#104;ttps://` reading as a local path. */
+function decodeEntities(value) {
+  return value
+    .replace(/&#x([0-9a-f]+);?/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
+    .replace(/&#(\d+);?/g, (_, dec) => String.fromCodePoint(Number(dec)))
+    .replace(/&amp;/gi, '&')
+    .replace(/&sol;/gi, '/')
+    .replace(/&colon;/gi, ':');
+}
+
+/**
+ * One attribute of one tag, by exact name. A regex over the whole tag matched `data-src` for
+ * `src`; this walks the attributes instead, so only the real one answers.
+ */
+function attrValue(tag, name) {
+  const body = tag.replace(/^<\S+/, '').replace(/\/?>$/, '');
+  const re = /([:\w.-]+)(?:\s*=\s*("[^"]*"|'[^']*'|[^\s>]+))?/g;
+  for (const match of body.matchAll(re)) {
+    if (match[1].toLowerCase() !== name.toLowerCase()) continue;
+    return (match[2] ?? '').replace(/^["']|["']$/g, '');
+  }
+  return '';
+}
+
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 // The tour, in flow order. File sizes are fixed by the screenshots in site/img.
@@ -103,52 +127,65 @@ function render(page, code) {
     src
       .replace(/\{\{>([\w.-]+)\}\}/g, (_, name) => fill(partial(name)))
       .replace(/\{\{(@?)([\w.]+)\}\}/g, (_, at, key) => {
+        // `in` would accept anything on Object.prototype: `{{toString}}` rendered the function
+        // source instead of throwing.
         if (at) {
-          if (!(key in special)) throw new Error(`unknown special {{@${key}}}`);
-          return fill(special[key]);
+          if (!Object.hasOwn(special, key)) throw new Error(`unknown special {{@${key}}}`);
+          return fill(String(special[key]));
         }
-        if (!(key in t)) throw new Error(`[${page.id}/${code}] missing string "${key}"`);
+        if (!Object.hasOwn(t, key)) throw new Error(`[${page.id}/${code}] missing string "${key}"`);
         used.add(key);
         return key.startsWith('a.') ? esc(t[key]) : t[key];
       });
 
   const html = fill(readFileSync(join(root, page.template), 'utf8'));
 
-  // Invariant C: no page may *fetch* a script, stylesheet or font from another origin — nor warm
-  // one up with `preconnect`/`dns-prefetch`, which leaks the visitor's address before anything is
-  // requested. The privacy page says this site collects nothing about its visitors (#4); a
-  // third-party resource would make that false, quietly, in a commit about something else.
+  // Anything still looking like a placeholder means a value carried one that the pass above did not
+  // reach — it would otherwise ship to the site as literal `{{…}}` text.
+  const leftover = html.match(/\{\{[^}]{0,80}\}\}/g);
+  if (leftover) throw new Error(`[${page.id}/${code}] unexpanded placeholder(s): ${[...new Set(leftover)].join(', ')}`);
+
+  // Invariant C: no page may *fetch* a script, stylesheet, font or any other subresource from
+  // another origin — nor warm one up with `preconnect`/`dns-prefetch`, which leaks the visitor's
+  // address before anything is requested. The privacy page says this site collects nothing about
+  // its visitors (#4); a third-party resource would make that false, quietly, in a commit about
+  // something else.
   //
   // `canonical` and `alternate` are metadata, not fetches, and must stay absolute. Links in prose
   // are not resources either. So this reads `rel`, rather than any absolute URL in a tag.
   const FETCHING_REL = /^(stylesheet|preconnect|dns-prefetch|preload|modulepreload|prefetch|prerender)$/i;
-  const attr = (tag, name) => tag.match(new RegExp(`\\b${name}\\s*=\\s*("[^"]*"|'[^']*'|[^\\s>]+)`, 'i'))?.[1]?.replace(/^["']|["']$/g, '') ?? '';
-  const isExternal = (url) => /^(?:https?:)?\/\//i.test(url.trim());
+  const isExternal = (url) => /^\s*(?:https?:)?\/\//i.test(decodeEntities(url));
   const offenders = [];
+
   for (const tag of html.match(/<(?:link|script)\b[^>]*>/gi) ?? []) {
     const isLink = /^<link/i.test(tag);
-    const rels = attr(tag, 'rel').split(/\s+/).filter(Boolean);
-    const url = isLink ? attr(tag, 'href') : attr(tag, 'src');
+    // Exact attribute names: `\bsrc` also matched `data-src`, so a tag could advertise a local
+    // value to this check while the browser fetched the external one.
+    const url = isLink ? attrValue(tag, 'href') : attrValue(tag, 'src');
+    const rels = attrValue(tag, 'rel').split(/\s+/).filter(Boolean);
     if (!url || !isExternal(url)) continue;
     if (!isLink || rels.some((rel) => FETCHING_REL.test(rel))) offenders.push(tag.trim());
   }
-  const atImport = html.match(/@import\s+(?:url\()?\s*["']?(?:https?:)?\/\/[^\s;)'"]+/i);
-  if (atImport) offenders.push(atImport[0]);
-  if (offenders.length) {
-    throw new Error(`[${page.id}/${code}] external resource, see Invariant C in build.mjs:\n  ${offenders.join('\n  ')}`);
+
+  // CSS fetches too: an `@font-face { src: url(https://fonts.gstatic.com/…) }` is exactly the
+  // request this invariant exists to stop, and it never appears in a tag.
+  for (const m of html.matchAll(/url\(\s*(["']?)([^)"']+)\1\s*\)/gi)) {
+    if (isExternal(m[2])) offenders.push(m[0].trim());
+  }
+  for (const m of html.matchAll(/@import\s+(?:url\(\s*)?(["']?)([^;)"']+)\1/gi)) {
+    if (isExternal(m[2])) offenders.push(m[0].trim());
   }
 
-  // Invariant A, per page: a string this page defines and never renders is either dead weight or
-  // a key that silently stopped being reachable.
-  const unusedPage = Object.keys(pageStrings).filter((k) => !used.has(k));
-  if (unusedPage.length) throw new Error(`[${page.id}/${code}] unused strings: ${unusedPage.join(', ')}`);
+  if (offenders.length) {
+    throw new Error(`[${page.id}/${code}] external resource, see Invariant C in build.mjs:\n  ${[...new Set(offenders)].join('\n  ')}`);
+  }
 
   return { html, used };
 }
 
 // Invariant B, per strings file: a key present in one locale and not the other is a page that
 // renders in one language and throws in the other.
-for (const [name, table] of [['shared', shared], ['landing', landing]]) {
+for (const [name, table] of [['shared', shared], ...PAGES.map((p) => [`${p.id} (${p.template})`, p.strings])]) {
   const keys = (c) => Object.keys(table[c]).sort().join('\n');
   if (keys('vi') !== keys('en')) {
     const vi = new Set(Object.keys(table.vi));
@@ -170,21 +207,20 @@ for (const page of PAGES) {
 
 const check = process.argv.includes('--check');
 const rendered = [];
-const sharedUse = Object.fromEntries(Object.keys(LOCALES).map((c) => [c, new Set()]));
 
 for (const page of PAGES) {
   for (const code of Object.keys(LOCALES)) {
     const { html, used } = render(page, code);
-    for (const key of used) if (key in shared[code]) sharedUse[code].add(key);
+    // Per page, not pooled across pages: a union would let a second page drop the footer partial
+    // entirely and still pass, because the landing page had already used those keys.
+    const missed = Object.keys(shared[code]).filter((k) => !used.has(k));
+    if (missed.length) {
+      throw new Error(
+        `[${page.id}/${code}] shared strings this page never renders: ${missed.join(', ')} — either the page is missing a shared partial, or those keys belong to the pages that use them`,
+      );
+    }
     rendered.push({ page, code, html, file: outputFile(page.path[code]) });
   }
-}
-
-// A shared string used by only some pages is not shared — it belongs to the pages that use it,
-// or the partial that renders it is not on every page.
-for (const code of Object.keys(LOCALES)) {
-  const unused = Object.keys(shared[code]).filter((k) => !sharedUse[code].has(k));
-  if (unused.length) throw new Error(`shared/${code}: strings not used on every page: ${unused.join(', ')}`);
 }
 
 let stale = 0;
