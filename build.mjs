@@ -114,6 +114,30 @@ function render(page, code) {
 
   const html = fill(readFileSync(join(root, page.template), 'utf8'));
 
+  // Invariant C: no page may *fetch* a script, stylesheet or font from another origin — nor warm
+  // one up with `preconnect`/`dns-prefetch`, which leaks the visitor's address before anything is
+  // requested. The privacy page says this site collects nothing about its visitors (#4); a
+  // third-party resource would make that false, quietly, in a commit about something else.
+  //
+  // `canonical` and `alternate` are metadata, not fetches, and must stay absolute. Links in prose
+  // are not resources either. So this reads `rel`, rather than any absolute URL in a tag.
+  const FETCHING_REL = /^(stylesheet|preconnect|dns-prefetch|preload|modulepreload|prefetch|prerender)$/i;
+  const attr = (tag, name) => tag.match(new RegExp(`\\b${name}\\s*=\\s*("[^"]*"|'[^']*'|[^\\s>]+)`, 'i'))?.[1]?.replace(/^["']|["']$/g, '') ?? '';
+  const isExternal = (url) => /^(?:https?:)?\/\//i.test(url.trim());
+  const offenders = [];
+  for (const tag of html.match(/<(?:link|script)\b[^>]*>/gi) ?? []) {
+    const isLink = /^<link/i.test(tag);
+    const rels = attr(tag, 'rel').split(/\s+/).filter(Boolean);
+    const url = isLink ? attr(tag, 'href') : attr(tag, 'src');
+    if (!url || !isExternal(url)) continue;
+    if (!isLink || rels.some((rel) => FETCHING_REL.test(rel))) offenders.push(tag.trim());
+  }
+  const atImport = html.match(/@import\s+(?:url\()?\s*["']?(?:https?:)?\/\/[^\s;)'"]+/i);
+  if (atImport) offenders.push(atImport[0]);
+  if (offenders.length) {
+    throw new Error(`[${page.id}/${code}] external resource, see Invariant C in build.mjs:\n  ${offenders.join('\n  ')}`);
+  }
+
   // Invariant A, per page: a string this page defines and never renders is either dead weight or
   // a key that silently stopped being reachable.
   const unusedPage = Object.keys(pageStrings).filter((k) => !used.has(k));
