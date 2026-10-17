@@ -1,12 +1,12 @@
   <header class="top">
     <div class="wrap nav">
-      <a class="brand" href="{{@path}}" aria-label="{{a.brandHome}}"><svg class="mark" viewBox="0 0 42 42" fill="none" aria-hidden="true"><circle cx="14" cy="21" r="9" fill="var(--coral)"/><circle cx="28" cy="21" r="9" fill="var(--coral)" opacity="0.6"/><path d="M21 14C17 14 14 17 14 21C14 25 17 28 21 28C25 28 28 25 28 21C28 17 25 14 21 14Z" fill="#FFFFFF"/></svg>GoGo VN</a>
+      <a class="brand" href="{{@link.landing}}" aria-label="{{a.brandHome}}"><svg class="mark" viewBox="0 0 42 42" fill="none" aria-hidden="true"><circle cx="14" cy="21" r="9" fill="var(--coral)"/><circle cx="28" cy="21" r="9" fill="var(--coral)" opacity="0.6"/><path d="M21 14C17 14 14 17 14 21C14 25 17 28 21 28C25 28 28 25 28 21C28 17 25 14 21 14Z" fill="#FFFFFF"/></svg>GoGo VN</a>
       <nav aria-label="{{a.navLabel}}">
         <ul class="links">
-          <li><a href="#demo">{{nav.demo}}</a></li>
-          <li><a href="#how">{{nav.how}}</a></li>
-          <li><a href="#stage">{{nav.stage}}</a></li>
-          <li><a href="#contact">{{nav.contact}}</a></li>
+          <li><a href="{{@link.landing}}#demo">{{nav.demo}}</a></li>
+          <li><a href="{{@link.landing}}#how">{{nav.how}}</a></li>
+          <li><a href="{{@link.landing}}#stage">{{nav.stage}}</a></li>
+          <li><a href="{{@link.landing}}#contact">{{nav.contact}}</a></li>
         </ul>
       </nav>
       <div class="lang" role="group" aria-label="{{a.langLabel}}">{{@langSwitch}}</div>

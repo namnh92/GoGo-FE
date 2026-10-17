@@ -10,6 +10,8 @@ import { MAIL } from './shared.mjs';
 
 export const landing = {
   vi: {
+      // The photo credit the licences require, kept with the page that shows the photos.
+      'foot.credits': 'Ảnh địa điểm trong ảnh chụp app: <a href="https://commons.wikimedia.org/wiki/File:Tr%C3%A0ng_Ti%E1%BB%81n_Plaza_-_2022-09-02_01.jpg">Tràng Tiền Plaza</a> — The Hanoian, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>; <a href="https://commons.wikimedia.org/wiki/File:Vietnamese_Women%27s_Museum_Building.JPG">Bảo tàng Phụ nữ Việt Nam</a> — Aumusee, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>; Wikimedia Commons',
       'a.title': 'GoGo — Cùng nhau chọn chỗ đi chơi',
       'a.desc': 'Ứng dụng giúp cặp đôi và nhóm bạn cùng chọn địa điểm, bình chọn và nhận một lịch trình chung cho buổi đi chơi. Dự án startup Việt Nam, MVP đang kiểm thử.',
       'a.ogDesc': 'Mỗi người tự chọn, cả nhóm bình chọn, nhận một lịch trình chung vừa ngân sách. MVP đang kiểm thử.',
@@ -98,6 +100,8 @@ export const landing = {
 
   },
   en: {
+      // The photo credit the licences require, kept with the page that shows the photos.
+      'foot.credits': 'Place photos in the app screenshots: <a href="https://commons.wikimedia.org/wiki/File:Tr%C3%A0ng_Ti%E1%BB%81n_Plaza_-_2022-09-02_01.jpg">Tràng Tiền Plaza</a> — The Hanoian, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>; <a href="https://commons.wikimedia.org/wiki/File:Vietnamese_Women%27s_Museum_Building.JPG">Bảo tàng Phụ nữ Việt Nam</a> — Aumusee, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>; Wikimedia Commons',
       'a.title': 'GoGo — Decide where to go, together',
       'a.desc': 'An app that helps couples and friend groups pick a place together, vote, and get one shared itinerary for the outing. A Vietnamese startup project with its MVP in testing.',
       'a.ogDesc': 'Everyone picks, the group votes, and you get one shared itinerary that fits the budget. MVP in testing.',
