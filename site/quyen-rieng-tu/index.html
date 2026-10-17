@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chính sách quyền riêng tư — GoGo</title>
+  <meta name="description" content="GoGo nhận dữ liệu nào, vì sao, ai nhận được nó, giữ bao lâu, và bạn làm gì để lấy lại hoặc xoá đi.">
+  <link rel="canonical" href="https://gogo.id.vn/quyen-rieng-tu/">
+  <link rel="alternate" hreflang="vi" href="https://gogo.id.vn/quyen-rieng-tu/">
+  <link rel="alternate" hreflang="en" href="https://gogo.id.vn/en/privacy/">
+  <link rel="alternate" hreflang="x-default" href="https://gogo.id.vn/quyen-rieng-tu/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GoGo VN">
+  <meta property="og:title" content="Chính sách quyền riêng tư — GoGo">
+  <meta property="og:description" content="GoGo nhận dữ liệu nào, vì sao, ai nhận được nó, giữ bao lâu, và quyền của bạn.">
+  <meta property="og:url" content="https://gogo.id.vn/quyen-rieng-tu/">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:image" content="https://gogo.id.vn/icon-512.png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#F6F3EE">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <style>
+    /* Be Vietnam Pro, served from this origin. Google Fonts was dropped in #4: opening any page
+       here sent the visitor's IP and User-Agent to Google's font hosts, which is a claim the
+       privacy page would then have had to make about itself. Sources and
+       sha256 per file are in README.md; the licence travels with the files (fonts/OFL.txt).
+       `build.mjs` refuses to emit a page that references any external script or stylesheet. */
+    /* vietnamese */
+    @font-face {
+      font-family: 'Be Vietnam Pro';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url(/fonts/be-vietnam-pro-400-vietnamese.woff2) format('woff2');
+      unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+    }
+    /* latin-ext */
+    @font-face {
+      font-family: 'Be Vietnam Pro';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url(/fonts/be-vietnam-pro-400-latin-ext.woff2) format('woff2');
+      unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    }
+    /* latin */
+    @font-face {
+      font-family: 'Be Vietnam Pro';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url(/fonts/be-vietnam-pro-400-latin.woff2) format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+    /* vietnamese */
+    @font-face {
+      font-family: 'Be Vietnam Pro';
+      font-style: normal;
+      font-weight: 500;
+      font-display: swap;
+      src: url(/fonts/be-vietnam-pro-500-vietnamese.woff2) format('woff2');
+      unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+    }
+    /* latin-ext */
+    @font-face {
+      font-family: 'Be Vietnam Pro';
+      font-style: normal;
+      font-weight: 500;
+      font-display: swap;
+      src: url(/fonts/be-vietnam-pro-500-latin-ext.woff2) format('woff2');
+      unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    }
+    /* latin */
+    @font-face {
+      font-family: 'Be Vietnam Pro';
+      font-style: normal;
+      font-weight: 500;
+      font-display: swap;
+      src: url(/fonts/be-vietnam-pro-500-latin.woff2) format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+    /* vietnamese */
+    @font-face {
+      font-family: 'Be Vietnam Pro';
+      font-style: normal;
+      font-weight: 600;
+      font-display: swap;
+      src: url(/fonts/be-vietnam-pro-600-vietnamese.woff2) format('woff2');
+      unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+    }
+    /* latin-ext */
+    @font-face {
+      font-family: 'Be Vietnam Pro';
+      font-style: normal;
+      font-weight: 600;
+      font-display: swap;
+      src: url(/fonts/be-vietnam-pro-600-latin-ext.woff2) format('woff2');
+      unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    }
+    /* latin */
+    @font-face {
+      font-family: 'Be Vietnam Pro';
+      font-style: normal;
+      font-weight: 600;
+      font-display: swap;
+      src: url(/fonts/be-vietnam-pro-600-latin.woff2) format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+    /* vietnamese */
+    @font-face {
+      font-family: 'Be Vietnam Pro';
+      font-style: normal;
+      font-weight: 700;
+      font-display: swap;
+      src: url(/fonts/be-vietnam-pro-700-vietnamese.woff2) format('woff2');
+      unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+    }
+    /* latin-ext */
+    @font-face {
+      font-family: 'Be Vietnam Pro';
+      font-style: normal;
+      font-weight: 700;
+      font-display: swap;
+      src: url(/fonts/be-vietnam-pro-700-latin-ext.woff2) format('woff2');
+      unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    }
+    /* latin */
+    @font-face {
+      font-family: 'Be Vietnam Pro';
+      font-style: normal;
+      font-weight: 700;
+      font-display: swap;
+      src: url(/fonts/be-vietnam-pro-700-latin.woff2) format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+    /* vietnamese */
+    @font-face {
+      font-family: 'Be Vietnam Pro';
+      font-style: normal;
+      font-weight: 800;
+      font-display: swap;
+      src: url(/fonts/be-vietnam-pro-800-vietnamese.woff2) format('woff2');
+      unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+    }
+    /* latin-ext */
+    @font-face {
+      font-family: 'Be Vietnam Pro';
+      font-style: normal;
+      font-weight: 800;
+      font-display: swap;
+      src: url(/fonts/be-vietnam-pro-800-latin-ext.woff2) format('woff2');
+      unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    }
+    /* latin */
+    @font-face {
+      font-family: 'Be Vietnam Pro';
+      font-style: normal;
+      font-weight: 800;
+      font-display: swap;
+      src: url(/fonts/be-vietnam-pro-800-latin.woff2) format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+
+    :root {
+      --coral: #D84F4A;
+      --coral-ink: #B93E48;
+      --coral-deep: #9E333D;
+      --coral-soft: #FFD8D4;
+      --lavender: #7667E8;
+      --lavender-ink: #5B4DD1;
+      --lavender-soft: #E5E0FF;
+      --mint: #4FAF86;
+      --mint-ink: #2F7D5C;
+      --mint-soft: #D9F3E7;
+      --amber-soft: #FCEBCB;
+      --ivory: #F6F3EE;
+      --surface: #FFFFFF;
+      --line: #ECE8E1;
+      --ink: #211F1C;
+      --ink-2: #4A4641;
+      --muted: #6A645E;
+      --glass: rgba(255, 255, 255, 0.72);
+      --glass-line: rgba(255, 255, 255, 0.9);
+      --shadow: 0 10px 30px rgba(33, 31, 28, 0.08);
+      --shadow-phone: 0 30px 60px -18px rgba(33, 31, 28, 0.45), 0 12px 24px -12px rgba(33, 31, 28, 0.25);
+      --bezel: #2A2825;
+      --bezel-edge: #4A4641;
+      --bezel-hi: rgba(255, 255, 255, 0.28);
+      --panel: linear-gradient(160deg, #7667E8 0%, #9A6BD6 48%, #D84F4A 100%);
+      --radius: 20px;
+      --motion: 240ms;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 80px; }
+    body {
+      margin: 0; background: var(--ivory); color: var(--ink);
+      font-family: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      font-size: 16px; line-height: 1.6; overflow-x: hidden;
+    }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+    a { color: inherit; }
+    a:not(.btn):not(.brand) { text-underline-offset: 3px; }
+    :focus-visible { outline: 3px solid var(--lavender-ink); outline-offset: 3px; border-radius: 6px; }
+    .skip {
+      position: absolute; left: 16px; top: -60px; z-index: 50; padding: 10px 16px; border-radius: 10px;
+      background: var(--ink); color: #fff; font-weight: 700; text-decoration: none;
+    }
+    .skip:focus { top: 12px; }
+
+    /* Background accents — solid soft shapes, no full-screen blur. */
+    .bg { position: absolute; inset: 0 0 auto 0; height: 900px; overflow: hidden; z-index: -1; pointer-events: none; }
+    .blob { position: absolute; border-radius: 50%; opacity: .7; }
+    .blob.c { width: 480px; height: 480px; background: var(--coral-soft); top: -160px; right: -140px; }
+    .blob.l { width: 380px; height: 380px; background: var(--lavender-soft); top: 260px; left: -180px; }
+    .blob.a { width: 240px; height: 240px; background: var(--amber-soft); top: 520px; right: 22%; opacity: .55; }
+
+    /* Header */
+    header.top {
+      position: sticky; top: 0; z-index: 20;
+      background: var(--glass); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--glass-line);
+    }
+    @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+      header.top { background: var(--surface); }
+    }
+    .nav { display: flex; align-items: center; gap: 12px; min-height: 64px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; font-size: 22px; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; margin-right: auto; }
+    .mark { width: 40px; height: 40px; display: block; flex: none; }
+    .links { display: flex; gap: 4px; margin: 0; padding: 0; list-style: none; }
+    .links a {
+      display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px;
+      font-size: 15px; font-weight: 500; color: var(--ink-2); text-decoration: none; border-radius: 10px;
+    }
+    .links a:hover { color: var(--ink); background: var(--surface); }
+    .lang { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); padding: 3px; }
+    .lang a {
+      display: inline-grid; place-items: center; min-width: 44px; min-height: 38px; border-radius: 999px;
+      font-size: 13px; font-weight: 700; color: var(--muted); text-decoration: none;
+    }
+    .lang a[aria-current="page"] { background: var(--ink); color: #fff; }
+    @media (max-width: 820px) { .links { display: none; } }
+
+    /* Buttons — filled CTA on coral-ink for AA with white text. */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 48px; padding: 0 22px; border-radius: 14px; border: 1px solid transparent;
+      font: inherit; font-weight: 700; font-size: 16px; text-decoration: none; cursor: pointer;
+      transition: transform var(--motion), background var(--motion), border-color var(--motion);
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary { background: var(--coral-ink); color: #fff; }
+    .btn-primary:hover { background: var(--coral-deep); }
+    .btn-secondary { background: var(--surface); color: var(--ink); border-color: var(--line); }
+    .btn-secondary:hover { border-color: var(--ink-2); }
+
+    footer { padding: 28px 0 44px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+    footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; align-items: center; }
+    footer a { color: var(--ink-2); display: inline-block; padding: 10px 0; }
+    footer .credits { flex-basis: 100%; order: 3; font-size: 13px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition-duration: 0ms !important; }
+    }
+    @media (prefers-reduced-transparency: reduce) {
+      header.top { background: var(--surface); -webkit-backdrop-filter: none; backdrop-filter: none; }
+    }
+    /* Legal pages: one column of prose, nothing interactive. The landing page's own styles stay
+       out of here, so a policy page is 6 KB of CSS rather than 28. */
+    .legal { padding: 40px 0 56px; }
+    .legal .wrap { max-width: 760px; }
+    .legal h1 { margin: 0 0 12px; font-size: clamp(28px, 4.5vw, 40px); line-height: 1.15; letter-spacing: -0.02em; font-weight: 800; }
+    .legal .lead { margin: 0 0 8px; color: var(--ink-2); font-size: 17px; }
+    .legal .meta { margin: 0 0 28px; color: var(--muted); font-size: 14px; }
+    .legal h2 { margin: 32px 0 8px; font-size: 20px; line-height: 1.3; font-weight: 700; }
+    .legal h3 { margin: 20px 0 6px; font-size: 16px; font-weight: 700; }
+    .legal p, .legal li { color: var(--ink-2); font-size: 16px; line-height: 1.65; }
+    .legal p { margin: 0 0 12px; }
+    .legal ul { margin: 0 0 12px; padding-left: 22px; }
+    .legal li { margin: 0 0 6px; }
+    .legal a { color: var(--coral-ink); font-weight: 600; }
+    .legal .box { margin: 16px 0 20px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
+    .legal .box p:last-child { margin: 0; }
+    .legal table { width: 100%; border-collapse: collapse; margin: 0 0 16px; font-size: 15px; }
+    .legal th, .legal td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); color: var(--ink-2); }
+    .legal th { color: var(--ink); font-weight: 700; font-size: 14px; }
+    .legal td:first-child { color: var(--ink); font-weight: 600; }
+    .legal .btn-mail { margin: 4px 0 8px; }
+    @media (max-width: 600px) {
+      .legal table, .legal thead, .legal tbody, .legal tr, .legal th, .legal td { display: block; }
+      .legal thead { display: none; }
+      .legal tr { padding: 10px 0; border-bottom: 1px solid var(--line); }
+      .legal th, .legal td { border: 0; padding: 2px 0; }
+      .legal td:first-child { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Bỏ qua, tới nội dung chính</a>
+  <header class="top">
+    <div class="wrap nav">
+      <a class="brand" href="/" aria-label="GoGo VN — trang chủ"><svg class="mark" viewBox="0 0 42 42" fill="none" aria-hidden="true"><circle cx="14" cy="21" r="9" fill="var(--coral)"/><circle cx="28" cy="21" r="9" fill="var(--coral)" opacity="0.6"/><path d="M21 14C17 14 14 17 14 21C14 25 17 28 21 28C25 28 28 25 28 21C28 17 25 14 21 14Z" fill="#FFFFFF"/></svg>GoGo VN</a>
+      <nav aria-label="Điều hướng chính">
+        <ul class="links">
+          <li><a href="/#demo">Sản phẩm</a></li>
+          <li><a href="/#how">Cách hoạt động</a></li>
+          <li><a href="/#stage">Tiến độ</a></li>
+          <li><a href="/#contact">Liên hệ</a></li>
+        </ul>
+      </nav>
+      <div class="lang" role="group" aria-label="Ngôn ngữ"><a href="/quyen-rieng-tu/" hreflang="vi" lang="vi" aria-current="page">VI</a><a href="/en/privacy/" hreflang="en" lang="en">EN</a></div>
+    </div>
+  </header>
+
+  <main id="main" class="legal">
+    <div class="wrap">
+      <h1>Chính sách quyền riêng tư của GoGo</h1>
+      <p class="lead">Áp dụng cho ứng dụng GoGo trên iOS và Android, và cho trang gogo.id.vn.</p>
+      <p class="meta">Hiệu lực từ ⟦legal.effectiveDate⟧ · <a href="/en/privacy/" hreflang="en" lang="en">English →</a></p>
+
+      <h2>1. Ai chịu trách nhiệm</h2>
+      <p>GoGo là một dự án cá nhân, chưa có pháp nhân. Người chịu trách nhiệm về dữ liệu của bạn là ⟦legal.ownerName⟧. Mọi câu hỏi về quyền riêng tư gửi tới <a href="mailto:namnh@gogo.id.vn">namnh@gogo.id.vn</a>.</p>
+
+      <h2>2. Dữ liệu GoGo nhận từ bạn và từ ứng dụng</h2>
+      <p>Danh sách này là đầy đủ: nó được dựng từ bảng dữ liệu của chính ứng dụng, nơi mỗi dòng dẫn tới đoạn mã gửi dữ liệu đó đi.</p>
+      <table>
+        <thead><tr><th>Dữ liệu</th><th>Dùng để làm gì</th><th>Bắt buộc?</th></tr></thead>
+        <tbody>
+          <tr><td>Email và mật khẩu</td><td>Tạo và đăng nhập tài khoản</td><td>Bắt buộc khi đăng ký</td></tr>
+          <tr><td>Tên hiển thị</td><td>Hiện tên bạn trong phòng</td><td>Bắt buộc khi đăng ký và khi vào phòng với tư cách khách</td></tr>
+          <tr><td>Ngày sinh, ảnh đại diện</td><td>Hồ sơ của bạn</td><td>Tuỳ chọn</td></tr>
+          <tr><td>Nội dung phòng: tên, ngày giờ, ngân sách và chế độ chia, khu vực, thành viên, lời mời</td><td>Chức năng cốt lõi: chốt chỗ đi chơi cùng nhóm</td><td>Bắt buộc theo luồng</td></tr>
+          <tr><td>Sở thích đã chọn, lượt vuốt, lượt bỏ phiếu, thay đổi lịch trình</td><td>Ghép lựa chọn của nhóm và dựng lịch trình</td><td>Bắt buộc theo luồng</td></tr>
+          <tr><td>Mục đã lưu, cài đặt thông báo</td><td>Danh sách đã lưu; tôn trọng lựa chọn nhận thông báo</td><td>Tuỳ chọn</td></tr>
+          <tr><td>Vị trí chính xác — chỉ khi bạn chọn “dùng vị trí của tôi”</td><td>Gợi ý địa điểm gần bạn; được lưu trên phòng làm điểm xuất phát của lịch trình</td><td>Tuỳ chọn — bạn có thể tự chọn khu vực thay vì cấp quyền</td></tr>
+          <tr><td>Từ khoá bạn tìm địa điểm</td><td>Tìm kiếm</td><td>Tuỳ chọn</td></tr>
+          <tr><td>Ảnh check-in (tối đa 3) và ảnh hoá đơn; số tiền hoá đơn và số người; điểm, ghi chú, tag</td><td>Nhật ký buổi đi chơi và chia tiền</td><td>Tuỳ chọn</td></tr>
+          <tr><td>Đánh giá địa điểm: điểm và nội dung chữ</td><td>Hiện cho người dùng khác sau khi kiểm duyệt</td><td>Tuỳ chọn</td></tr>
+          <tr><td>Đề xuất địa điểm: link Google Maps bạn dán, ghi chú, phân loại, mood, khoảng giá</td><td>Thêm địa điểm mới vào GoGo, sau kiểm duyệt</td><td>Tuỳ chọn</td></tr>
+          <tr><td>Mã đăng ký thông báo của thiết bị và id người dùng gửi cho OneSignal</td><td>Gửi thông báo đúng người</td><td>Tuỳ chọn, theo quyền thông báo</td></tr>
+          <tr><td>Báo lỗi và sự cố: ngữ cảnh lỗi, id người dùng khi đã đăng nhập, id bản cài khi chưa</td><td>Sửa lỗi và đo tỉ lệ phiên không sự cố</td><td>Bắt buộc theo bản build</td></tr>
+        </tbody>
+      </table>
+      <p>GoGo <strong>không</strong> gửi đi: danh bạ, lịch, tin nhắn, dữ liệu sức khoẻ, thông tin thanh toán, mật khẩu của dịch vụ khác, và không đọc vị trí khi ứng dụng chạy nền.</p>
+      <p>Khi bạn bấm “Chỉ đường”, ứng dụng mở Google Maps kèm địa chỉ điểm đến. Bạn tự bấm, GoGo không gửi gì thêm — nhưng Google nhận địa chỉ đó qua trình duyệt hoặc ứng dụng Maps của bạn.</p>
+
+      <h2>3. Dữ liệu các SDK trong ứng dụng tự thu</h2>
+      <p>Bốn thư viện của bên khác chạy trong ứng dụng và tự thu dữ liệu, dù GoGo không viết dòng nào để gửi:</p>
+      <ul>
+        <li><strong>OneSignal</strong> (thông báo đẩy) — theo tài liệu của họ: hệ điều hành, ngôn ngữ, múi giờ, quốc gia, phiên bản ứng dụng, model thiết bị, tên gói, nhà mạng, địa chỉ IP, mã thông báo đẩy, cùng dữ liệu phiên và trạng thái quyền thông báo. GoGo <strong>không</strong> bật tính năng vị trí của OneSignal.</li>
+        <li><strong>Tenjin</strong> (đo nguồn cài đặt) — theo tài liệu của họ: định danh thiết bị, địa chỉ IP, loại và model máy, ngôn ngữ, quốc gia, nền tảng và phiên bản hệ điều hành, tên gói, phiên bản SDK và ứng dụng. Trên Android, bản build khai quyền đọc mã quảng cáo và kèm App Set ID cùng Install Referrer của Play. Trên iOS <strong>không có màn hỏi theo dõi</strong>, nên Tenjin không nhận được mã quảng cáo của Apple; chỉ còn định danh theo nhà phát triển và địa chỉ IP.</li>
+        <li><strong>Sentry</strong> (báo lỗi) — ngữ cảnh thiết bị, hệ điều hành và ứng dụng do SDK gắn sẵn. Dự án được cấu hình để <strong>không lưu địa chỉ IP</strong> và không lưu vị trí suy ra từ IP. Không có theo dõi hiệu năng, không ghi lại phiên, không chụp màn hình.</li>
+        <li><strong>SDK Google Maps</strong> (bản đồ trong ứng dụng, dùng trên cả iOS và Android) — Google nhận khoá API, thông tin thiết bị và ứng dụng, địa chỉ IP, vùng bản đồ được yêu cầu và toạ độ các điểm được ghim, tức là những địa điểm trong kế hoạch của bạn. Ứng dụng tắt phần SDK đọc vị trí thiết bị.</li>
+      </ul>
+
+      <h2>4. Quyền ứng dụng xin trên máy bạn</h2>
+      <ul>
+        <li><strong>Vị trí khi đang dùng ứng dụng</strong> — để gợi ý địa điểm gần bạn. Tuỳ chọn: bạn có thể tự chọn khu vực.</li>
+        <li><strong>Thư viện ảnh</strong> — để thêm ảnh đại diện và ảnh check-in.</li>
+        <li><strong>Thông báo</strong> — để báo khi có người vào phòng, có kết quả bình chọn, hoặc tới giờ đi.</li>
+      </ul>
+      <p>Ứng dụng <strong>không</strong> xin: vị trí khi chạy nền, camera, danh bạ, lịch, micro.</p>
+
+      <h2>5. Ai nhận dữ liệu của bạn</h2>
+      <ul>
+        <li><strong>Máy chủ GoGo</strong> (<code>api-*.gogo.id.vn</code>) — nơi tài khoản, phòng, lịch trình và nội dung bạn tạo được lưu.</li>
+        <li><strong>OneSignal</strong> — gửi thông báo đẩy thay GoGo.</li>
+        <li><strong>Tenjin</strong> — đo xem bản cài đặt đến từ đâu. GoGo khai Tenjin là <strong>bên thứ ba nhận dữ liệu được chia sẻ</strong>, không phải bên chỉ xử lý thay GoGo: họ nhận định danh thiết bị và sự kiện cài đặt, mở ứng dụng.</li>
+        <li><strong>Sentry</strong> — nhận báo lỗi và dữ liệu phiên để GoGo sửa lỗi.</li>
+        <li><strong>Google Maps Platform</strong> — vẽ bản đồ trong ứng dụng, và tính thời gian di chuyển: máy chủ GoGo gửi điểm xuất phát bạn chọn cùng toạ độ các điểm dừng cho Google.</li>
+      </ul>
+      <p>Hạ tầng chạy GoGo cũng xử lý dữ liệu thay GoGo: cơ sở dữ liệu PostgreSQL tại Neon, bộ đệm Redis tại Upstash, ảnh và tệp tại Cloudflare R2, và Cloudflare cho mạng biên. Khoá bí mật nằm ở AWS SSM và không chứa dữ liệu cá nhân.</p>
+
+      <h2>6. Giữ bao lâu</h2>
+      <ul>
+        <li>Dữ liệu tài khoản: trong thời gian tài khoản còn tồn tại, sau đó theo mục 8.</li>
+        <li><strong>Toạ độ chính xác của điểm xuất phát: xoá 30 ngày sau khi phòng kết thúc.</strong> Địa chỉ bạn tự nhập thì giữ lại.</li>
+        <li>Chữ bạn nhập khi tìm kiếm: 90 ngày (chỉ còn số lượt, không còn chữ).</li>
+        <li>Bản ghi lần đăng nhập: 30 ngày.</li>
+        <li>Phiên của khách chưa đăng ký: 7 ngày sau khi hết hạn thì bị thu hồi và ẩn danh.</li>
+        <li>Tệp dữ liệu bạn yêu cầu xuất: tự xoá 24 giờ sau khi sẵn sàng, và chỉ tải được một lần.</li>
+        <li>Hồ sơ một yêu cầu về quyền riêng tư: ⟦legal.ledgerRetentionMonths⟧ tháng sau khi đóng, làm bằng chứng đã xử lý.</li>
+        <li>Các mốc trên do một tác vụ chạy mỗi ngày thực hiện.</li>
+      </ul>
+
+      <h2>7. Bảo mật</h2>
+      <p>Mật khẩu không được lưu dưới dạng đọc lại được: GoGo lưu bản băm Argon2id. Phiên đăng nhập trên máy bạn nằm trong Keychain của iOS hoặc Keystore của Android.</p>
+
+      <h2>8. Quyền của bạn</h2>
+      <ul>
+        <li><strong>Xuất dữ liệu</strong> — trong ứng dụng: Cá nhân → ⚙️ Tài khoản → Dữ liệu của bạn → Xuất dữ liệu (tối đa 3 lần mỗi giờ). Tệp chỉ tải được từ phiên của chính bạn, nên GoGo không gửi nó qua email.</li>
+        <li><strong>Xoá tài khoản</strong> — trong ứng dụng: Cá nhân → ⚙️ Tài khoản → Xoá tài khoản. Không mở được ứng dụng thì xem <a href="/xoa-du-lieu/">trang xoá dữ liệu</a>.</li>
+        <li><strong>Sửa dữ liệu</strong> — sửa hồ sơ trong ứng dụng; các trường tuỳ chọn có thể để trống.</li>
+        <li><strong>Rút lại cho phép</strong> — quyền vị trí, ảnh và thông báo tắt được trong cài đặt hệ điều hành; công tắc thông báo cũng có trong ứng dụng.</li>
+        <li><strong>Hỏi chuyện khác</strong> — gửi <a href="mailto:namnh@gogo.id.vn">namnh@gogo.id.vn</a>; yêu cầu được ghi vào hồ sơ như mục 6 nói.</li>
+      </ul>
+
+      <h2>9. Trang web này</h2>
+      <p>gogo.id.vn là trang tĩnh chạy trên Cloudflare Workers. Trang <strong>không đặt cookie, không có analytics, không có script theo dõi, và không nạp gì từ máy chủ của bên khác</strong> — phông chữ được phục vụ từ chính tên miền này. Trang chủ bản tiếng Việt có một đoạn script nhỏ nằm ngay trong trang, chỉ đọc địa chỉ URL để chuyển các link <code>?lang=en</code> cũ sang bản tiếng Anh. Cloudflare xử lý địa chỉ IP và thông tin yêu cầu để phục vụ và bảo vệ trang, và có thể đặt một cookie kỹ thuật khi hiển thị bước kiểm tra bảo mật.</p>
+
+      <h2>10. Khi chính sách thay đổi</h2>
+      <p>Bản mới được đăng tại chính địa chỉ này kèm ngày hiệu lực mới. GoGo chưa có cơ chế thông báo trong ứng dụng hay qua email, nên không hứa điều đó. Toàn bộ lịch sử sửa đổi là công khai: <a href="https://github.com/namnh92/GoGo-FE/commits/master/src/strings/privacy.mjs">lịch sử trang này trên GitHub</a>.</p>
+
+      <h2>11. Liên hệ</h2>
+      <p>Email: <a href="mailto:namnh@gogo.id.vn">namnh@gogo.id.vn</a>.</p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>© 2026 GoGo VN · Dự án startup Việt Nam · chưa có pháp nhân</span>
+      <span class="credits"></span>
+      <span>Hỗ trợ: <a href="mailto:namnh@gogo.id.vn">namnh@gogo.id.vn</a> · <a href="/quyen-rieng-tu/">Quyền riêng tư</a> · <a href="/xoa-du-lieu/">Xoá dữ liệu</a> · <a href="/en/privacy/" hreflang="en" lang="en">English version</a></span>
+    </div>
+  </footer>
+</body>
+</html>

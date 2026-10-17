@@ -1,0 +1,28 @@
+    /* Legal pages: one column of prose, nothing interactive. The landing page's own styles stay
+       out of here, so a policy page is 6 KB of CSS rather than 28. */
+    .legal { padding: 40px 0 56px; }
+    .legal .wrap { max-width: 760px; }
+    .legal h1 { margin: 0 0 12px; font-size: clamp(28px, 4.5vw, 40px); line-height: 1.15; letter-spacing: -0.02em; font-weight: 800; }
+    .legal .lead { margin: 0 0 8px; color: var(--ink-2); font-size: 17px; }
+    .legal .meta { margin: 0 0 28px; color: var(--muted); font-size: 14px; }
+    .legal h2 { margin: 32px 0 8px; font-size: 20px; line-height: 1.3; font-weight: 700; }
+    .legal h3 { margin: 20px 0 6px; font-size: 16px; font-weight: 700; }
+    .legal p, .legal li { color: var(--ink-2); font-size: 16px; line-height: 1.65; }
+    .legal p { margin: 0 0 12px; }
+    .legal ul { margin: 0 0 12px; padding-left: 22px; }
+    .legal li { margin: 0 0 6px; }
+    .legal a { color: var(--coral-ink); font-weight: 600; }
+    .legal .box { margin: 16px 0 20px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
+    .legal .box p:last-child { margin: 0; }
+    .legal table { width: 100%; border-collapse: collapse; margin: 0 0 16px; font-size: 15px; }
+    .legal th, .legal td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); color: var(--ink-2); }
+    .legal th { color: var(--ink); font-weight: 700; font-size: 14px; }
+    .legal td:first-child { color: var(--ink); font-weight: 600; }
+    .legal .btn-mail { margin: 4px 0 8px; }
+    @media (max-width: 600px) {
+      .legal table, .legal thead, .legal tbody, .legal tr, .legal th, .legal td { display: block; }
+      .legal thead { display: none; }
+      .legal tr { padding: 10px 0; border-bottom: 1px solid var(--line); }
+      .legal th, .legal td { border: 0; padding: 2px 0; }
+      .legal td:first-child { font-size: 16px; }
+    }
