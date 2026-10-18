@@ -49,7 +49,7 @@ export const deleteData = {
     's4.removedH': 'Bị xoá',
     's4.removed': '<ul><li>đường đăng nhập: email và mật khẩu;</li><li>mọi phiên đăng nhập và mọi đăng ký nhận thông báo của thiết bị;</li><li>tên hiển thị, ảnh đại diện, khu vực mặc định, ngân sách thường dùng, ngày sinh, sở thích;</li><li>mục đã lưu, thông báo và cài đặt thông báo;</li><li>tên bạn trên các phòng từng tham gia được thay bằng một nhãn ẩn danh.</li></ul>',
     's4.keptH': 'Còn lại, có chủ ý',
-    's4.kept': '<ul><li>một bản ghi kỹ thuật của tài khoản (chỉ còn id), để các liên kết dữ liệu không vỡ và id không bị cấp lại cho người khác;</li><li>đánh giá bạn đã viết;</li><li>ảnh bạn đã góp cho địa điểm.</li></ul><p>Hai thứ cuối là nội dung bạn đã góp cho người khác đọc, nên chúng ở lại — nhưng không còn hiện tên bạn.</p>',
+    's4.kept': '<ul><li>một bản ghi kỹ thuật của tài khoản và id của nó, để các liên kết dữ liệu không vỡ và id không bị cấp lại cho người khác;</li><li>đánh giá bạn đã viết;</li><li>ảnh bạn đã góp cho địa điểm.</li></ul><p>Hai thứ cuối là nội dung bạn đã góp cho người khác đọc, nên chúng ở lại — nhưng không còn hiện tên bạn.</p>',
     // ADR-0023 amendment: thu hồi tệp export đang chờ.
     's4.irreversible': '<p>Việc xoá <strong>không thể hoàn tác</strong>. Nếu bạn vừa yêu cầu xuất dữ liệu mà chưa tải, tệp đó cũng bị thu hồi.</p>',
 
@@ -103,7 +103,7 @@ export const deleteData = {
     's4.removedH': 'Removed',
     's4.removed': '<ul><li>the way in: your email address and password;</li><li>every session and every device push registration;</li><li>display name, avatar, home area, usual budget, date of birth, interests;</li><li>saved items, notifications and notification settings;</li><li>your name on rooms you took part in, replaced by a fixed anonymous label.</li></ul>',
     's4.keptH': 'Kept, deliberately',
-    's4.kept': '<ul><li>a technical record of the account (its id only), so data links do not break and the id is never reissued to someone else;</li><li>reviews you wrote;</li><li>photos you contributed to places.</li></ul><p>The last two are content you contributed for other people to read, so they stay — without your name on them.</p>',
+    's4.kept': '<ul><li>the technical account record and its id, so data links do not break and the id is never reissued to someone else;</li><li>reviews you wrote;</li><li>photos you contributed to places.</li></ul><p>The last two are content you contributed for other people to read, so they stay — without your name on them.</p>',
     's4.irreversible': '<p>Deletion <strong>cannot be undone</strong>. If you asked for a data export and have not downloaded it, that file is revoked too.</p>',
 
     's5.h': '5. Data already held by providers',
@@ -119,7 +119,7 @@ export const deleteData = {
     's8.p': '<p>A guest has no account. A guest session is revoked and anonymized automatically 7 days after it expires, so there is nothing to request.</p>',
 
     's9.h': '9. If you want your data before deleting',
-    's9.p': '<p>Exporting is only possible <strong>in the app</strong>: Profile → ⚙️ Account → Your data → Export data. The file can only be downloaded from your own session and GoGo does not email it — which is why this page only takes deletion requests.</p>',
+    's9.p': '<p>Exporting is only possible <strong>in the app</strong>: Profile → ⚙️ Account → Your data → Export my data. The file can only be downloaded from your own session and GoGo does not email it — which is why this page only takes deletion requests.</p>',
 
     's10.p': `<p>See also: <a href="{{@link.privacy}}">the privacy policy</a>. Anything else: <a href="${MAILTO}">{{@mail}}</a>.</p>`,
   },

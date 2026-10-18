@@ -62,9 +62,13 @@ export const privacy = {
       // D23
       '          <tr><td>Đề xuất địa điểm: link Google Maps bạn dán, ghi chú, phân loại, mood, khoảng giá</td><td>Thêm địa điểm mới vào GoGo, sau kiểm duyệt</td><td>Tuỳ chọn</td></tr>',
       // D12, D13
-      '          <tr><td>Mã đăng ký thông báo của thiết bị và id người dùng gửi cho OneSignal</td><td>Gửi thông báo đúng người</td><td>Tuỳ chọn, theo quyền thông báo</td></tr>',
+      // D12 (mã đăng ký + nền tảng → máy chủ GoGo) và D13 (id người dùng + token ES256 → OneSignal)
+      // là hai đích khác nhau; gộp vào một dòng "gửi cho OneSignal" là khai sai bên nhận.
+      '          <tr><td>Mã đăng ký push và nền tảng gửi cho máy chủ GoGo; id người dùng và token ES256 ngắn hạn gửi cho OneSignal</td><td>Gửi thông báo đúng người</td><td>Tuỳ chọn, theo quyền thông báo</td></tr>',
+      // D14
+      '          <tr><td>Sự kiện cài đặt và mở ứng dụng, cùng tham số attribution, gửi cho Tenjin</td><td>Đo nguồn cài đặt và mở deferred deep link</td><td>Tuỳ chọn</td></tr>',
       // D15, D16
-      '          <tr><td>Báo lỗi và sự cố: ngữ cảnh lỗi, id người dùng khi đã đăng nhập, id bản cài khi chưa</td><td>Sửa lỗi và đo tỉ lệ phiên không sự cố</td><td>Bắt buộc theo bản build</td></tr>',
+      '          <tr><td>Báo lỗi, sự cố và breadcrumb đã lọc: id người dùng khi đã đăng nhập, nếu không là id bản cài; dữ liệu release-health của phiên gồm sid, did là id bản cài, trạng thái, bộ đếm và seq</td><td>Sửa lỗi và đo tỉ lệ phiên không sự cố</td><td>Tuỳ theo DSN của bản build</td></tr>',
     ].join('\n'),
     // store-privacy.md §2, dòng "Không gửi".
     's2.not': '<p>GoGo <strong>không</strong> gửi đi: danh bạ, lịch, tin nhắn, dữ liệu sức khoẻ, thông tin thanh toán, mật khẩu của dịch vụ khác, và không đọc vị trí khi ứng dụng chạy nền.</p>',
@@ -77,9 +81,9 @@ export const privacy = {
     's3.onesignal': '<strong>OneSignal</strong> (thông báo đẩy) — theo tài liệu của họ: hệ điều hành, ngôn ngữ, múi giờ, quốc gia, phiên bản ứng dụng, model thiết bị, tên gói, nhà mạng, địa chỉ IP, mã thông báo đẩy, cùng dữ liệu phiên và trạng thái quyền thông báo. GoGo <strong>không</strong> bật tính năng vị trí của OneSignal.',
     // Android: AD_ID + App Set + Install Referrer (plugins/with-tenjin-android.js:6-8,23).
     // iOS: không có expo-tracking-transparency, không có NSUserTrackingUsageDescription.
-    's3.tenjin': '<strong>Tenjin</strong> (đo nguồn cài đặt) — theo tài liệu của họ: định danh thiết bị, địa chỉ IP, loại và model máy, ngôn ngữ, quốc gia, nền tảng và phiên bản hệ điều hành, tên gói, phiên bản SDK và ứng dụng. Trên Android, bản build khai quyền đọc mã quảng cáo và kèm App Set ID cùng Install Referrer của Play. Trên iOS <strong>không có màn hỏi theo dõi</strong>, nên Tenjin không nhận được mã quảng cáo của Apple; chỉ còn định danh theo nhà phát triển và địa chỉ IP.',
+    's3.tenjin': '<strong>Tenjin</strong> (đo nguồn cài đặt) — theo tài liệu của họ: định danh thiết bị, địa chỉ IP, loại và model máy, ngôn ngữ, quốc gia, nền tảng và phiên bản hệ điều hành, tên gói, phiên bản SDK và ứng dụng, thiết lập Giới hạn theo dõi quảng cáo, và dữ liệu phân bổ Apple Search nếu bật. Trên Android, bản build khai quyền đọc mã quảng cáo và kèm App Set ID cùng Install Referrer của Play. Trên iOS <strong>không có màn hỏi theo dõi</strong>, nên Tenjin không nhận được mã quảng cáo của Apple; chỉ còn định danh theo nhà phát triển và địa chỉ IP.',
     // scrubIPAddresses + rule $user.geo.** (GoGo-Infra#208, #215) — là thiết lập console, kiểm lại trước mỗi lần nộp.
-    's3.sentry': '<strong>Sentry</strong> (báo lỗi) — ngữ cảnh thiết bị, hệ điều hành và ứng dụng do SDK gắn sẵn. Dự án được cấu hình để <strong>không lưu địa chỉ IP</strong> và không lưu vị trí suy ra từ IP. Không có theo dõi hiệu năng, không ghi lại phiên, không chụp màn hình.',
+    's3.sentry': '<strong>Sentry</strong> (báo lỗi) — ngữ cảnh thiết bị, hệ điều hành và ứng dụng do SDK gắn sẵn. Dự án được cấu hình để <strong>không lưu địa chỉ IP</strong> và không lưu vị trí suy ra từ IP. Không có theo dõi hiệu năng, không có Session Replay (ghi lại nội dung phiên), không chụp màn hình và không thu cây phân cấp giao diện.',
     // react-native-maps đặt PROVIDER_GOOGLE trên cả hai nền tảng (map-canvas.view.tsx:95-97).
     's3.maps': '<strong>SDK Google Maps</strong> (bản đồ trong ứng dụng, dùng trên cả iOS và Android) — Google nhận khoá API, thông tin thiết bị và ứng dụng, địa chỉ IP, vùng bản đồ được yêu cầu và toạ độ các điểm được ghim, tức là những địa điểm trong kế hoạch của bạn. Ứng dụng tắt phần SDK đọc vị trí thiết bị.',
 
@@ -127,6 +131,9 @@ export const privacy = {
     // §8 — đường trong app (nhãn thật của GoGo-MobileApp) + trang xoá dữ liệu.
     's8.h': '8. Quyền của bạn',
     's8.list': [
+      // Giới hạn 3 lần/giờ là thật, chặn phía máy chủ: GoGo-MobileApp `src/shared/i18n/vi.ts:69`
+      // ("Mỗi giờ tối đa 3 lần") và `src/features/account/account.view.tsx:169`
+      // ("rate-limited server-side (3/hour)").
       '        <li><strong>Xuất dữ liệu</strong> — trong ứng dụng: Cá nhân → ⚙️ Tài khoản → Dữ liệu của bạn → Xuất dữ liệu (tối đa 3 lần mỗi giờ). Tệp chỉ tải được từ phiên của chính bạn, nên GoGo không gửi nó qua email.</li>',
       '        <li><strong>Xoá tài khoản</strong> — trong ứng dụng: Cá nhân → ⚙️ Tài khoản → Xoá tài khoản. Không mở được ứng dụng thì xem <a href="{{@link.deleteData}}">trang xoá dữ liệu</a>.</li>',
       '        <li><strong>Sửa dữ liệu</strong> — sửa hồ sơ trong ứng dụng; các trường tuỳ chọn có thể để trống.</li>',
@@ -180,8 +187,9 @@ export const privacy = {
       '          <tr><td>Check-in photos (up to 3) and a bill photo; bill amount and number of people; rating, note, tags</td><td>A record of the outing, and splitting the bill</td><td>Optional</td></tr>',
       '          <tr><td>Place reviews: rating and text</td><td>Shown to other people after moderation</td><td>Optional</td></tr>',
       '          <tr><td>Place suggestions: the Google Maps link you paste, a note, category, moods, price range</td><td>Adding new places to GoGo, after moderation</td><td>Optional</td></tr>',
-      '          <tr><td>The device push registration id and your user id, sent to OneSignal</td><td>Delivering notifications to the right person</td><td>Optional, follows the notification permission</td></tr>',
-      '          <tr><td>Crash and error reports: error context, your user id when signed in, an installation id when not</td><td>Fixing bugs and measuring how many sessions are crash-free</td><td>Required by the build</td></tr>',
+      '          <tr><td>The push-registration id and platform sent to GoGo servers; your user id and a short-lived ES256 token sent to OneSignal</td><td>Delivering notifications to the right person</td><td>Optional, follows the notification permission</td></tr>',
+      '          <tr><td>Install and app-open events, with attribution parameters, sent to Tenjin</td><td>Measuring where an install came from, and opening deferred deep links</td><td>Optional</td></tr>',
+      '          <tr><td>Crash and error reports and filtered breadcrumbs: your user id when signed in, otherwise an installation id; session release-health data including sid, an installation did, status, counters and seq</td><td>Fixing bugs and measuring how many sessions are crash-free</td><td>Depends on the build DSN</td></tr>',
     ].join('\n'),
     's2.not': '<p>GoGo does <strong>not</strong> send: contacts, calendar, messages, health data, payment details, passwords for other services, and it does not read your location while the app is in the background.</p>',
     's2.directions': '<p>Tapping “Directions” opens Google Maps with the destination address. You start that yourself and GoGo sends nothing more — but Google receives the address through your browser or Maps app.</p>',
@@ -189,8 +197,8 @@ export const privacy = {
     's3.h': '3. What the libraries inside the app collect on their own',
     's3.p': '<p>Four third-party libraries run inside the app and collect data by themselves, even where GoGo writes no code to send any:</p>',
     's3.onesignal': '<strong>OneSignal</strong> (push notifications) — per their documentation: operating system, language, timezone, country, app version, device model, package name, carrier, IP address, push token, plus session data and the notification permission state. GoGo does <strong>not</strong> enable the OneSignal location feature.',
-    's3.tenjin': '<strong>Tenjin</strong> (install attribution) — per their documentation: device identifiers, IP address, device type and model, locale, country, platform and OS version, bundle id, SDK and app version. On Android the build declares the advertising-id permission and includes the App Set ID and the Play Install Referrer. On iOS there is <strong>no tracking prompt</strong>, so Tenjin does not receive the Apple advertising identifier; only the vendor identifier and the IP address.',
-    's3.sentry': '<strong>Sentry</strong> (error reporting) — device, OS and app context attached by the SDK. The projects are configured <strong>not to store IP addresses</strong> and not to store a location inferred from one. No performance tracing, no session replay, no screenshots.',
+    's3.tenjin': '<strong>Tenjin</strong> (install attribution) — per their documentation: device identifiers, IP address, device type and model, locale, country, platform and OS version, bundle id, SDK and app version, the Limit Ad Tracking setting, and Apple Search attribution if enabled. On Android the build declares the advertising-id permission and includes the App Set ID and the Play Install Referrer. On iOS there is <strong>no tracking prompt</strong>, so Tenjin does not receive the Apple advertising identifier; only the vendor identifier and the IP address.',
+    's3.sentry': '<strong>Sentry</strong> (error reporting) — device, OS and app context attached by the SDK. The projects are configured <strong>not to store IP addresses</strong> and not to store a location inferred from one. No performance tracing, no session replay, no screenshots, and no view hierarchy.',
     's3.maps': '<strong>The Google Maps SDK</strong> (the in-app map, used on iOS as well as Android) — Google receives the API key, device and app information, the IP address, the requested map region and the coordinates of the pins, which are the places in your plan. The app turns off the part of the SDK that reads the device location.',
 
     's4.h': '4. Permissions the app asks for on your device',
@@ -228,7 +236,7 @@ export const privacy = {
 
     's8.h': '8. Your rights',
     's8.list': [
-      '        <li><strong>Export your data</strong> — in the app: Profile → ⚙️ Account → Your data → Export data (up to 3 times an hour). The file can only be downloaded from your own session, which is why GoGo does not email it.</li>',
+      '        <li><strong>Export your data</strong> — in the app: Profile → ⚙️ Account → Your data → Export my data (up to 3 times an hour). The file can only be downloaded from your own session, which is why GoGo does not email it.</li>',
       '        <li><strong>Delete your account</strong> — in the app: Profile → ⚙️ Account → Delete account. If you cannot open the app, see the <a href="{{@link.deleteData}}">data deletion page</a>.</li>',
       '        <li><strong>Correct your data</strong> — edit your profile in the app; optional fields can be left empty.</li>',
       '        <li><strong>Withdraw a permission</strong> — location, photos and notifications can be turned off in your device settings; the notification switch is in the app as well.</li>',

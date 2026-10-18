@@ -341,8 +341,9 @@
           <tr><td>Check-in photos (up to 3) and a bill photo; bill amount and number of people; rating, note, tags</td><td>A record of the outing, and splitting the bill</td><td>Optional</td></tr>
           <tr><td>Place reviews: rating and text</td><td>Shown to other people after moderation</td><td>Optional</td></tr>
           <tr><td>Place suggestions: the Google Maps link you paste, a note, category, moods, price range</td><td>Adding new places to GoGo, after moderation</td><td>Optional</td></tr>
-          <tr><td>The device push registration id and your user id, sent to OneSignal</td><td>Delivering notifications to the right person</td><td>Optional, follows the notification permission</td></tr>
-          <tr><td>Crash and error reports: error context, your user id when signed in, an installation id when not</td><td>Fixing bugs and measuring how many sessions are crash-free</td><td>Required by the build</td></tr>
+          <tr><td>The push-registration id and platform sent to GoGo servers; your user id and a short-lived ES256 token sent to OneSignal</td><td>Delivering notifications to the right person</td><td>Optional, follows the notification permission</td></tr>
+          <tr><td>Install and app-open events, with attribution parameters, sent to Tenjin</td><td>Measuring where an install came from, and opening deferred deep links</td><td>Optional</td></tr>
+          <tr><td>Crash and error reports and filtered breadcrumbs: your user id when signed in, otherwise an installation id; session release-health data including sid, an installation did, status, counters and seq</td><td>Fixing bugs and measuring how many sessions are crash-free</td><td>Depends on the build DSN</td></tr>
         </tbody>
       </table>
       <p>GoGo does <strong>not</strong> send: contacts, calendar, messages, health data, payment details, passwords for other services, and it does not read your location while the app is in the background.</p>
@@ -352,8 +353,8 @@
       <p>Four third-party libraries run inside the app and collect data by themselves, even where GoGo writes no code to send any:</p>
       <ul>
         <li><strong>OneSignal</strong> (push notifications) — per their documentation: operating system, language, timezone, country, app version, device model, package name, carrier, IP address, push token, plus session data and the notification permission state. GoGo does <strong>not</strong> enable the OneSignal location feature.</li>
-        <li><strong>Tenjin</strong> (install attribution) — per their documentation: device identifiers, IP address, device type and model, locale, country, platform and OS version, bundle id, SDK and app version. On Android the build declares the advertising-id permission and includes the App Set ID and the Play Install Referrer. On iOS there is <strong>no tracking prompt</strong>, so Tenjin does not receive the Apple advertising identifier; only the vendor identifier and the IP address.</li>
-        <li><strong>Sentry</strong> (error reporting) — device, OS and app context attached by the SDK. The projects are configured <strong>not to store IP addresses</strong> and not to store a location inferred from one. No performance tracing, no session replay, no screenshots.</li>
+        <li><strong>Tenjin</strong> (install attribution) — per their documentation: device identifiers, IP address, device type and model, locale, country, platform and OS version, bundle id, SDK and app version, the Limit Ad Tracking setting, and Apple Search attribution if enabled. On Android the build declares the advertising-id permission and includes the App Set ID and the Play Install Referrer. On iOS there is <strong>no tracking prompt</strong>, so Tenjin does not receive the Apple advertising identifier; only the vendor identifier and the IP address.</li>
+        <li><strong>Sentry</strong> (error reporting) — device, OS and app context attached by the SDK. The projects are configured <strong>not to store IP addresses</strong> and not to store a location inferred from one. No performance tracing, no session replay, no screenshots, and no view hierarchy.</li>
         <li><strong>The Google Maps SDK</strong> (the in-app map, used on iOS as well as Android) — Google receives the API key, device and app information, the IP address, the requested map region and the coordinates of the pins, which are the places in your plan. The app turns off the part of the SDK that reads the device location.</li>
       </ul>
 
@@ -392,7 +393,7 @@
 
       <h2>8. Your rights</h2>
       <ul>
-        <li><strong>Export your data</strong> — in the app: Profile → ⚙️ Account → Your data → Export data (up to 3 times an hour). The file can only be downloaded from your own session, which is why GoGo does not email it.</li>
+        <li><strong>Export your data</strong> — in the app: Profile → ⚙️ Account → Your data → Export my data (up to 3 times an hour). The file can only be downloaded from your own session, which is why GoGo does not email it.</li>
         <li><strong>Delete your account</strong> — in the app: Profile → ⚙️ Account → Delete account. If you cannot open the app, see the <a href="/en/delete-my-data/">data deletion page</a>.</li>
         <li><strong>Correct your data</strong> — edit your profile in the app; optional fields can be left empty.</li>
         <li><strong>Withdraw a permission</strong> — location, photos and notifications can be turned off in your device settings; the notification switch is in the app as well.</li>

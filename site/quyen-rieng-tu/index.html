@@ -341,8 +341,9 @@
           <tr><td>Ảnh check-in (tối đa 3) và ảnh hoá đơn; số tiền hoá đơn và số người; điểm, ghi chú, tag</td><td>Nhật ký buổi đi chơi và chia tiền</td><td>Tuỳ chọn</td></tr>
           <tr><td>Đánh giá địa điểm: điểm và nội dung chữ</td><td>Hiện cho người dùng khác sau khi kiểm duyệt</td><td>Tuỳ chọn</td></tr>
           <tr><td>Đề xuất địa điểm: link Google Maps bạn dán, ghi chú, phân loại, mood, khoảng giá</td><td>Thêm địa điểm mới vào GoGo, sau kiểm duyệt</td><td>Tuỳ chọn</td></tr>
-          <tr><td>Mã đăng ký thông báo của thiết bị và id người dùng gửi cho OneSignal</td><td>Gửi thông báo đúng người</td><td>Tuỳ chọn, theo quyền thông báo</td></tr>
-          <tr><td>Báo lỗi và sự cố: ngữ cảnh lỗi, id người dùng khi đã đăng nhập, id bản cài khi chưa</td><td>Sửa lỗi và đo tỉ lệ phiên không sự cố</td><td>Bắt buộc theo bản build</td></tr>
+          <tr><td>Mã đăng ký push và nền tảng gửi cho máy chủ GoGo; id người dùng và token ES256 ngắn hạn gửi cho OneSignal</td><td>Gửi thông báo đúng người</td><td>Tuỳ chọn, theo quyền thông báo</td></tr>
+          <tr><td>Sự kiện cài đặt và mở ứng dụng, cùng tham số attribution, gửi cho Tenjin</td><td>Đo nguồn cài đặt và mở deferred deep link</td><td>Tuỳ chọn</td></tr>
+          <tr><td>Báo lỗi, sự cố và breadcrumb đã lọc: id người dùng khi đã đăng nhập, nếu không là id bản cài; dữ liệu release-health của phiên gồm sid, did là id bản cài, trạng thái, bộ đếm và seq</td><td>Sửa lỗi và đo tỉ lệ phiên không sự cố</td><td>Tuỳ theo DSN của bản build</td></tr>
         </tbody>
       </table>
       <p>GoGo <strong>không</strong> gửi đi: danh bạ, lịch, tin nhắn, dữ liệu sức khoẻ, thông tin thanh toán, mật khẩu của dịch vụ khác, và không đọc vị trí khi ứng dụng chạy nền.</p>
@@ -352,8 +353,8 @@
       <p>Bốn thư viện của bên khác chạy trong ứng dụng và tự thu dữ liệu, dù GoGo không viết dòng nào để gửi:</p>
       <ul>
         <li><strong>OneSignal</strong> (thông báo đẩy) — theo tài liệu của họ: hệ điều hành, ngôn ngữ, múi giờ, quốc gia, phiên bản ứng dụng, model thiết bị, tên gói, nhà mạng, địa chỉ IP, mã thông báo đẩy, cùng dữ liệu phiên và trạng thái quyền thông báo. GoGo <strong>không</strong> bật tính năng vị trí của OneSignal.</li>
-        <li><strong>Tenjin</strong> (đo nguồn cài đặt) — theo tài liệu của họ: định danh thiết bị, địa chỉ IP, loại và model máy, ngôn ngữ, quốc gia, nền tảng và phiên bản hệ điều hành, tên gói, phiên bản SDK và ứng dụng. Trên Android, bản build khai quyền đọc mã quảng cáo và kèm App Set ID cùng Install Referrer của Play. Trên iOS <strong>không có màn hỏi theo dõi</strong>, nên Tenjin không nhận được mã quảng cáo của Apple; chỉ còn định danh theo nhà phát triển và địa chỉ IP.</li>
-        <li><strong>Sentry</strong> (báo lỗi) — ngữ cảnh thiết bị, hệ điều hành và ứng dụng do SDK gắn sẵn. Dự án được cấu hình để <strong>không lưu địa chỉ IP</strong> và không lưu vị trí suy ra từ IP. Không có theo dõi hiệu năng, không ghi lại phiên, không chụp màn hình.</li>
+        <li><strong>Tenjin</strong> (đo nguồn cài đặt) — theo tài liệu của họ: định danh thiết bị, địa chỉ IP, loại và model máy, ngôn ngữ, quốc gia, nền tảng và phiên bản hệ điều hành, tên gói, phiên bản SDK và ứng dụng, thiết lập Giới hạn theo dõi quảng cáo, và dữ liệu phân bổ Apple Search nếu bật. Trên Android, bản build khai quyền đọc mã quảng cáo và kèm App Set ID cùng Install Referrer của Play. Trên iOS <strong>không có màn hỏi theo dõi</strong>, nên Tenjin không nhận được mã quảng cáo của Apple; chỉ còn định danh theo nhà phát triển và địa chỉ IP.</li>
+        <li><strong>Sentry</strong> (báo lỗi) — ngữ cảnh thiết bị, hệ điều hành và ứng dụng do SDK gắn sẵn. Dự án được cấu hình để <strong>không lưu địa chỉ IP</strong> và không lưu vị trí suy ra từ IP. Không có theo dõi hiệu năng, không có Session Replay (ghi lại nội dung phiên), không chụp màn hình và không thu cây phân cấp giao diện.</li>
         <li><strong>SDK Google Maps</strong> (bản đồ trong ứng dụng, dùng trên cả iOS và Android) — Google nhận khoá API, thông tin thiết bị và ứng dụng, địa chỉ IP, vùng bản đồ được yêu cầu và toạ độ các điểm được ghim, tức là những địa điểm trong kế hoạch của bạn. Ứng dụng tắt phần SDK đọc vị trí thiết bị.</li>
       </ul>
 
