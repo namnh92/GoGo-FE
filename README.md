@@ -30,7 +30,6 @@ Landing page giới thiệu sản phẩm GoGo VN + mục kêu gọi đầu tư �
   (merged develop d3e2ab7); ảnh chụp từ Metro ở ac3bc6f.
 - Logo công nghệ: `site/img/logos/` — Claude từ simple-icons 13.21.0 (CC0); Cloudflare, AWS,
   Google Cloud từ devicon 2.16.0 (MIT). Logo là thương hiệu của chủ sở hữu tương ứng.
-- Nháp chính sách chưa có hiệu lực: `docs/drafts/` (không deploy).
 - CI: `.github/workflows/check.yml` chạy `node build.mjs --check` trên PR và trên `master` —
   trước #4 không có gì chặn một trang commit lệch nguồn.
 - Nội dung chỉ ghi điều đã xác nhận: không founder, số liệu, pháp nhân, đối tác chưa được owner chốt.
@@ -42,7 +41,7 @@ node build.mjs && npx wrangler@4 dev --port 8788
 ```
 
 ```bash
-node build.mjs --check && npx wrangler@4 deploy
+node build.mjs --check --release && npx wrangler@4 deploy
 ```
 
 ## Phông chữ tự host (#4)
@@ -83,3 +82,28 @@ Be Vietnam Pro 400–800, ba subset như Google phục vụ, tải từ `https:/
 | `be-vietnam-pro-800-latin.woff2` | 800 | latin | 13380 | `8a5b5841729c2ed690748ab243602bd45205575a5f58fe0c1fef04d79a912276` | `https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSQI281Rb0JcBao.woff2` |
 
 Licence đi kèm file: `site/fonts/OFL.txt` (SIL OFL 1.1 — bắt buộc khi phát hành lại).
+
+## Trang pháp lý (#3)
+
+| URL | Nguồn |
+| --- | --- |
+| `/quyen-rieng-tu/` · `/en/privacy/` | `src/pages/privacy.html` + `src/strings/privacy.mjs` |
+| `/xoa-du-lieu/` · `/en/delete-my-data/` | `src/pages/delete-data.html` + `src/strings/delete-data.mjs` |
+
+Mỗi mệnh đề trong hai file chuỗi đó có comment dẫn nguồn (`GoGo-MobileApp/docs/store-privacy.md`,
+ADR-0023, `privacy-jobs.ts`, ADR-0011, ADR-0033). **Mệnh đề không có nguồn thì bỏ, không đoán** —
+một câu sai trên trang chính sách tệ hơn một câu thiếu. Tiếng Việt viết trước và là bản owner ký;
+tiếng Anh là bản dịch cho người duyệt của cửa hàng.
+
+Năm hằng số pháp lý nằm ở `LEGAL` trong `src/strings/shared.mjs`: `ownerName`, `effectiveDate`,
+`ackWithinHours`, `completeWithinDays`, `ledgerRetentionMonths`. Khi còn `null`, trang in ra token
+nhìn thấy được (`⟦legal.ownerName⟧`): `node build.mjs` và `--check` vẫn xanh để review được, nhưng
+`--check --release` **từ chối** nên không deploy được bản còn token. Đó là lý do dòng deploy ở trên
+có `--release`.
+
+Khai vào console cửa hàng sau khi deploy (owner làm, tên ô có thể đổi theo thời gian):
+
+- Google Play → *App content → Privacy policy*: `https://gogo.id.vn/quyen-rieng-tu/`
+- Google Play → *Data safety → Data deletion*: `https://gogo.id.vn/xoa-du-lieu/`
+- App Store Connect → *App Privacy → Privacy Policy URL* (theo từng localization): bản vi dùng
+  `/quyen-rieng-tu/`, bản en dùng `/en/privacy/`
