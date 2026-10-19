@@ -107,7 +107,25 @@ function render(page, code) {
       ? `<script>if (/[?&]lang=en(&|$)/.test(location.search)) location.replace('/en/' + location.hash);</script>`
       : '';
 
+  // Three hreflang lines per page, x-default on the Vietnamese one (the product's default language
+   // and the URL a store console gets when it has only one field).
+  const alternates = [
+    `<link rel="alternate" hreflang="vi" href="${SITE}${page.path.vi}">`,
+    `<link rel="alternate" hreflang="en" href="${SITE}${page.path.en}">`,
+    `<link rel="alternate" hreflang="x-default" href="${SITE}${page.path.vi}">`,
+  ].join('\n  ');
+
+  // Every page reachable from every other by id, in the current locale, so no partial has to know a
+  // path. `navPrefix` is empty on the landing page itself — its section anchors stay bare fragments,
+  // which is both correct and what keeps this refactor byte-neutral — and is the locale home
+  // elsewhere, where `#demo` would otherwise point at an anchor that does not exist.
+  const links = Object.fromEntries(PAGES.map((p) => [`link.${p.id}`, p.path[code]]));
+  const navPrefix = page.id === 'landing' ? '' : links['link.landing'];
+
   const special = {
+    ...links,
+    alternates,
+    navPrefix,
     htmlLang: loc.htmlLang,
     canonical: SITE + page.path[code],
     site: SITE,
@@ -123,7 +141,16 @@ function render(page, code) {
   };
 
   const used = new Set();
+  const COMMENT = /<!--[\s\S]*?-->/g;
   const fill = (src) =>
+    // Split on comments and leave those segments alone: `<!-- {{>footer.html}} -->` used to count
+    // every footer string as rendered while rendering no footer.
+    src
+      .split(COMMENT)
+      .map((segment) => fillSegment(segment))
+      .reduce((out, segment, i, all) => out + segment + (i < all.length - 1 ? (src.match(COMMENT) ?? [])[i] ?? '' : ''), '');
+
+  const fillSegment = (src) =>
     src
       .replace(/\{\{>([\w.-]+)\}\}/g, (_, name) => fill(partial(name)))
       .replace(/\{\{(@?)([\w.]+)\}\}/g, (_, at, key) => {
@@ -142,7 +169,7 @@ function render(page, code) {
 
   // Anything still looking like a placeholder means a value carried one that the pass above did not
   // reach — it would otherwise ship to the site as literal `{{…}}` text.
-  const leftover = html.match(/\{\{[^}]{0,80}\}\}/g);
+  const leftover = html.replace(COMMENT, '').match(/\{\{[@>]?[\w.-]+\}\}/g);
   if (leftover) throw new Error(`[${page.id}/${code}] unexpanded placeholder(s): ${[...new Set(leftover)].join(', ')}`);
 
   // Invariant C: no page may *fetch* a script, stylesheet, font or any other subresource from
@@ -180,6 +207,12 @@ function render(page, code) {
     throw new Error(`[${page.id}/${code}] external resource, see Invariant C in build.mjs:\n  ${[...new Set(offenders)].join('\n  ')}`);
   }
 
+  // Invariant A, per page: a string this page defines and never renders is dead weight, or a key
+  // that silently stopped being reachable. Deleted by accident while fixing the shared-usage check
+  // in the first review round, restored here.
+  const unusedPage = Object.keys(pageStrings).filter((k) => !used.has(k));
+  if (unusedPage.length) throw new Error(`[${page.id}/${code}] unused strings: ${unusedPage.join(', ')}`);
+
   return { html, used };
 }
 
@@ -200,7 +233,7 @@ for (const [name, table] of [['shared', shared], ...PAGES.map((p) => [`${p.id} (
 // the next reader cannot tell which one is live.
 for (const page of PAGES) {
   for (const code of Object.keys(LOCALES)) {
-    const clash = Object.keys(page.strings[code]).filter((k) => k in shared[code]);
+    const clash = Object.keys(page.strings[code]).filter((k) => Object.hasOwn(shared[code], k));
     if (clash.length) throw new Error(`[${page.id}/${code}] defined in both shared and the page file: ${clash.join(', ')}`);
   }
 }

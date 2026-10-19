@@ -54,9 +54,13 @@ Trước đây mỗi lượt mở trang gửi IP + User-Agent của khách tới
 `url(...)` trong CSS, và `@import` — khi URL trỏ ra origin khác (kể cả dạng `//host` và dạng mã hoá
 entity). `canonical` và `alternate` là metadata nên không bị chặn, link trong văn bản cũng vậy.
 
-**Nó không chặn**: `<iframe>`, `<img>`, `<video>`, `fetch()` viết trong script nội tuyến, hay import
-động. Hôm nay trang không có thứ nào trong số đó, nhưng câu "trang không nạp gì từ bên thứ ba" chỉ
-đúng tới mức Invariant C kiểm được — muốn chặn hết thì cần CSP `default-src 'self'`, chưa làm.
+**Nó không chặn**: `<iframe>`, `<img>`, `<video>`, `fetch()` trong script nội tuyến, import động,
+`<base>`, `imagesrcset`. Trang có nhiều `<img>` — tất cả đều trỏ vào `/img/` của chính tên miền này,
+và đó mới là điều đúng: **không có URL của bên thứ ba qua những đường đó**, chứ không phải không có
+những đường đó. Invariant C cũng là lưới phòng chính mình (một commit sau vô tình thêm lại Google
+Fonts), không phải lá chắn trước người cố tình: nó quét bằng regex nên `url(/**/https://…)`,
+`data-note=">" src="…"` hay một `<base>` ngoại lai vẫn đi vòng được. Chốt chặn thật là CSP
+`default-src 'self'` — chưa làm, xem #4.
 
 Be Vietnam Pro 400–800, ba subset như Google phục vụ, tải từ `https://fonts.gstatic.com/s/bevietnampro/v12/`:
 
