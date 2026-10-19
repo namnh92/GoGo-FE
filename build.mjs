@@ -1,16 +1,66 @@
 #!/usr/bin/env node
-// Builds the static language pages from src/template.html + src/strings.mjs:
+// Builds every page of the static site from `src/pages/*.html` + `src/partials/*` +
+// `src/strings/*.mjs`:
 //   site/index.html     (vi, default)
 //   site/en/index.html  (en)
-// Usage: node build.mjs          write both pages
+// Usage: node build.mjs          write every page
 //        node build.mjs --check  fail if the committed pages differ from a fresh build
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+//
+// Adding a page is one row in PAGES plus one body template and one strings file; the chrome is
+// never copied, which is the whole reason the partials exist.
+import { readFileSync, writeFileSync, mkdirSync, readdirSync, statSync } from 'node:fs';
+import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { locales, SITE, MAIL } from './src/strings.mjs';
+import { shared, SITE, MAIL } from './src/strings/shared.mjs';
+import { landing } from './src/strings/landing.mjs';
 
 const root = dirname(fileURLToPath(import.meta.url));
-const template = readFileSync(join(root, 'src/template.html'), 'utf8');
+
+/** Locale-level facts. A page decides its own paths; a locale decides how it is labelled. */
+const LOCALES = {
+  vi: { htmlLang: 'vi', ogLocale: 'vi_VN', ogLocaleAlt: 'en_US' },
+  en: { htmlLang: 'en', ogLocale: 'en_US', ogLocaleAlt: 'vi_VN' },
+};
+
+/**
+ * Every page of the site. `path` is both the URL and the output location, so a page cannot be
+ * served from a path the build does not know about (`--check` fails on any html under `site/`
+ * this table did not produce).
+ */
+const PAGES = [
+  {
+    id: 'landing',
+    template: 'src/pages/landing.html',
+    strings: landing,
+    path: { vi: '/', en: '/en/' },
+    // Old links used ?lang=en on the Vietnamese page; only that page carries the redirect.
+    legacyRedirect: true,
+  },
+];
+
+/** Enough of HTML's entity set to stop `&#104;ttps://` reading as a local path. */
+function decodeEntities(value) {
+  return value
+    .replace(/&#x([0-9a-f]+);?/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
+    .replace(/&#(\d+);?/g, (_, dec) => String.fromCodePoint(Number(dec)))
+    .replace(/&amp;/gi, '&')
+    .replace(/&sol;/gi, '/')
+    .replace(/&colon;/gi, ':');
+}
+
+/**
+ * One attribute of one tag, by exact name. A regex over the whole tag matched `data-src` for
+ * `src`; this walks the attributes instead, so only the real one answers.
+ */
+function attrValue(tag, name) {
+  const body = tag.replace(/^<\S+/, '').replace(/\/?>$/, '');
+  const re = /([:\w.-]+)(?:\s*=\s*("[^"]*"|'[^']*'|[^\s>]+))?/g;
+  for (const match of body.matchAll(re)) {
+    if (match[1].toLowerCase() !== name.toLowerCase()) continue;
+    return (match[2] ?? '').replace(/^["']|["']$/g, '');
+  }
+  return '';
+}
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
@@ -25,33 +75,64 @@ const SHOTS = [
   { n: 7, img: 'done', w: 460, h: 1000, kind: 'ios' },
 ];
 
-function render(code) {
-  const loc = locales[code];
+/** `{{>name}}` pulls in `src/partials/name` (html or css), recursively. */
+function partial(name) {
+  try {
+    return readFileSync(join(root, 'src/partials', name), 'utf8').replace(/\n$/, '');
+  } catch {
+    throw new Error(`unknown partial {{>${name}}} — expected src/partials/${name}`);
+  }
+}
+
+function outputFile(path) {
+  return join(root, 'site', path === '/' ? 'index.html' : `${path.replace(/^\/|\/$/g, '')}/index.html`);
+}
+
+function render(page, code) {
+  const loc = LOCALES[code];
   const other = code === 'vi' ? 'en' : 'vi';
-  const t = loc.strings;
+  const pageStrings = page.strings[code];
+  const t = { ...shared[code], ...pageStrings };
 
   const langSwitch = ['vi', 'en']
-    .map((c) => `<a href="${locales[c].path}" hreflang="${c}" lang="${c}"${c === code ? ' aria-current="page"' : ''}>${c.toUpperCase()}</a>`)
+    .map((c) => `<a href="${page.path[c]}" hreflang="${c}" lang="${c}"${c === code ? ' aria-current="page"' : ''}>${c.toUpperCase()}</a>`)
     .join('');
 
   const shots = SHOTS.map(
     (s) => `<li class="shot"><figure><div class="phone ${s.kind}"><div class="island" aria-hidden="true"></div><div class="screen"><img src="/img/${s.img}.png" width="${s.w}" height="${s.h}" loading="lazy" alt="{{a.s${s.n}}}"></div></div><figcaption><strong>{{s${s.n}.h}}</strong>{{s${s.n}.p}}</figcaption></figure></li>`,
   ).join('\n          ');
 
-  // Old links used ?lang=en on the Vietnamese page; send them to the real English URL.
   const legacyRedirect =
-    code === 'vi'
+    page.legacyRedirect && code === 'vi'
       ? `<script>if (/[?&]lang=en(&|$)/.test(location.search)) location.replace('/en/' + location.hash);</script>`
       : '';
 
+  // Three hreflang lines per page, x-default on the Vietnamese one (the product's default language
+   // and the URL a store console gets when it has only one field).
+  const alternates = [
+    `<link rel="alternate" hreflang="vi" href="${SITE}${page.path.vi}">`,
+    `<link rel="alternate" hreflang="en" href="${SITE}${page.path.en}">`,
+    `<link rel="alternate" hreflang="x-default" href="${SITE}${page.path.vi}">`,
+  ].join('\n  ');
+
+  // Every page reachable from every other by id, in the current locale, so no partial has to know a
+  // path. `navPrefix` is empty on the landing page itself — its section anchors stay bare fragments,
+  // which is both correct and what keeps this refactor byte-neutral — and is the locale home
+  // elsewhere, where `#demo` would otherwise point at an anchor that does not exist.
+  const links = Object.fromEntries(PAGES.map((p) => [`link.${p.id}`, p.path[code]]));
+  const navPrefix = page.id === 'landing' ? '' : links['link.landing'];
+
   const special = {
+    ...links,
+    alternates,
+    navPrefix,
     htmlLang: loc.htmlLang,
-    canonical: SITE + loc.path,
+    canonical: SITE + page.path[code],
     site: SITE,
-    path: loc.path,
+    path: page.path[code],
     ogLocale: loc.ogLocale,
     ogLocaleAlt: loc.ogLocaleAlt,
-    otherPath: loc.otherPath,
+    otherPath: page.path[other],
     otherLang: other,
     mail: MAIL,
     langSwitch,
@@ -60,47 +141,148 @@ function render(code) {
   };
 
   const used = new Set();
+  const COMMENT = /<!--[\s\S]*?-->/g;
   const fill = (src) =>
-    src.replace(/\{\{(@?)([\w.]+)\}\}/g, (_, at, key) => {
-      if (at) {
-        if (!(key in special)) throw new Error(`unknown special {{@${key}}}`);
-        return fill(special[key]);
-      }
-      if (!(key in t)) throw new Error(`[${code}] missing string "${key}"`);
-      used.add(key);
-      return key.startsWith('a.') ? esc(t[key]) : t[key];
-    });
+    // Split on comments and leave those segments alone: `<!-- {{>footer.html}} -->` used to count
+    // every footer string as rendered while rendering no footer.
+    src
+      .split(COMMENT)
+      .map((segment) => fillSegment(segment))
+      .reduce((out, segment, i, all) => out + segment + (i < all.length - 1 ? (src.match(COMMENT) ?? [])[i] ?? '' : ''), '');
 
-  const html = fill(template);
-  const unused = Object.keys(t).filter((k) => !used.has(k));
-  if (unused.length) throw new Error(`[${code}] unused strings: ${unused.join(', ')}`);
-  return html;
+  const fillSegment = (src) =>
+    src
+      .replace(/\{\{>([\w.-]+)\}\}/g, (_, name) => fill(partial(name)))
+      .replace(/\{\{(@?)([\w.]+)\}\}/g, (_, at, key) => {
+        // `in` would accept anything on Object.prototype: `{{toString}}` rendered the function
+        // source instead of throwing.
+        if (at) {
+          if (!Object.hasOwn(special, key)) throw new Error(`unknown special {{@${key}}}`);
+          return fill(String(special[key]));
+        }
+        if (!Object.hasOwn(t, key)) throw new Error(`[${page.id}/${code}] missing string "${key}"`);
+        used.add(key);
+        return key.startsWith('a.') ? esc(t[key]) : t[key];
+      });
+
+  const html = fill(readFileSync(join(root, page.template), 'utf8'));
+
+  // Anything still looking like a placeholder means a value carried one that the pass above did not
+  // reach — it would otherwise ship to the site as literal `{{…}}` text.
+  const leftover = html.replace(COMMENT, '').match(/\{\{[@>]?[\w.-]+\}\}/g);
+  if (leftover) throw new Error(`[${page.id}/${code}] unexpanded placeholder(s): ${[...new Set(leftover)].join(', ')}`);
+
+  // Invariant C: no page may *fetch* a script, stylesheet, font or any other subresource from
+  // another origin — nor warm one up with `preconnect`/`dns-prefetch`, which leaks the visitor's
+  // address before anything is requested. The privacy page says this site collects nothing about
+  // its visitors (#4); a third-party resource would make that false, quietly, in a commit about
+  // something else.
+  //
+  // `canonical` and `alternate` are metadata, not fetches, and must stay absolute. Links in prose
+  // are not resources either. So this reads `rel`, rather than any absolute URL in a tag.
+  const FETCHING_REL = /^(stylesheet|preconnect|dns-prefetch|preload|modulepreload|prefetch|prerender)$/i;
+  const isExternal = (url) => /^\s*(?:https?:)?\/\//i.test(decodeEntities(url));
+  const offenders = [];
+
+  for (const tag of html.match(/<(?:link|script)\b[^>]*>/gi) ?? []) {
+    const isLink = /^<link/i.test(tag);
+    // Exact attribute names: `\bsrc` also matched `data-src`, so a tag could advertise a local
+    // value to this check while the browser fetched the external one.
+    const url = isLink ? attrValue(tag, 'href') : attrValue(tag, 'src');
+    const rels = attrValue(tag, 'rel').split(/\s+/).filter(Boolean);
+    if (!url || !isExternal(url)) continue;
+    if (!isLink || rels.some((rel) => FETCHING_REL.test(rel))) offenders.push(tag.trim());
+  }
+
+  // CSS fetches too: an `@font-face { src: url(https://fonts.gstatic.com/…) }` is exactly the
+  // request this invariant exists to stop, and it never appears in a tag.
+  for (const m of html.matchAll(/url\(\s*(["']?)([^)"']+)\1\s*\)/gi)) {
+    if (isExternal(m[2])) offenders.push(m[0].trim());
+  }
+  for (const m of html.matchAll(/@import\s+(?:url\(\s*)?(["']?)([^;)"']+)\1/gi)) {
+    if (isExternal(m[2])) offenders.push(m[0].trim());
+  }
+
+  if (offenders.length) {
+    throw new Error(`[${page.id}/${code}] external resource, see Invariant C in build.mjs:\n  ${[...new Set(offenders)].join('\n  ')}`);
+  }
+
+  // Invariant A, per page: a string this page defines and never renders is dead weight, or a key
+  // that silently stopped being reachable. Deleted by accident while fixing the shared-usage check
+  // in the first review round, restored here.
+  const unusedPage = Object.keys(pageStrings).filter((k) => !used.has(k));
+  if (unusedPage.length) throw new Error(`[${page.id}/${code}] unused strings: ${unusedPage.join(', ')}`);
+
+  return { html, used };
 }
 
-// Both locales must define exactly the same keys.
-const keys = (c) => Object.keys(locales[c].strings).sort().join('\n');
-if (keys('vi') !== keys('en')) {
-  const vi = new Set(Object.keys(locales.vi.strings));
-  const en = new Set(Object.keys(locales.en.strings));
-  throw new Error(
-    `locale keys differ — only vi: ${[...vi].filter((k) => !en.has(k))}; only en: ${[...en].filter((k) => !vi.has(k))}`,
-  );
+// Invariant B, per strings file: a key present in one locale and not the other is a page that
+// renders in one language and throws in the other.
+for (const [name, table] of [['shared', shared], ...PAGES.map((p) => [`${p.id} (${p.template})`, p.strings])]) {
+  const keys = (c) => Object.keys(table[c]).sort().join('\n');
+  if (keys('vi') !== keys('en')) {
+    const vi = new Set(Object.keys(table.vi));
+    const en = new Set(Object.keys(table.en));
+    throw new Error(
+      `${name}: locale keys differ — only vi: ${[...vi].filter((k) => !en.has(k))}; only en: ${[...en].filter((k) => !vi.has(k))}`,
+    );
+  }
 }
 
-const outputs = { vi: join(root, 'site/index.html'), en: join(root, 'site/en/index.html') };
+// A key defined in both shared and a page file resolves by merge order rather than by intent, so
+// the next reader cannot tell which one is live.
+for (const page of PAGES) {
+  for (const code of Object.keys(LOCALES)) {
+    const clash = Object.keys(page.strings[code]).filter((k) => Object.hasOwn(shared[code], k));
+    if (clash.length) throw new Error(`[${page.id}/${code}] defined in both shared and the page file: ${clash.join(', ')}`);
+  }
+}
+
 const check = process.argv.includes('--check');
+const rendered = [];
+
+for (const page of PAGES) {
+  for (const code of Object.keys(LOCALES)) {
+    const { html, used } = render(page, code);
+    // Per page, not pooled across pages: a union would let a second page drop the footer partial
+    // entirely and still pass, because the landing page had already used those keys.
+    const missed = Object.keys(shared[code]).filter((k) => !used.has(k));
+    if (missed.length) {
+      throw new Error(
+        `[${page.id}/${code}] shared strings this page never renders: ${missed.join(', ')} — either the page is missing a shared partial, or those keys belong to the pages that use them`,
+      );
+    }
+    rendered.push({ page, code, html, file: outputFile(page.path[code]) });
+  }
+}
+
 let stale = 0;
-for (const [code, file] of Object.entries(outputs)) {
-  const html = render(code);
+for (const { html, file } of rendered) {
   if (check) {
     let current = '';
     try { current = readFileSync(file, 'utf8'); } catch {}
-    if (current !== html) { console.error(`stale: ${file} — run node build.mjs`); stale++; }
+    if (current !== html) { console.error(`stale: ${relative(root, file)} — run node build.mjs`); stale++; }
   } else {
     mkdirSync(dirname(file), { recursive: true });
     writeFileSync(file, html);
-    console.log(`wrote ${file.replace(root + '/', '')} (${html.length} bytes)`);
+    console.log(`wrote ${relative(root, file)} (${html.length} bytes)`);
   }
 }
+
+if (check) {
+  // A page added to `site/` by hand would be served and never checked against a source.
+  const produced = new Set(rendered.map(({ file }) => file));
+  const walk = (dir) =>
+    readdirSync(dir).flatMap((entry) => {
+      const path = join(dir, entry);
+      return statSync(path).isDirectory() ? walk(path) : [path];
+    });
+  const orphans = walk(join(root, 'site')).filter((p) => p.endsWith('.html') && !produced.has(p));
+  if (orphans.length) {
+    console.error(`orphan pages under site/ — no PAGES row produces them: ${orphans.map((p) => relative(root, p)).join(', ')}`);
+    stale++;
+  }
+}
+
 if (stale) process.exit(1);
 if (check) console.log('pages match sources');

@@ -1,37 +1,21 @@
-// Copy for both language pages. Every key must exist in both locales — build.mjs fails otherwise.
-// Rules for this file (issue #1):
-// - State only what is verified: no founder identity, metrics, legal entity, partners or funding.
-// - Anything not yet true is labelled as planned (dự kiến / kế hoạch).
-// - Values are inserted as HTML. Keys starting with `a.` are escaped for attributes.
+// Landing page strings (`/`, `/en/`).
+//
+// Editing rules, carried over from the single strings module this file replaced:
+//   - verified facts only; a claim nobody can check does not go on the site, and anything not built
+//     yet is labelled as planned rather than described as working;
+//   - values are raw HTML and are interpolated as-is, so markup belongs in them deliberately;
+//   - `a.*` keys are HTML-escaped by `build.mjs` because they land in attributes — never put markup
+//     in one.
+import { MAIL } from './shared.mjs';
 
-const MAIL = 'namnh@gogo.id.vn';
-
-export const SITE = 'https://gogo.id.vn';
-
-export const locales = {
+export const landing = {
   vi: {
-    path: '/',
-    htmlLang: 'vi',
-    ogLocale: 'vi_VN',
-    ogLocaleAlt: 'en_US',
-    otherPath: '/en/',
-    strings: {
       'a.title': 'GoGo — Cùng nhau chọn chỗ đi chơi',
       'a.desc': 'Ứng dụng giúp cặp đôi và nhóm bạn cùng chọn địa điểm, bình chọn và nhận một lịch trình chung cho buổi đi chơi. Dự án startup Việt Nam, MVP đang kiểm thử.',
       'a.ogDesc': 'Mỗi người tự chọn, cả nhóm bình chọn, nhận một lịch trình chung vừa ngân sách. MVP đang kiểm thử.',
-      'a.brandHome': 'GoGo VN — trang chủ',
-      'a.navLabel': 'Điều hướng chính',
-      'a.langLabel': 'Ngôn ngữ',
       'a.heroShots': 'Ảnh màn hình ứng dụng: bình chọn địa điểm và lịch trình nhóm',
       'a.mailTrial': `mailto:${MAIL}?subject=${encodeURIComponent('GoGo — Đăng ký dùng thử')}`,
       'a.mailPartner': `mailto:${MAIL}?subject=${encodeURIComponent('GoGo — Hợp tác / đầu tư')}`,
-      skip: 'Bỏ qua, tới nội dung chính',
-
-      'nav.demo': 'Sản phẩm',
-      'nav.how': 'Cách hoạt động',
-      'nav.stage': 'Tiến độ',
-      'nav.contact': 'Liên hệ',
-
       'hero.badge': 'MVP đang kiểm thử · chưa phát hành công khai',
       'hero.h1': 'Hết cảnh hỏi nhau <em>“đi đâu giờ?”</em>',
       'hero.lead': 'Lên kèo đi chơi thường mất cả buổi nhắn tin, rồi vẫn có người phải chiều theo số đông. GoGo cho cặp đôi và nhóm bạn mỗi người tự chọn, cùng bình chọn, rồi nhận một lịch trình chung vừa ngân sách và thời gian.',
@@ -112,36 +96,14 @@ export const locales = {
       't4.h': 'Google Cloud',
       't4.p': 'Bản đồ, tìm địa điểm và chỉ đường dùng Google Maps Platform (Maps SDK, Places API, Routes API). Đánh giá Google luôn được ghi rõ nguồn, không gộp với đánh giá của cộng đồng GoGo.',
 
-      'foot.project': 'Dự án startup Việt Nam · chưa có pháp nhân',
-      'foot.support': 'Hỗ trợ:',
-      'foot.lang': 'English version',
-      'foot.photo': 'Ảnh địa điểm trong ảnh chụp app:',
-    },
   },
-
   en: {
-    path: '/en/',
-    htmlLang: 'en',
-    ogLocale: 'en_US',
-    ogLocaleAlt: 'vi_VN',
-    otherPath: '/',
-    strings: {
       'a.title': 'GoGo — Decide where to go, together',
       'a.desc': 'An app that helps couples and friend groups pick a place together, vote, and get one shared itinerary for the outing. A Vietnamese startup project with its MVP in testing.',
       'a.ogDesc': 'Everyone picks, the group votes, and you get one shared itinerary that fits the budget. MVP in testing.',
-      'a.brandHome': 'GoGo VN — home',
-      'a.navLabel': 'Main navigation',
-      'a.langLabel': 'Language',
       'a.heroShots': 'App screenshots: voting on a place and the group itinerary',
       'a.mailTrial': `mailto:${MAIL}?subject=${encodeURIComponent('GoGo — Trial request')}`,
       'a.mailPartner': `mailto:${MAIL}?subject=${encodeURIComponent('GoGo — Partnership / investment')}`,
-      skip: 'Skip to main content',
-
-      'nav.demo': 'Product',
-      'nav.how': 'How it works',
-      'nav.stage': 'Progress',
-      'nav.contact': 'Contact',
-
       'hero.badge': 'MVP in testing · not publicly released',
       'hero.h1': 'No more <em>“so… where do we go?”</em>',
       'hero.lead': 'Planning an outing usually takes an evening of messages, and someone still ends up going along with the majority. GoGo lets couples and friend groups each choose, vote together, and get one shared itinerary that fits the budget and the time.',
@@ -222,12 +184,5 @@ export const locales = {
       't4.h': 'Google Cloud',
       't4.p': 'Maps, place search and directions use Google Maps Platform (Maps SDK, Places API, Routes API). Google ratings always show their source and are never merged with GoGo community ratings.',
 
-      'foot.project': 'A Vietnamese startup project · no legal entity yet',
-      'foot.support': 'Support:',
-      'foot.lang': 'Phiên bản tiếng Việt',
-      'foot.photo': 'Place photos in the app screenshots:',
-    },
   },
 };
-
-export { MAIL };
