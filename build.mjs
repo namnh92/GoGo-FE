@@ -25,6 +25,16 @@ const SHOTS = [
   { n: 7, img: 'done', w: 460, h: 1000, kind: 'ios' },
 ];
 
+// Technology we use — verified in the GoGo repos (BE/Mobile/CMS/Infra manifests), plus Adjust,
+// whose integration is in progress (GoGo-MobileApp#363). Names are brand names, not translated.
+const STACK = [
+  ['claude.svg', 'Claude Code'], ['cloudflare.svg', 'Cloudflare'], ['aws.svg', 'AWS'],
+  ['googlecloud.svg', 'Google Cloud'], ['sentry.svg', 'Sentry'], ['onesignal.svg', 'OneSignal'],
+  ['tenjin.svg', 'Tenjin'], ['adjust.svg', 'Adjust'], ['expo.svg', 'Expo'],
+  ['react.svg', 'React Native'], ['nestjs.svg', 'NestJS'], ['postgresql.svg', 'PostgreSQL'],
+  ['neon.svg', 'Neon'], ['upstash.svg', 'Upstash'], ['drizzle.svg', 'Drizzle'], ['terraform.svg', 'Terraform'],
+];
+
 function render(code) {
   const loc = locales[code];
   const other = code === 'vi' ? 'en' : 'vi';
@@ -44,6 +54,8 @@ function render(code) {
       ? `<script>if (/[?&]lang=en(&|$)/.test(location.search)) location.replace('/en/' + location.hash);</script>`
       : '';
 
+  const stack = STACK.map(([f, name]) => `<li><img src="/img/logos/${f}" alt="" height="32" loading="lazy">${name}</li>`).join('\n          ');
+
   const special = {
     htmlLang: loc.htmlLang,
     canonical: SITE + loc.path,
@@ -57,6 +69,7 @@ function render(code) {
     langSwitch,
     shots,
     legacyRedirect,
+    stack,
   };
 
   const used = new Set();

@@ -20,8 +20,9 @@ Landing page giới thiệu sản phẩm GoGo VN + mục kêu gọi đầu tư �
   (`foot.photo` + `.credits`): Tràng Tiền Plaza (The Hanoian, CC BY-SA 4.0) và Bảo tàng Phụ nữ Việt Nam
   (Aumusee, CC BY-SA 3.0). Ảnh ở Kết quả / Lịch trình / Đang đi chơi cần GoGo-MobileApp#334
   (merged develop d3e2ab7); ảnh chụp từ Metro ở ac3bc6f.
-- Logo công nghệ: `site/img/logos/` — Claude từ simple-icons 13.21.0 (CC0); Cloudflare, AWS,
-  Google Cloud từ devicon 2.16.0 (MIT). Logo là thương hiệu của chủ sở hữu tương ứng.
+- Logo công nghệ: `site/img/logos/`, danh sách ở `STACK` trong `build.mjs`. Nguồn: simple-icons 16.35.0 (CC0),
+  devicon 2.17.0 (AWS, MIT), trang chính chủ (OneSignal favicon.svg, Tenjin logo SVG trong header tenjin.com,
+  Adjust logo trắng trên adjust.com). Logo là thương hiệu của chủ sở hữu tương ứng.
 - Nháp chính sách chưa có hiệu lực: `docs/drafts/` (không deploy).
 - Nội dung chỉ ghi điều đã xác nhận: không founder, số liệu, pháp nhân, đối tác chưa được owner chốt.
 

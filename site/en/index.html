@@ -53,6 +53,11 @@
       --bezel-edge: #4A4641;
       --bezel-hi: rgba(255, 255, 255, 0.28);
       --panel: linear-gradient(160deg, #7667E8 0%, #9A6BD6 48%, #D84F4A 100%);
+      --night: #121110;
+      --night-2: #1E1C1A;
+      --night-line: rgba(255, 255, 255, 0.10);
+      --on-night: rgba(255, 255, 255, 0.92);
+      --on-night-2: rgba(255, 255, 255, 0.72);
       --radius: 20px;
       --motion: 240ms;
     }
@@ -216,10 +221,19 @@
     @media (max-width: 760px) { .contact { grid-template-columns: 1fr; } }
 
     /* Technology */
-    .tech .card { box-shadow: none; }
-    .tech .card a { color: var(--coral-ink); font-weight: 600; }
-    .tech .logo { display: block; width: 40px; height: 40px; margin-bottom: 14px; object-fit: contain; }
-    .tech .grid { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+    /* Technology — logo wall on a black band; every mark rendered white for one consistent read. */
+    .dark { background: var(--night); color: #fff; }
+    .dark .eyebrow { color: var(--coral-soft); }
+    .dark .sub { color: var(--on-night-2); }
+    .stack { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+    .stack li {
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+      min-height: 112px; padding: 18px 12px; border-radius: 16px;
+      background: var(--night-2); border: 1px solid var(--night-line);
+      font-size: 14px; font-weight: 600; color: var(--on-night); text-align: center;
+    }
+    .stack img { display: block; height: 32px; width: auto; max-width: 120px; object-fit: contain; filter: brightness(0) invert(1); }
+    @media (max-width: 440px) { .stack { grid-template-columns: repeat(2, 1fr); } }
 
     footer { padding: 28px 0 44px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
     footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; align-items: center; }
@@ -342,17 +356,29 @@
       </div>
     </section>
 
-    <section class="tech" aria-labelledby="tech-h">
+    <section class="tech dark" aria-labelledby="tech-h">
       <div class="wrap">
         <p class="eyebrow">Technology we use</p>
-        <h2 id="tech-h">Tools and infrastructure</h2>
-        <p class="sub">These are services we use, not formal partnerships.</p>
-        <div class="grid">
-          <article class="card"><img class="logo" src="/img/logos/claude.svg" width="40" height="40" alt=""><h3>Claude Code · Anthropic</h3><p><strong>Development tool:</strong> the team writes, tests and reviews code with <a href="https://claude.com/product/claude-code" rel="noopener">Claude Code</a>. The product does <strong>not</strong> integrate the Claude API today: place suggestions come from a rule-based algorithm, with no generative AI.</p></article>
-          <article class="card"><img class="logo" src="/img/logos/cloudflare.svg" width="40" height="40" alt=""><h3>Cloudflare</h3><p>This site and GoGo’s share links run on <a href="https://workers.cloudflare.com/" rel="noopener">Cloudflare Workers</a>; DNS, CDN and attack protection are handled by Cloudflare; internal tools sit behind Cloudflare Access.</p></article>
-          <article class="card"><img class="logo" src="/img/logos/aws.svg" width="40" height="40" alt=""><h3>AWS</h3><p>Secrets (service keys, system passwords) are managed in AWS Systems Manager Parameter Store, never in source code.</p></article>
-          <article class="card"><img class="logo" src="/img/logos/google-cloud.svg" width="40" height="40" alt=""><h3>Google Cloud</h3><p>Maps, place search and directions use Google Maps Platform (Maps SDK, Places API, Routes API). Google ratings always show their source and are never merged with GoGo community ratings.</p></article>
-        </div>
+        <h2 id="tech-h">Built with</h2>
+        <p class="sub">Services and tools we use — not partnerships.</p>
+        <ul class="stack">
+          <li><img src="/img/logos/claude.svg" alt="" height="32" loading="lazy">Claude Code</li>
+          <li><img src="/img/logos/cloudflare.svg" alt="" height="32" loading="lazy">Cloudflare</li>
+          <li><img src="/img/logos/aws.svg" alt="" height="32" loading="lazy">AWS</li>
+          <li><img src="/img/logos/googlecloud.svg" alt="" height="32" loading="lazy">Google Cloud</li>
+          <li><img src="/img/logos/sentry.svg" alt="" height="32" loading="lazy">Sentry</li>
+          <li><img src="/img/logos/onesignal.svg" alt="" height="32" loading="lazy">OneSignal</li>
+          <li><img src="/img/logos/tenjin.svg" alt="" height="32" loading="lazy">Tenjin</li>
+          <li><img src="/img/logos/adjust.svg" alt="" height="32" loading="lazy">Adjust</li>
+          <li><img src="/img/logos/expo.svg" alt="" height="32" loading="lazy">Expo</li>
+          <li><img src="/img/logos/react.svg" alt="" height="32" loading="lazy">React Native</li>
+          <li><img src="/img/logos/nestjs.svg" alt="" height="32" loading="lazy">NestJS</li>
+          <li><img src="/img/logos/postgresql.svg" alt="" height="32" loading="lazy">PostgreSQL</li>
+          <li><img src="/img/logos/neon.svg" alt="" height="32" loading="lazy">Neon</li>
+          <li><img src="/img/logos/upstash.svg" alt="" height="32" loading="lazy">Upstash</li>
+          <li><img src="/img/logos/drizzle.svg" alt="" height="32" loading="lazy">Drizzle</li>
+          <li><img src="/img/logos/terraform.svg" alt="" height="32" loading="lazy">Terraform</li>
+        </ul>
       </div>
     </section>
   </main>
