@@ -103,6 +103,7 @@ export const locales = {
       'tech.eyebrow': 'Công nghệ sử dụng',
       'tech.h2': 'Xây dựng trên',
       'tech.sub': 'Dịch vụ và công cụ chúng tôi đang dùng — không phải quan hệ đối tác.',
+      'tech.program': 'GoGo tham gia chương trình <strong>Sentry for Startups</strong>.',
 
       'foot.project': 'Dự án startup Việt Nam · chưa có pháp nhân',
       'foot.support': 'Hỗ trợ:',
@@ -205,6 +206,7 @@ export const locales = {
       'tech.eyebrow': 'Technology we use',
       'tech.h2': 'Built with',
       'tech.sub': 'Services and tools we use — not partnerships.',
+      'tech.program': 'GoGo is part of the <strong>Sentry for Startups</strong> program.',
 
       'foot.project': 'A Vietnamese startup project · no legal entity yet',
       'foot.support': 'Support:',
